@@ -1,17 +1,6 @@
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
-import * as Logger from 'koa-logger';
+import app from './app';
 
-const app = new Koa();
-const router = new Router();
-
-router.get('(./)', async (ctx) => {
-    ctx.body = 'Hello World!';
-});
-
-app.use(router.routes());
-app.use(Logger());
-
-app.listen(3000);
+const port = process.env.PORT || 3000;
+const server = app.listen(port);
 
 console.log('Server running on port 3000');
