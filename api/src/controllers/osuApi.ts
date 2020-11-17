@@ -1,3 +1,6 @@
+import { osuCreds } from '../../credentials.json';
+
+
 const osuApi = {
     init: _ => new Auth(12345, 'test', 'localhost:3000'),
     getUserInfo: (cb) => new User(),
