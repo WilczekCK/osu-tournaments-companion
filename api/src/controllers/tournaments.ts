@@ -1,0 +1,5 @@
+const tournaments = {
+    //...
+}
+
+export = tournaments;

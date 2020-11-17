@@ -1,0 +1,5 @@
+const osuApi = {
+    //...
+}
+
+export = osuApi;
