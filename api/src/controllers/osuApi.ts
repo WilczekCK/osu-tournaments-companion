@@ -1,8 +1,8 @@
-import { osuCreds } from '../../credentials.json';
-
+import * as credentials from '../../credentials.json';
+const osuCreds = credentials.osuCreds;
 
 const osuApi = {
-    init: _ => new Auth(12345, 'test', 'localhost:3000'),
+    init: _ => new Auth(osuCreds.clientId, osuCreds.clientKey, osuCreds.callbackUrl),
     getUserInfo: (cb) => new User(),
     getRoomInfo: (cb) => new Room(),
 }
