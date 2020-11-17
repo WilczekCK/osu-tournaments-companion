@@ -23,8 +23,8 @@ async function getToken(){
         .then(function ( {data} ) {
             return data.access_token;
         })
-        .catch(function (error) {
-            console.log(error);
+        .catch(function (error: never) {
+            throw new Error(`Problem with gaining token from Osu!Api, ${error}`)
         })    
 }
 
@@ -37,9 +37,9 @@ async function accessApi(scope: string){
     .then(function ( {data} ) {
         return data;
     })
-    .catch(function (error) {
-        console.log(error);
+    .catch(function (error: never) {
+        throw new Error(`Could not connect to Osu!Api, ${error}`)
     })    
 }
 
-export = (scope: string) => new OsuApi(scope);
+export = (scope: string) => new OsuApi(scope).getInfo;
