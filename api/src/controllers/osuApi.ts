@@ -1,12 +1,5 @@
 import * as credentials from '../../credentials.json';
 const osuCreds = credentials.osuCreds;
-
-const osuApi = {
-    init: _ => new Auth(osuCreds.clientId, osuCreds.clientKey, osuCreds.callbackUrl),
-    getUserInfo: (cb) => new User(),
-    getRoomInfo: (cb) => new Room(),
-}
-
 class Auth{
     constructor(
         private clientId: number,
@@ -28,6 +21,12 @@ class Judge{
     constructor(
         //... waiting for api config
     ){}
+}
+
+const osuApi = {
+    init: () => new Auth(osuCreds.clientId, osuCreds.clientKey, osuCreds.callbackUrl),
+    //getUserInfo: (cb) => new User(),
+    //getRoomInfo: (cb) => new Room(),
 }
 
 export = osuApi;
