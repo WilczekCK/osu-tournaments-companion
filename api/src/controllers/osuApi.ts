@@ -1,34 +1,27 @@
 import * as credentials from '../../credentials.json';
-const osuCreds = credentials.osuCreds;
-class Auth{
-    constructor(
-        private clientId: number,
-        private clientKey: string,
-        private callbackUrl: string,
-    ){
-        console.log(this);
+import axios from 'axios';
+class OsuApi{
+    public constructor (osuCreds: any){
+        this.getToken(osuCreds);
+    }
+
+    public async getToken(osuCreds: any){
+        return await axios.post( osuCreds.getTokenUrl, {
+            client_id: osuCreds.clientId,
+            client_secret: osuCreds.clientKey,
+            grant_type: 'client_credentials',
+            scope: 'public',
+        })
+        .then(function ( {data} ) {
+            return data.access_token;
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        
     }
 }
-class User{
-    constructor(
-        //... waiting for api config
-    ){}
-}
-class Room{
-    constructor(
-        //... waiting for api config
-    ){}
-}
-class Judge{
-    constructor(
-        //... waiting for api config
-    ){}
-}
 
-const osuApi = {
-    init: () => new Auth(osuCreds.clientId, osuCreds.clientKey, osuCreds.callbackUrl),
-    //getUserInfo: (cb) => new User(),
-    //getRoomInfo: (cb) => new Room(),
-}
+new OsuApi(credentials.osuCreds);
 
-export = osuApi;
+export = OsuApi;

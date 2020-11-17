@@ -7,7 +7,7 @@ const router = new Router();
 router.use(tournamentsRoute)
 
 router.get('/', async (ctx) => {
-    osuApi.init();
+    console.log(osuApi);
     ctx.body = 'Hello World!';
 });
 
