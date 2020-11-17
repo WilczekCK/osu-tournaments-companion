@@ -5,7 +5,9 @@ class Auth{
         private clientId: number,
         private clientKey: string,
         private callbackUrl: string,
-    ){}
+    ){
+        console.log(this);
+    }
 }
 class User{
     constructor(
