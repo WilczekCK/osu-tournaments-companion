@@ -1,7 +1,6 @@
 import Router from 'koa-router';
 import tournamentsRoute from './tournaments/index';
 
-
 const router = new Router();
 router.use(tournamentsRoute)
 
