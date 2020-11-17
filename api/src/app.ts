@@ -9,6 +9,11 @@ router.get('/', async (ctx) => {
     ctx.body = 'Hello World!';
 });
 
+router.get('/osuApi', async (ctx) => {
+    ctx.status = 200;
+});
+
+
 app.use(router.routes());
 app.use(Logger());
 

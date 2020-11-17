@@ -25,7 +25,8 @@
     "typescript": "^4.0.5"
   },
   "scripts": {
-    "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts"
+    "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/test.ts",
+    "test": "npx jest"
   },
   "keywords": [
     "osu",
