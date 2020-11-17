@@ -1,30 +1,45 @@
-const osuApi = {
-    init: _ => new Auth(12345, 'test', 'localhost:3000'),
-    getUserInfo: (cb) => new User(),
-    getRoomInfo: (cb) => new Room(),
+import * as credentials from '../../credentials.json';
+import axios from 'axios';
+
+const {osuCreds} = credentials;
+class OsuApi{
+    public token: Promise<string>;
+    public getInfo: Promise<object>; 
+
+    public constructor (scope: string){
+        this.token = getToken();
+        this.getInfo = accessApi(scope);
+    }
 }
 
-class Auth{
-    constructor(
-        private clientId: number,
-        private clientKey: string,
-        private callbackUrl: string,
-    ){}
-}
-class User{
-    constructor(
-        //... waiting for api config
-    ){}
-}
-class Room{
-    constructor(
-        //... waiting for api config
-    ){}
-}
-class Judge{
-    constructor(
-        //... waiting for api config
-    ){}
+async function getToken(){
+    return await axios
+        .post( osuCreds.getTokenUrl, {
+            client_id: osuCreds.clientId,
+            client_secret: osuCreds.clientKey,
+            grant_type: 'client_credentials',
+            scope: 'public',
+        })
+        .then(function ( {data} ) {
+            return data.access_token;
+        })
+        .catch(function (error: never) {
+            throw new Error(`Problem with gaining token from Osu!Api, ${error}`)
+        })    
 }
 
-export = osuApi;
+async function accessApi(scope: string){
+    return await axios({
+        method: 'get',
+        url: osuCreds.apiEndpoint+scope,
+        headers: { Authorization: `Bearer ${await getToken()}` }
+    })
+    .then(function ( {data} ) {
+        return data;
+    })
+    .catch(function (error: never) {
+        throw new Error(`Could not connect to Osu!Api, ${error}`)
+    })    
+}
+
+export = (scope: string) => new OsuApi(scope).getInfo;
