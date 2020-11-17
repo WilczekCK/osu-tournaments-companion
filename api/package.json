@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "@types/koa-logger": "^3.1.1",
+    "@types/supertest": "^2.0.10",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",
@@ -35,7 +36,13 @@
   "author": "Pawel Wilk",
   "license": "ISC",
   "jest": {
-    "moduleFileExtensions": ["js", "jsx", "json", "ts", "tsx"],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "ts",
+      "tsx"
+    ],
     "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.{ts,js}",
@@ -44,7 +51,7 @@
       "!**/coverage/**"
     ],
     "transform": {
-      "\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "\\.ts$": "./node_modules/ts-jest/preprocessor.js"
     },
     "coverageThreshold": {
       "global": {
