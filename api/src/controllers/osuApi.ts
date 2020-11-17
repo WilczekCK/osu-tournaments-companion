@@ -1,12 +1,18 @@
 import * as credentials from '../../credentials.json';
 import axios from 'axios';
-class OsuApi{
-    public constructor (osuCreds: any){
-        this.getToken(osuCreds);
-    }
 
-    public async getToken(osuCreds: any){
-        return await axios.post( osuCreds.getTokenUrl, {
+const {osuCreds} = credentials;
+class OsuApi{
+    public token: Promise<string>;
+
+    public constructor (){
+        this.token = getToken();
+    }
+}
+
+async function getToken(){
+    return await axios
+        .post( osuCreds.getTokenUrl, {
             client_id: osuCreds.clientId,
             client_secret: osuCreds.clientKey,
             grant_type: 'client_credentials',
@@ -17,11 +23,7 @@ class OsuApi{
         })
         .catch(function (error) {
             console.log(error);
-        })
-        
-    }
+        })    
 }
 
-new OsuApi(credentials.osuCreds);
-
-export = OsuApi;
+export = new OsuApi();
