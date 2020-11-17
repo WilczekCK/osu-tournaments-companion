@@ -4,9 +4,11 @@ import axios from 'axios';
 const {osuCreds} = credentials;
 class OsuApi{
     public token: Promise<string>;
+    public getInfo: Promise<object>; 
 
-    public constructor (){
+    public constructor (scope: string){
         this.token = getToken();
+        this.getInfo = accessApi(scope);
     }
 }
 
@@ -26,4 +28,18 @@ async function getToken(){
         })    
 }
 
-export = new OsuApi();
+async function accessApi(scope: string){
+    return await axios({
+        method: 'get',
+        url: osuCreds.apiEndpoint+scope,
+        headers: { Authorization: `Bearer ${await getToken()}` }
+    })
+    .then(function ( {data} ) {
+        return data;
+    })
+    .catch(function (error) {
+        console.log(error);
+    })    
+}
+
+export = (scope: string) => new OsuApi(scope);

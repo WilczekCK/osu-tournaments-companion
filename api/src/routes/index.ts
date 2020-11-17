@@ -6,9 +6,11 @@ import osuApi from '../controllers/osuApi';
 const router = new Router();
 router.use(tournamentsRoute)
 
-router.get('/', async (ctx) => {
-    console.log(osuApi.token)
-    ctx.body = 'Hello World!';
+router.get('/', async (ctx, next) => {
+    const askedInfo = await osuApi('users/2427116').getInfo;
+
+    ctx.body = askedInfo;
+    next();
 });
 
 export = router.routes();
