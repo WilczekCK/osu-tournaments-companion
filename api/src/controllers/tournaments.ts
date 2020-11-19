@@ -6,4 +6,22 @@ const tournaments = {
     matchInfo: _ => _
 }
 
+
+
+class Tournaments{
+
+}
+
 export = tournaments;
+
+/*   
+    mongo.getConnection();
+    const lol = new Tournament({id: 1, title:'Test', titleFlattened:'Tst', teams:[1,2,3,4,5], judge:"Boom", timeCreated:Date.now(), roomURL:"localhost", twitchURL:'osutv', mapsIdPlayed:[111,222,333]});
+    lol.save();
+    
+    tournament.find((err: any, tournament: any) => {
+        if(err) return console.log('err')
+        console.log(tournament);
+    })
+    mongo.stopConnection();
+ */
