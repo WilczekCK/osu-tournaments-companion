@@ -14,6 +14,18 @@ class Tournaments {
         });
         this.disconnect();
         return result;
+    };
+
+    public displayOne = async (tournamentId: Number) => {
+        this.connect();
+        
+        //@ts-ignore -- wtf is wrong with you TS?
+        const query = tournamentsSchema.where( {id: tournamentId} );
+        const result = await query.find((err: any, tournament: any) => {
+            return tournament;
+        });
+        this.disconnect();
+        return result;
     }
 }
 
