@@ -11,8 +11,9 @@ router.use(tournamentsRoute)
 
 router.get('/', async (ctx, next) => {
     //const askedInfo = await osuApi('users/2415342');
-    tournaments;
-    ctx.body = 'lol';
+    const allTournaments:Object = await tournaments.displayAll();
+
+    ctx.body = allTournaments;
     next();
 });
 

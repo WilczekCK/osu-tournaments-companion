@@ -1,17 +1,23 @@
 
-import mongoose from "mongoose";
+import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
-/* const tournaments = {
-    prepareRoom: _ => _,
-    prepareUserInfo: _ => _,
-    recognizeJudge: _ => _,
-    sendToDb: _ => _,
-    matchInfo: _ => _
-} */
+import tournaments from "../routes/tournaments";
 
-console.log(tournamentsSchema.Tournament)
+class Tournaments {
+    private connect = () => mongo.getConnection();
+    private disconnect = () => mongo.stopConnection();
+    
+    public displayAll = async () => {
+        this.connect();
+        const result = await tournamentsSchema.find((err: any, tournament: any) => {
+            return tournament;
+        });
+        this.disconnect();
+        return result;
+    }
+}
 
-export = tournamentsSchema;
+export = new Tournaments();
 
 /*   
     mongo.getConnection();
