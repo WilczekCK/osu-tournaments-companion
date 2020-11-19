@@ -14,7 +14,7 @@ const tournamentSchema = new Schema({
 
 const Tournament = mongoose.model('Tournament', tournamentSchema);
 
-const lol = new Tournament({id: 1, title:'Test', titleFlattened:'Tst', teams:[1,2,3,4,5], judge:"Boom", timeCreated:Date.now(), roomURL:"localhost", twitchURL:'osutv', mapsIdPlayed:[111,222,333]});
-lol.save();
+//const lol = new Tournament({id: 1, title:'Test', titleFlattened:'Tst', teams:[1,2,3,4,5], judge:"Boom", timeCreated:Date.now(), roomURL:"localhost", twitchURL:'osutv', mapsIdPlayed:[111,222,333]});
+//lol.save();
 
 export = Tournament;
