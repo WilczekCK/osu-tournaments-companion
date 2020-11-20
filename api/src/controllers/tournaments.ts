@@ -41,19 +41,18 @@ class Tournaments {
 
         this.disconnect();
         return result;
+    };
+
+    public insert = async (tournamentInfo: Object) => {
+        this.connect()
+
+        const newTournament = new tournamentsSchema(tournamentInfo);
+        await newTournament.save();
+
+        this.disconnect();
+
+        return {status: 200}
     }
 }
 
 export = new Tournaments();
-
-/*   
-    mongo.getConnection();
-    const lol = new Tournament({id: 1, title:'Test', titleFlattened:'Tst', teams:[1,2,3,4,5], judge:"Boom", timeCreated:Date.now(), roomURL:"localhost", twitchURL:'osutv', mapsIdPlayed:[111,222,333]});
-    lol.save();
-
-    tournament.find((err: any, tournament: any) => {
-        if(err) return console.log('err')
-        console.log(tournament);
-    })
-    mongo.stopConnection();
- */
