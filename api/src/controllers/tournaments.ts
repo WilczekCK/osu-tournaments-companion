@@ -52,6 +52,17 @@ class Tournaments {
         this.disconnect();
 
         return {status: 200}
+    };
+
+    public delete = async (tournamentId: Number) => {
+        this.connect()
+
+        const {ok, deletedCount} = await tournamentsSchema.deleteOne({id: tournamentId}, (cb) => cb);
+        
+        this.disconnect();
+
+        const status = ok ? 200 : 400;
+        return {status, deletedCount};
     }
 }
 
