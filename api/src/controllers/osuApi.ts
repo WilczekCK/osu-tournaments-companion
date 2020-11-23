@@ -4,7 +4,7 @@ import axios from 'axios';
 const {osuCreds} = credentials;
 class OsuApi{
     public token: Promise<string>;
-    public getInfo: Promise<object>; 
+    public getInfo: any; 
 
     public constructor (scope: string){
         this.token = getToken();

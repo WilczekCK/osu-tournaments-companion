@@ -2,6 +2,13 @@
 import mongo from "./mongo";
 import usersSchema from '../database/users.schema';
 
+type insertSchema = {
+    id: number,
+    username: string,
+    country: string,
+    playStyle: Array<number>,
+}
+
 type UpdateSchema = {
     whereQuery: {
         [key: string]: string | number,
@@ -51,7 +58,7 @@ class Users {
         return result;
     };
 
-    public insert = async (userInfo: Object) => {
+    public insert = async (userInfo: insertSchema) => {
         this.connect()
 
         const newUser = new usersSchema(userInfo);
