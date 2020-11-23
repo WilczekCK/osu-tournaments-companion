@@ -1,6 +1,6 @@
 
 import mongo from "./mongo";
-import usersSchema from '../database/tournaments.schema';
+import usersSchema from '../database/users.schema';
 
 type UpdateSchema = {
     whereQuery: {
