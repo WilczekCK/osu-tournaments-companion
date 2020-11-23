@@ -89,4 +89,4 @@ class Users {
     }
 }
 
-export = new User();
+export = new Users();
