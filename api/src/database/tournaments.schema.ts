@@ -1,20 +1,28 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
+
+interface Tournament extends Document {
+    id: Number;
+    title: String;
+    titleFlattened: String;
+    teams: Array<Number>;
+    judge: String;
+    timeCreated: Date;
+    roomURL: String;
+    twitchURL: String;
+    mapsIdPlayed: Array<Number>;
+}
 
 const tournamentSchema = new Schema({
-    id: Number,
-    title: String,
-    titleFlattened: String,
-    teams: Array,
-    judge: String,
-    timeCreated: Date,
-    roomURL: String,
-    twitchURL: String,
-    mapsIdPlayed: Array,
+    id: { type: Number, required: true },
+    title: { type: String, required: true },
+    titleFlattened: { type: String, required: true },
+    teams: { type: Array, required: true },
+    judge: { type: String, required: true },
+    timeCreated: { type: Date, required: true },
+    roomURL: { type: String, required: true },
+    twitchURL: { type: String, required: true },
+    mapsIdPlayed: { type: Array, required: true },
 })
 
-const Tournament = mongoose.model('Tournament', tournamentSchema);
-
-//const lol = new Tournament({id: 1, title:'Test', titleFlattened:'Tst', teams:[1,2,3,4,5], judge:"Boom", timeCreated:Date.now(), roomURL:"localhost", twitchURL:'osutv', mapsIdPlayed:[111,222,333]});
-//lol.save();
-
-export = Tournament;
+const TournamentCreator = mongoose.model<Tournament>('Tournament', tournamentSchema);
+export = TournamentCreator;

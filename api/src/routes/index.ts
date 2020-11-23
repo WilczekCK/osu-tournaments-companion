@@ -1,22 +1,24 @@
 import Router from 'koa-router';
 import tournamentsRoute from './tournaments/index';
-import tournament from '../database/tournaments.schema';
 
 import osuApi from '../controllers/osuApi';
 import mongo from '../controllers/mongo';
+import tournaments from '../controllers/tournaments';
+
 
 const router = new Router();
 router.use(tournamentsRoute)
 
 router.get('/', async (ctx, next) => {
     //const askedInfo = await osuApi('users/2415342');
-    mongo.getConnection();
-    tournament.find((err: any, tournament: any) => {
-        if(err) return console.log('err')
-        console.log(tournament);
-    })
+    //const allTournaments:Object = await tournaments.displayCertain({title: "Test"});
 
-    ctx.body = 'lol';
+    
+    const allTournaments = await tournaments.update({ 
+            whereQuery: { prefix: "id", content: 1 },
+            modifyQuery:{ prefix: "id", content: 123 } 
+        });
+    ctx.body = allTournaments;
     next();
 });
 
