@@ -3,6 +3,14 @@ import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
 import tournaments from "../routes/tournaments";
 
+type UpdateSchema = {
+    whereQuery: {
+        [key: string]: string | number,
+    },
+    modifyQuery: {
+        [key: string]: string | number;
+    },
+}
 class Tournaments {
     private connect = () => mongo.getConnection();
     private disconnect = () => mongo.stopConnection();
@@ -63,6 +71,21 @@ class Tournaments {
 
         const status = ok ? 200 : 400;
         return {status, deletedCount};
+    }
+
+    public update = async (tournamentInfo: UpdateSchema ) => {
+        this.connect()
+
+        const {whereQuery, modifyQuery} = tournamentInfo;
+        const {ok, nModified} = await tournamentsSchema.updateOne(
+            {[whereQuery.prefix]: whereQuery.content}, 
+            {[modifyQuery.prefix]: modifyQuery.content}
+        );
+
+        this.disconnect()
+
+        const status = ok ? 200 : 400;
+        return {status, modified: nModified};
     }
 }
 

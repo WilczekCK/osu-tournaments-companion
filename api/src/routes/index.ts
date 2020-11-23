@@ -14,7 +14,10 @@ router.get('/', async (ctx, next) => {
     //const allTournaments:Object = await tournaments.displayCertain({title: "Test"});
 
     
-    const allTournaments = await tournaments.delete(23412432);
+    const allTournaments = await tournaments.update({ 
+            whereQuery: { prefix: "id", content: 1 },
+            modifyQuery:{ prefix: "id", content: 123 } 
+        });
     ctx.body = allTournaments;
     next();
 });
