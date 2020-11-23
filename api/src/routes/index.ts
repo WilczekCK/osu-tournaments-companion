@@ -10,15 +10,15 @@ const router = new Router();
 router.use(tournamentsRoute)
 
 router.get('/', async (ctx, next) => {
-    //const askedInfo = await osuApi('users/2415342');
+    const askedInfo = await osuApi('users/1837989');
     //const allTournaments:Object = await tournaments.displayCertain({title: "Test"});
 
     
-    const allTournaments = await tournaments.update({ 
+    /*const allTournaments = await tournaments.update({ 
             whereQuery: { prefix: "id", content: 1 },
             modifyQuery:{ prefix: "id", content: 123 } 
-        });
-    ctx.body = allTournaments;
+        });*/
+    ctx.body = askedInfo;
     next();
 });
 
