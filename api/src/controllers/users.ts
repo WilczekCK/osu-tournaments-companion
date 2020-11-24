@@ -23,6 +23,7 @@ class Users {
     private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => usersSchema.where(where);
+    private error: string;
 
     public displayAll = async () => {
         this.connect();
@@ -62,11 +63,12 @@ class Users {
         this.connect()
 
         const newUser = new usersSchema(userInfo);
+            
         await newUser.save();
-
+    
         this.disconnect();
-
-        return {status: 200}
+        
+        return {status : 200}
     };
 
     public delete = async (userId: Number) => {

@@ -8,7 +8,7 @@ interface User extends Document {
 }
 
 const userSchema = new Schema({
-    id: { type: Number, required: true },
+    id: { type: Number, required: true, unique: true },
     username: { type: String, required: true },
     country: { type: String, required: true },
     playStyle: { type: Array, required: true },
