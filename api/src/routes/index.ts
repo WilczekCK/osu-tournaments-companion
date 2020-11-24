@@ -19,7 +19,7 @@ router.get('/', async (ctx, next) => {
         playStyle: askedInfo.playstyle
     })
 
-    console.log(user)
+    throw Error('Some error');
     
     /*const allTournaments = await tournaments.update({ 
             whereQuery: { prefix: "id", content: 1 },
