@@ -9,7 +9,7 @@ const tournamentRouter = new Router({
 tournamentRouter.use(showTournament, manageTournament);
     
 tournamentRouter.get('/', async (ctx) => {
-    ctx.body = 'Tournament route';
+    ctx.body = 'All of the tournaments will be listed here!';
 })
 
 export = tournamentRouter.routes();
