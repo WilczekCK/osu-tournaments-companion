@@ -67,7 +67,7 @@ class Users {
         try{
             await newUser.save();
         }catch(err){
-            return {status : 422, response: "This user is already registered"};
+            return {status : 422, response: "This user is already registered or some data is missing"};
         }
     
         this.disconnect();
