@@ -55,7 +55,12 @@ class Tournaments {
         this.connect()
 
         const newTournament = new tournamentsSchema(tournamentInfo);
-        await newTournament.save();
+        
+        try{
+            await newTournament.save();
+        }catch(err){
+            return {status : 422, response: "This tournament is already listed or some data is missing"};
+        }
 
         this.disconnect();
 
