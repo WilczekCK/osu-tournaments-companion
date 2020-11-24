@@ -13,15 +13,15 @@ interface Tournament extends Document {
 }
 
 const tournamentSchema = new Schema({
-    id: { type: Number, required: true },
+    id: { type: Number, required: true, unique: true },
     title: { type: String, required: true },
     titleFlattened: { type: String, required: true },
-    teams: { type: Array, required: true },
-    judge: { type: String, required: true },
+    teams: { type: Array},
+    judge: { type: String},
     timeCreated: { type: Date, required: true },
     roomURL: { type: String, required: true },
-    twitchURL: { type: String, required: true },
-    mapsIdPlayed: { type: Array, required: true },
+    twitchURL: { type: String },
+    mapsIdPlayed: { type: Array},
 })
 
 const TournamentCreator = mongoose.model<Tournament>('Tournament', tournamentSchema);
