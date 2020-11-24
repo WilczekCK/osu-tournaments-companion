@@ -1,6 +1,7 @@
 
 import mongo from "./mongo";
 import usersSchema from '../database/users.schema';
+import { error } from "console";
 
 type insertSchema = {
     id: number,
@@ -23,7 +24,6 @@ class Users {
     private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => usersSchema.where(where);
-    private error: string;
 
     public displayAll = async () => {
         this.connect();
@@ -63,12 +63,16 @@ class Users {
         this.connect()
 
         const newUser = new usersSchema(userInfo);
-            
-        await newUser.save();
+
+        try{
+            await newUser.save();
+        }catch(err){
+            return {status : 422, response: "This user is already registered"};
+        }
     
         this.disconnect();
-        
-        return {status : 200}
+
+        return {status : 200, response: "Inserted succesfully"};
     };
 
     public delete = async (userId: Number) => {
@@ -79,7 +83,7 @@ class Users {
         this.disconnect();
 
         const status = ok ? 200 : 400;
-        return {status, deletedCount};
+        return {status};
     }
 
     public update = async (userInfo: UpdateSchema) => {
@@ -94,7 +98,7 @@ class Users {
         this.disconnect()
 
         const status = ok ? 200 : 400;
-        return {status, modified: nModified};
+        return {status};
     }
 }
 
