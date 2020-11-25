@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+import koaBody from 'koa-body';
 import osuApi from '../../../controllers/osuApi';
 import tournaments from '../../../controllers/tournaments';
 
@@ -12,7 +13,7 @@ manageTournament.post('/:id', async (ctx) => {
         id,
         title: name,
         titleFlattened: name, //to flatten soon
-        teams: recent_participants,
+        teams: recent_participants, //to divide later === (n-1) /2
         judge: user_id,
         timeCreated: starts_at,
         roomURL: channel_id,
@@ -21,6 +22,20 @@ manageTournament.post('/:id', async (ctx) => {
         isActive: active
     })
 
+    ctx.body = response;
+})
+
+manageTournament.patch('/:id', koaBody(), async (ctx) => {
+
+    const {prefix, content} = ctx.request.header;
+
+    const response = await tournaments.update({
+        whereQuery: {prefix: "id", content: ctx.params.id},
+        modifyQuery: {prefix: "twitchURL", content: content} 
+    })
+
+    console.log({whereQuery: {prefix: "id", content: ctx.params.id},
+    modifyQuery: {prefix: "twitchURL", content: content} })
     ctx.body = response;
 })
 
