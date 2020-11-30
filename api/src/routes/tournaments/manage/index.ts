@@ -26,16 +26,20 @@ manageTournament.post('/:id', async (ctx) => {
 })
 
 manageTournament.patch('/:id', koaBody(), async (ctx) => {
-
     const {prefix, content} = ctx.request.header;
 
     const response = await tournaments.update({
         whereQuery: {prefix: "id", content: ctx.params.id},
-        modifyQuery: {prefix: "twitchURL", content: content} 
+        modifyQuery: {prefix: prefix, content: content} 
     })
 
-    console.log({whereQuery: {prefix: "id", content: ctx.params.id},
-    modifyQuery: {prefix: "twitchURL", content: content} })
+    ctx.body = response;
+})
+
+
+manageTournament.delete('/:id', koaBody(), async (ctx) => {
+    const response = await tournaments.delete(ctx.params.id)
+    
     ctx.body = response;
 })
 
