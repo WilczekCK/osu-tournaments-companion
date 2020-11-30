@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import tournamentsRoute from './tournaments/index';
+import usersRoute from './users/index';
 
 import osuApi from '../controllers/osuApi';
 import mongo from '../controllers/mongo';
@@ -7,7 +8,7 @@ import tournaments from '../controllers/tournaments';
 import users from '../controllers/users';
 
 const router = new Router();
-router.use(tournamentsRoute)
+router.use(tournamentsRoute, usersRoute)
 
 router.get('/', async (ctx, next) => {
     const askedInfo = await osuApi('users/1837989');

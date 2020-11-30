@@ -82,15 +82,16 @@ class Tournaments {
         this.connect()
 
         const {whereQuery, modifyQuery} = tournamentInfo;
-        const {ok, nModified} = await tournamentsSchema.updateOne(
+        const resp = modifyQuery.content && modifyQuery.prefix 
+        ? await tournamentsSchema.updateOne(
             {[whereQuery.prefix]: whereQuery.content}, 
-            {[modifyQuery.prefix]: modifyQuery.content}
-        );
+            {[modifyQuery.prefix]: modifyQuery.content})
+        : {ok: 0};
 
-        this.disconnect()
+    this.disconnect()
 
-        const status = ok ? 200 : 400;
-        return {status, modified: nModified};
+    const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
+    return {status};
     }
 }
 
