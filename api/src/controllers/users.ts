@@ -1,7 +1,6 @@
 
 import mongo from "./mongo";
 import usersSchema from '../database/users.schema';
-import { error } from "console";
 
 type insertSchema = {
     id: number,
@@ -88,16 +87,18 @@ class Users {
 
     public update = async (userInfo: UpdateSchema) => {
         this.connect()
-
+        
         const {whereQuery, modifyQuery} = userInfo;
-        const {ok, nModified} = await usersSchema.updateOne(
-            {[whereQuery.prefix]: whereQuery.content}, 
-            {[modifyQuery.prefix]: modifyQuery.content}
-        );
+
+        const resp = modifyQuery.content && modifyQuery.prefix 
+            ? await usersSchema.updateOne(
+                {[whereQuery.prefix]: whereQuery.content}, 
+                {[modifyQuery.prefix]: modifyQuery.content})
+            : {ok: 0};
 
         this.disconnect()
 
-        const status = ok ? 200 : 400;
+        const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
         return {status};
     }
 }
