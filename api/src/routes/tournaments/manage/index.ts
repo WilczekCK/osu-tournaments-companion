@@ -3,15 +3,17 @@ import koaBody from 'koa-body';
 import auth from 'koa-basic-auth';
 import osuApi from '../../../controllers/osuApi';
 import tournaments from '../../../controllers/tournaments';
-
+import * as credentials from '../../../../credentials.json';
+const {protectedRoutes} = credentials;
 
 const manageTournament = new Router({
     prefix: '/m'
 });
 
-manageTournament.all('/:id', auth({name:'admin', pass:'password'}), async (ctx, next) => {
+console.log(protectedRoutes)
+manageTournament.all('/:id', auth({name:protectedRoutes.username, pass:protectedRoutes.password}), async (ctx, next) => {
     //before all, authorized routes!
-    next();
+    await next();
 })
     
 manageTournament.post('/:id', async (ctx) => {
@@ -29,6 +31,7 @@ manageTournament.post('/:id', async (ctx) => {
         isActive: active
     })
 
+    ctx.status = response.status;
     ctx.body = response;
 })
 

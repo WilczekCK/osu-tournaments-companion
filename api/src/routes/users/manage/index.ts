@@ -3,14 +3,16 @@ import koaBody from 'koa-body';
 import auth from 'koa-basic-auth';
 import osuApi from '../../../controllers/osuApi';
 import users from '../../../controllers/users';
+import * as credentials from '../../../../credentials.json';
+const {protectedRoutes} = credentials;
 
 const manageUser = new Router({
     prefix: '/m'
 });
 
-manageUser.all('/:id', auth({name:'admin', pass:'password'}), async (ctx, next) => {
+manageUser.all('/:id', auth({name:protectedRoutes.username, pass:protectedRoutes.password}), async (ctx, next) => {
     //before all, authorized routes!
-    next();
+    await next();
 })
 
 manageUser.post('/:id', async (ctx) => {
