@@ -8,6 +8,11 @@ const manageUser = new Router({
     prefix: '/m'
 });
 
+manageUser.all('/:id', auth({name:'admin', pass:'password'}), async (ctx, next) => {
+    //before all, authorized routes!
+    next();
+})
+
 manageUser.post('/:id', async (ctx) => {
     const {id, username, country, playstyle} = await osuApi(`users/${ctx.params.id}/osu`)
 
