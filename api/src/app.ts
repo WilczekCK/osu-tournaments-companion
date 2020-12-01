@@ -11,6 +11,13 @@ app.use(async (ctx, next) => {
     try {
       await next();
     } catch (err) {
+      if(401 == err.status){
+        ctx.status = 401;
+        ctx.set('WWW-Authenticate', 'Basic');
+        ctx.body = {status: ctx.status, response:"No access here!"}
+      }else{
+        throw err;
+      }
       ctx.status = err.status || 500;
       ctx.body = {status: ctx.status, response:err.message}
     }

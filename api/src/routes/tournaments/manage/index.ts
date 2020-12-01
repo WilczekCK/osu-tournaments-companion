@@ -8,6 +8,11 @@ import tournaments from '../../../controllers/tournaments';
 const manageTournament = new Router({
     prefix: '/m'
 });
+
+manageTournament.all('/:id', auth({name:'admin', pass:'password'}), async (ctx, next) => {
+    //before all, authorized routes!
+    next();
+})
     
 manageTournament.post('/:id', async (ctx) => {
     const {id, name, user_id, starts_at, playlist, recent_participants, channel_id, active} = await osuApi(`rooms/${ctx.params.id}`)
