@@ -1,7 +1,9 @@
 import Router from 'koa-router';
 import koaBody from 'koa-body';
+import auth from 'koa-basic-auth';
 import osuApi from '../../../controllers/osuApi';
 import tournaments from '../../../controllers/tournaments';
+
 
 const manageTournament = new Router({
     prefix: '/m'

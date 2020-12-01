@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import koaBody from 'koa-body';
+import auth from 'koa-basic-auth';
 import osuApi from '../../../controllers/osuApi';
 import users from '../../../controllers/users';
 
