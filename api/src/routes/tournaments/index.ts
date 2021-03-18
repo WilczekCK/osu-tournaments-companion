@@ -24,6 +24,8 @@ tournamentRouter.get('/:id', async (ctx) => {
     ctx.body = extApi 
         ? await osuApi(`matches/${ctx.params.id}`) 
         : await tournaments.displayOne(ctx.params.id)
+
+    
 })
 
 export = tournamentRouter.routes();

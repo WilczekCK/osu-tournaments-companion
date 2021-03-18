@@ -37,14 +37,16 @@ class Users {
 
     public displayOne = async (userId: Number) => {
         this.connect();
-        
 
         const result = await this.query( {id: userId} ).find((err: any, user: any) => {
             return user;
         });
 
         this.disconnect();
-        return result;
+
+        return result.length 
+            ? {status: 200, result}
+            : {status: 404, message: 'We do not have this user at our DB :('};
     };
 
     public displayCertain = async (whereQuery: Object) => {
@@ -53,6 +55,22 @@ class Users {
         const result = await this.query(whereQuery).find((err: any, user: any) => {
             return user;
         });
+
+        this.disconnect();
+        return result;
+    };
+
+    public displayFew = async (users: Array<Object>) => {
+        this.connect();
+        const result : Array<Object> = [];
+
+        for await (let user of users){
+            //@ts-ignore
+            await this.displayOne( user.id );
+            //result.push(getInfo);
+        }
+
+        console.log(result);
 
         this.disconnect();
         return result;
