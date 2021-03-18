@@ -32,13 +32,12 @@ class Tournaments {
     public displayOne = async (tournamentId: Number) => {
         this.connect();
         
-
         const result = await this.query( {id: tournamentId} ).find((err: any, tournament: any) => {
             return tournament;
         });
 
         this.disconnect();
-        return result;
+        return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
     };
 
     public displayCertain = async (whereQuery: Object) => {

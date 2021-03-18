@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import osuApi from '../../controllers/osuApi';
+import tournaments from '../../controllers/tournaments';
 import manageTournament from './manage/index';
 
 const tournamentRouter = new Router({
@@ -18,7 +19,7 @@ tournamentRouter.get('/:id', async (ctx) => {
 
     ctx.body = extApi 
         ? await osuApi(`matches/${ctx.params.id}`) 
-        : {status: 200}
+        : await tournaments.displayOne(ctx.params.id)
 })
 
 export = tournamentRouter.routes();
