@@ -10,7 +10,11 @@ const tournamentRouter = new Router({
 tournamentRouter.use(manageTournament);
     
 tournamentRouter.get('/', async (ctx) => {
-    ctx.body = await osuApi(`matches/`);
+    let {osuApi: extApi} = ctx.query;
+
+    ctx.body = extApi 
+        ? await osuApi(`matches/`) 
+        : await tournaments.displayAll();
 })
 
 // Just for displaying single tournament
