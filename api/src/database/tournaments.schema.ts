@@ -13,6 +13,7 @@ interface Tournament extends Document {
     twitchURL: String;
     //mapsIdPlayed: Array<Number>;
     //isActive: Boolean;
+    events: Array<Object>;
 }
 
 const tournamentSchema = new Schema({
@@ -28,6 +29,7 @@ const tournamentSchema = new Schema({
     twitchURL: { type: String },
     //mapsIdPlayed: { type: Array },
     //isActive: {type: Boolean, required: true}
+    events: { type: Array }
 })
 
 const TournamentCreator = mongoose.model<Tournament>('Tournament', tournamentSchema);

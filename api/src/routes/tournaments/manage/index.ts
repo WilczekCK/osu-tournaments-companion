@@ -19,8 +19,6 @@ manageTournament.all('/:id', auth({name:protectedRoutes.username, pass:protected
     
 manageTournament.post('/:id', async (ctx) => {
     const {match, events, users: players} = await osuApi(`matches/${ctx.params.id}`);
-    
-    const playersInfo = await users.displayFew(players);
 
     const response = await tournaments.insert({
         id: match.id,
@@ -34,7 +32,8 @@ manageTournament.post('/:id', async (ctx) => {
         //roomURL: channel_id,
         twitchURL: 'TBA',
         //mapsIdPlayed: playlist,
-        //isActive: active
+        //isActive: active,
+        events
     })
 
     ctx.status = response.status;

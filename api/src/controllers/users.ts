@@ -64,10 +64,16 @@ class Users {
         this.connect();
         const result : Array<Object> = [];
 
-        for await (let user of users){
-            //@ts-ignore
-            await this.displayOne( user.id );
-            //result.push(getInfo);
+        for (let user of users){
+            
+            try{ 
+                //@ts-ignore
+                result.push(this.displayOne( user.id ));                
+            }catch(err){
+                result.push('error');
+            }
+
+
         }
 
         console.log(result);
