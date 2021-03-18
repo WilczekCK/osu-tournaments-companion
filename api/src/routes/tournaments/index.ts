@@ -11,9 +11,14 @@ tournamentRouter.use(manageTournament);
 tournamentRouter.get('/', async (ctx) => {
     ctx.body = await osuApi(`matches/`);
 })
+
 // Just for displaying single tournament
 tournamentRouter.get('/:id', async (ctx) => {
-    ctx.body = await osuApi(`matches/${ctx.params.id}`);
+    let {osuApi: extApi} = ctx.query;
+
+    ctx.body = extApi 
+        ? await osuApi(`matches/${ctx.params.id}`) 
+        : {status: 200}
 })
 
 export = tournamentRouter.routes();
