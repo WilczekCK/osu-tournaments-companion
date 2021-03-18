@@ -17,7 +17,7 @@ manageTournament.all('/:id', auth({name:protectedRoutes.username, pass:protected
 })
     
 manageTournament.post('/:id', async (ctx) => {
-    const {id, name, user_id, starts_at, playlist, recent_participants, channel_id, active} = await osuApi(`rooms/${ctx.params.id}`)
+    const {id, name, user_id, starts_at, playlist, recent_participants, channel_id, active} = await osuApi(`matches/${ctx.params.id}`)
     const response = await tournaments.insert({
         id,
         title: name,

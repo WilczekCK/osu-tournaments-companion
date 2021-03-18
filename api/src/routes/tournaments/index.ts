@@ -9,11 +9,11 @@ const tournamentRouter = new Router({
 tournamentRouter.use(manageTournament);
     
 tournamentRouter.get('/', async (ctx) => {
-    ctx.body = 'When ppy will give access to route, it will be available';
+    ctx.body = await osuApi(`matches/`);
 })
 // Just for displaying single tournament
 tournamentRouter.get('/:id', async (ctx) => {
-    ctx.body = await osuApi(`rooms/${ctx.params.id}`);
+    ctx.body = await osuApi(`matches/${ctx.params.id}`);
 })
 
 export = tournamentRouter.routes();
