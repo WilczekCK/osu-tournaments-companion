@@ -2,6 +2,7 @@
 import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
 import tournaments from "../routes/tournaments";
+import users from "../routes/users";
 
 type UpdateSchema = {
     whereQuery: {
@@ -53,7 +54,7 @@ class Tournaments {
 
     public insert = async (tournamentInfo: Object) => {
         this.connect()
-
+        
         const newTournament = new tournamentsSchema(tournamentInfo);
         
         try{

@@ -18,14 +18,16 @@ manageTournament.all('/:id', auth({name:protectedRoutes.username, pass:protected
 })
     
 manageTournament.post('/:id', async (ctx) => {
-    const {match, events, users} = await osuApi(`matches/${ctx.params.id}`);
+    const {match, events, users: players} = await osuApi(`matches/${ctx.params.id}`);
 
+
+    
     const response = await tournaments.insert({
         id: match.id,
         title: match.name,
         titleFlattened: match.name, //to flatten soon
         //teams: recent_participants, //to divide later === (n-1) /2
-        users,
+        users: players,
         //judge: user_id,
         timeCreated: match.start_time,
         timeEnded: match.end_time,
@@ -35,8 +37,8 @@ manageTournament.post('/:id', async (ctx) => {
         //isActive: active
     })
 
-    //ctx.status = response.status;
-    //ctx.body = response;
+    ctx.status = response.status;
+    ctx.body = response;
 })
 
 manageTournament.patch('/:id', koaBody(), async (ctx) => {
