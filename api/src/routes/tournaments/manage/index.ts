@@ -3,6 +3,7 @@ import koaBody from 'koa-body';
 import auth from 'koa-basic-auth';
 import osuApi from '../../../controllers/osuApi';
 import tournaments from '../../../controllers/tournaments';
+import users from '../../../controllers/users';
 import * as credentials from '../../../../credentials.json';
 const {protectedRoutes} = credentials;
 
@@ -17,12 +18,14 @@ manageTournament.all('/:id', auth({name:protectedRoutes.username, pass:protected
 })
     
 manageTournament.post('/:id', async (ctx) => {
-    const {match, events, users} = await osuApi(`matches/${ctx.params.id}`)
-    console.log({
+    const {match, events, users} = await osuApi(`matches/${ctx.params.id}`);
+
+    const response = await tournaments.insert({
         id: match.id,
         title: match.name,
         titleFlattened: match.name, //to flatten soon
         //teams: recent_participants, //to divide later === (n-1) /2
+        users,
         //judge: user_id,
         timeCreated: match.start_time,
         timeEnded: match.end_time,
@@ -31,19 +34,6 @@ manageTournament.post('/:id', async (ctx) => {
         //mapsIdPlayed: playlist,
         //isActive: active
     })
-
-   /* const response = await tournaments.insert({
-        id,
-        title: name,
-        titleFlattened: name, //to flatten soon
-        teams: recent_participants, //to divide later === (n-1) /2
-        judge: user_id,
-        timeCreated: starts_at,
-        roomURL: channel_id,
-        twitchURL: 'TBA',
-        mapsIdPlayed: playlist,
-        isActive: active
-    })*/
 
     //ctx.status = response.status;
     //ctx.body = response;
