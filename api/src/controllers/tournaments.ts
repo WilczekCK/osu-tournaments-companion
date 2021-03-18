@@ -26,7 +26,7 @@ class Tournaments {
         });
 
         this.disconnect();
-        return result;
+        return result.length ? result : {status: 404, message: 'We do not have any tournament in DB yet :('};
     };
 
     public displayOne = async (tournamentId: Number) => {
