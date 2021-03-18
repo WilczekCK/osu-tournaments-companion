@@ -11,7 +11,7 @@ const router = new Router();
 router.use(tournamentsRoute, usersRoute)
 
 router.get('/', async (ctx, next) => {
-    const askedInfo = await osuApi('matches/');
+    const askedInfo = await osuApi('rooms/405854465');
     //const allTournaments:Object = await tournaments.displayCertain({title: "Test"});
    
     /*const allTournaments = await tournaments.update({ 
