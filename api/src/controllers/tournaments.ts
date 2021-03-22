@@ -2,6 +2,7 @@
 import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
 import tournaments from "../routes/tournaments";
+import users from "../routes/users";
 
 type UpdateSchema = {
     whereQuery: {
@@ -25,19 +26,18 @@ class Tournaments {
         });
 
         this.disconnect();
-        return result;
+        return result.length ? result : {status: 404, message: 'We do not have any tournament in DB yet :('};
     };
 
     public displayOne = async (tournamentId: Number) => {
         this.connect();
         
-
         const result = await this.query( {id: tournamentId} ).find((err: any, tournament: any) => {
             return tournament;
         });
 
         this.disconnect();
-        return result;
+        return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
     };
 
     public displayCertain = async (whereQuery: Object) => {
@@ -53,7 +53,7 @@ class Tournaments {
 
     public insert = async (tournamentInfo: Object) => {
         this.connect()
-
+        
         const newTournament = new tournamentsSchema(tournamentInfo);
         
         try{

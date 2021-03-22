@@ -11,22 +11,14 @@ const router = new Router();
 router.use(tournamentsRoute, usersRoute)
 
 router.get('/', async (ctx, next) => {
-    const askedInfo = await osuApi('users/1837989');
+    const askedInfo = await osuApi('rooms/405854465');
     //const allTournaments:Object = await tournaments.displayCertain({title: "Test"});
-    const user = await users.insert({
-        id: askedInfo.id,
-        username: askedInfo.username,
-        country: askedInfo.country_code,
-        playStyle: askedInfo.playstyle
-    })
-
-    throw Error('Some error');
-    
+   
     /*const allTournaments = await tournaments.update({ 
             whereQuery: { prefix: "id", content: 1 },
             modifyQuery:{ prefix: "id", content: 123 } 
         });*/
-    ctx.body = user;
+    ctx.body = askedInfo;
     next();
 });
 

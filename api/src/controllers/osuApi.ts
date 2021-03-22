@@ -29,6 +29,7 @@ async function getToken(){
 }
 
 async function accessApi(scope: string){
+    console.log(osuCreds.apiEndpoint+scope)
     return await axios({
         method: 'get',
         url: osuCreds.apiEndpoint+scope,

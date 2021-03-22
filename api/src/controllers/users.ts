@@ -2,13 +2,6 @@
 import mongo from "./mongo";
 import usersSchema from '../database/users.schema';
 
-type insertSchema = {
-    id: number,
-    username: string,
-    country: string,
-    playStyle: Array<number>,
-}
-
 type UpdateSchema = {
     whereQuery: {
         [key: string]: string | number,
@@ -37,14 +30,16 @@ class Users {
 
     public displayOne = async (userId: Number) => {
         this.connect();
-        
 
         const result = await this.query( {id: userId} ).find((err: any, user: any) => {
             return user;
         });
 
         this.disconnect();
-        return result;
+
+        return result.length 
+            ? {status: 200, result}
+            : {status: 404, message: 'We do not have this user at our DB :('};
     };
 
     public displayCertain = async (whereQuery: Object) => {
@@ -58,10 +53,20 @@ class Users {
         return result;
     };
 
-    public insert = async (userInfo: insertSchema) => {
+
+    public insert = async (userInfo: any) => {
         this.connect()
 
-        const newUser = new usersSchema(userInfo);
+        const newUser = new usersSchema({
+            id: userInfo.id,
+            username: userInfo.username,
+            country: {
+                code: userInfo.country.code,
+                name: userInfo.country.name
+            },
+            avatarUrl: userInfo.avatar_url,
+            profileColor: userInfo.profile_colour
+        })
 
         try{
             await newUser.save();
@@ -73,6 +78,12 @@ class Users {
 
         return {status : 200, response: "Inserted succesfully"};
     };
+
+    public insertBulk = async (users: Array<Object>) => {
+        for await(let user of users){
+            this.insert(user)
+        }
+    }
 
     public delete = async (userId: Number) => {
         this.connect()
