@@ -11,7 +11,7 @@ interface User extends Document {
 const userSchema = new Schema({
     id: { type: Number, required: true, unique: true },
     username: { type: String, required: true },
-    country: { type: Array, required: true },
+    country: { type: Object, required: true },
     avatarUrl: { type: String },
     profileColor: { type: String }
 })

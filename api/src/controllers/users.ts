@@ -60,7 +60,10 @@ class Users {
         const newUser = new usersSchema({
             id: userInfo.id,
             username: userInfo.username,
-            country: userInfo.country,
+            country: {
+                code: userInfo.country.code,
+                name: userInfo.country.name
+            },
             avatarUrl: userInfo.avatar_url,
             profileColor: userInfo.profile_colour
         })
