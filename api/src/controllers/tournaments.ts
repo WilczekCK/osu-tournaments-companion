@@ -12,6 +12,22 @@ type UpdateSchema = {
         [key: string]: string | number;
     },
 }
+
+type insertSchema = {
+    match: {
+        id: number,
+        name: string,
+        start_time: Date,
+        end_time: Date
+    },
+    players: Array<object>,
+    events: {
+        id: number,
+        detail: object,
+        user_id: number,
+    }
+}
+
 class Tournaments {
     private connect = () => mongo.getConnection();
     private disconnect = () => mongo.stopConnection();
@@ -51,7 +67,7 @@ class Tournaments {
         return result;
     };
 
-    public insert = async (match: Object, events: Object, players: Object) => {
+    public insert = async (match: insertSchema['match'], events: insertSchema['events'], players: insertSchema['players']) => {
         this.connect()
         
         const newTournament = new tournamentsSchema({
@@ -60,7 +76,7 @@ class Tournaments {
             titleFlattened: match.name, //to flatten soon
             //teams: recent_participants, //to divide later === (n-1) /2
             users: players,
-            judge: events[0].id, //players which creates room is usually the judge
+            judge: undefined,
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
