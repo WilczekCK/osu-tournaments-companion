@@ -51,10 +51,22 @@ class Tournaments {
         return result;
     };
 
-    public insert = async (tournamentInfo: Object) => {
+    public insert = async (match: Object, events: Object, players: Object) => {
         this.connect()
         
-        const newTournament = new tournamentsSchema(tournamentInfo);
+        const newTournament = new tournamentsSchema({
+            id: match.id,
+            title: match.name,
+            titleFlattened: match.name, //to flatten soon
+            //teams: recent_participants, //to divide later === (n-1) /2
+            users: players,
+            judge: events[0].id, //players which creates room is usually the judge
+            timeCreated: match.start_time,
+            timeEnded: match.end_time,
+            twitchURL: 'TBA',
+            //mapsIdPlayed: playlist,
+            events
+        });
         
         try{
             await newTournament.save();
