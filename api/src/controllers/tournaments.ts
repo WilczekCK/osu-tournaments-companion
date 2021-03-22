@@ -67,7 +67,7 @@ class Tournaments {
         return result;
     };
 
-    public insert = async (match: insertSchema['match'], events: insertSchema['events'], players: insertSchema['players']) => {
+    public insert = async (match: insertSchema['match'], events: Array<Object>, players: insertSchema['players']) => {
         this.connect()
         
         const newTournament = new tournamentsSchema({
@@ -86,6 +86,7 @@ class Tournaments {
         
         try{
             await newTournament.save();
+            await this.parseEventsObject(events, match.id);
         }catch(err){
             return {status : 422, response: "This tournament is already listed or some data is missing"};
         }
@@ -120,6 +121,39 @@ class Tournaments {
 
     const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
     return {status};
+    }
+
+    public parseEventsObject = async (events: Array<object | string | number>, id: number) => {
+        type Detail = {
+          detail: object,
+          type: string,
+        }
+
+        for await(let event of events){
+            //@ts-ignore
+            const {detail} : object = event;
+
+            switch(  detail.type ){
+                case 'match-created':
+                    console.log('Match created');
+                    break;
+                case 'match-disbanded':
+                    console.log('Match ended');
+                    break;
+                case 'host-changed':
+                    console.log('Host changed');
+                    break;
+                case 'player-joined':
+                    console.log('Player joined');
+                    break;
+                case 'player-left':
+                    console.log('Player left');
+                    break;
+                case 'other':
+                    console.log('Beatmap changed');
+                    break;
+            }
+        }
     }
 }
 
