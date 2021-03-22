@@ -2,13 +2,6 @@
 import mongo from "./mongo";
 import usersSchema from '../database/users.schema';
 
-type insertSchema = {
-    id: number,
-    username: string,
-    country: string,
-    playStyle: Array<number>,
-}
-
 type UpdateSchema = {
     whereQuery: {
         [key: string]: string | number,
@@ -67,8 +60,9 @@ class Users {
         const newUser = new usersSchema({
             id: userInfo.id,
             username: userInfo.username,
-            country: userInfo.country.code,
-            playStyle: userInfo.playstyle
+            country: userInfo.country,
+            avatarUrl: userInfo.avatar_url,
+            profileColor: userInfo.profile_colour
         })
 
         try{
