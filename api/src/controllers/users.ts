@@ -60,32 +60,16 @@ class Users {
         return result;
     };
 
-    public displayFew = async (users: Array<Object>) => {
-        this.connect();
-        const result : Array<Object> = [];
 
-        for (let user of users){
-            
-            try{ 
-                //@ts-ignore
-                result.push(this.displayOne( user.id ));                
-            }catch(err){
-                result.push('error');
-            }
-
-
-        }
-
-        console.log(result);
-
-        this.disconnect();
-        return result;
-    };
-
-    public insert = async (userInfo: insertSchema) => {
+    public insert = async (userInfo: any) => {
         this.connect()
 
-        const newUser = new usersSchema(userInfo);
+        const newUser = new usersSchema({
+            id: userInfo.id,
+            username: userInfo.username,
+            country: userInfo.country.code,
+            playStyle: userInfo.playstyle
+        })
 
         try{
             await newUser.save();
@@ -97,6 +81,12 @@ class Users {
 
         return {status : 200, response: "Inserted succesfully"};
     };
+
+    public insertBulk = async (users: Array<Object>) => {
+        for await(let user of users){
+            this.insert(user)
+        }
+    }
 
     public delete = async (userId: Number) => {
         this.connect()

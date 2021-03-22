@@ -16,14 +16,7 @@ manageUser.all('/:id', auth({name:protectedRoutes.username, pass:protectedRoutes
 })
 
 manageUser.post('/:id', async (ctx) => {
-    const {id, username, country, playstyle} = await osuApi(`users/${ctx.params.id}/osu`)
-
-    const response = await users.insert({
-        id,
-        username,
-        country: country.code,
-        playStyle: playstyle
-    })
+    const response = await users.insert(await osuApi(`users/${ctx.params.id}/osu`))
 
     ctx.status = response.status;
     ctx.body = response;
