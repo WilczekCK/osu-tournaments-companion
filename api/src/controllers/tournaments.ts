@@ -82,7 +82,7 @@ class Tournaments {
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
-            mapsPlayed: plays
+            mapsPlayed: plays.beatmap
         });
         
         try{
