@@ -4,6 +4,7 @@ import koaBody from 'koa-body';
 import * as cron from 'node-cron';
 
 import routes from './routes/index';
+import tournaments from './controllers/tournaments';
 
 const app = new Koa();
 
@@ -25,12 +26,13 @@ app.use(async (ctx, next) => {
 });
 
 
-cron.schedule('* * * * *', () => {
-  console.log('minute passed!');
+cron.schedule('* * * * *', async () => {
+  console.log(await tournaments.displayCertain({'timeEnded': null}));
 })
 
 app.use(routes);
 app.use(Logger());
 app.use(koaBody());
+
 
 export = app;
