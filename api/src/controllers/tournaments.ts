@@ -71,7 +71,10 @@ class Tournaments {
     public insert = async (match: insertSchema['match'], events: Array<Object>, players: insertSchema['players']) => {
         this.connect()
 
-        let [{judge}] = await this.parseEventsObject( events );
+        let [{judge, mapsPlayed, modUsed, scoresMade}] = await this.parseEventsObject( events );
+
+        console.log(mapsPlayed, modUsed, scoresMade);
+
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,
@@ -128,7 +131,7 @@ class Tournaments {
 
         type roomInfo = {
             detail?: any,
-            game?: Array<object>,
+            game?: any,
             user_id?: number
         }
 
@@ -138,28 +141,38 @@ class Tournaments {
             user_id: number | Number,
         }
 
+        interface gameDetail {
+            mods?: Array<string> | string, //still not quite sure
+            beatmapsPlayed: Array<object>,
+            scores: Array<object>
+        }
+
+
         for await(let event of eventsDetail){
             const {detail, game, user_id} : roomInfo = event;
             const eventTriggered : eventDetail = { id: detail.id, type: detail.type, user_id };
         
+            //maybe later it will be useful.
             switch( eventTriggered.type ){
                 case 'match-created':
                     getInfo.push( {'judge': eventTriggered.user_id } );
                     break;
                 case 'match-disbanded':
-                    console.log('Match ended');
                     break;
                 case 'host-changed':
-                    console.log('Host changed');
                     break;
                 case 'player-joined':
-                    console.log('Player joined');
                     break;
                 case 'player-left':
-                    console.log('Player left');
                     break;
                 case 'other':
-                    console.log('Beatmap changed');
+                    const gameDetails : gameDetail = {mods: game.mods, beatmapsPlayed: game.beatmaps, scores: game.scores}
+                    
+                    getInfo.push(
+                        { 'mapsPlayed': gameDetails.beatmapsPlayed }, 
+                        { 'modUsed': gameDetails.mods },
+                        { 'scoresMade': gameDetails.scores }
+                        )
                     break;
             }
         }
