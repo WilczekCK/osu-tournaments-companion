@@ -7,6 +7,7 @@
     "@types/koa-basic-auth": "^2.0.3",
     "@types/koa-logger": "^3.1.1",
     "@types/mongoose": "^5.10.1",
+    "@types/node-cron": "^2.0.3",
     "@types/supertest": "^2.0.10",
     "axios": "^0.21.0",
     "koa": "^2.13.0",
@@ -16,7 +17,8 @@
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
     "koa-router": "^10.0.0",
-    "mongoose": "^5.10.15"
+    "mongoose": "^5.10.15",
+    "node-cron": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",

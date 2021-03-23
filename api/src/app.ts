@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import Logger from 'koa-logger';
 import koaBody from 'koa-body';
+import * as cron from 'node-cron';
 
 import routes from './routes/index';
 
@@ -23,6 +24,10 @@ app.use(async (ctx, next) => {
     }
 });
 
+
+cron.schedule('* * * * *', () => {
+  console.log('minute passed!');
+})
 
 app.use(routes);
 app.use(Logger());
