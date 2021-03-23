@@ -72,13 +72,6 @@ class Tournaments {
         this.connect()
 
         let [{judge}] = await this.parseEventsObject( events );
-
-        let test = await axios.get('/users/');
-
-        console.log(test);
-        
-        //let judgeInfo : object = 
-        
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,

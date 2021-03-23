@@ -6,7 +6,7 @@ interface Tournament extends Document {
     titleFlattened: String;
     //teams: Array<Number>;
     users: Array<Object>;
-    judge: Object | undefined;
+    judge: Number | undefined;
     timeCreated: Date;
     timeEnded: Date | Object; 
     //roomURL: String;
@@ -23,7 +23,7 @@ const tournamentSchema = new Schema({
     titleFlattened: { type: String, required: true },
     //teams: { type: Array },
     users: { type: Array },
-    judge: { type: Object || undefined},
+    judge: { type: Number || undefined},
     timeCreated: { type: Date, required: true },
     timeEnded: { type: Date || Object, required:true},
     //roomURL: { type: String, required: true },
