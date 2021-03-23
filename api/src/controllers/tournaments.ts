@@ -70,11 +70,7 @@ class Tournaments {
 
     public insert = async (match: insertSchema['match'], events: Array<Object>, players: insertSchema['players']) => {
         this.connect()
-
-        let [kurwa] = await this.parseEventsObject( events );
-      
-
-        console.log(  await this.parseEventsObject( events ) );
+        let [{judge}, plays] = await this.parseEventsObject( events );
 
         const newTournament = new tournamentsSchema({
             id: match.id,
@@ -82,13 +78,13 @@ class Tournaments {
             titleFlattened: match.name, //to flatten soon
             //teams: recent_participants, //to divide later === (n-1) /2
             users: players,
-            judge: kurwa.judge,
+            judge: judge,
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
-            //mapsIdPlayed: playlist,
-            events
+            mapsPlayed: plays
         });
+        
         try{
             await newTournament.save();
         }catch(err){
@@ -128,7 +124,8 @@ class Tournaments {
     }
 
     public parseEventsObject = async (eventsDetail: object[] ) => {
-        
+        let getInfo : {[key: string] : number | string | object | object[]}[] = [];
+        let playedBeatmaps: {[key: string]: Array<object>} = { beatmap:[] };
 
         type roomInfo = {
             detail?: any,
@@ -144,13 +141,9 @@ class Tournaments {
 
         interface gameDetail {
             mods?: Array<object> | string, //still not quite sure
-            beatmapPlayed: Array<object>,
+            info: Array<object>,
             scores: Array<object>
         }
-
-
-
-        let getInfo : {[key: string] : number | string | object | object[]}[] = [];
 
         for await(let event of eventsDetail){
             const {detail, game, user_id} : roomInfo = event;
@@ -170,19 +163,18 @@ class Tournaments {
                 case 'player-left':
                     break;
                 case 'other':
-                    const gameDetails : gameDetail = {mods: game.mods, beatmapPlayed: game.beatmap, scores: game.scores}
-                    getInfo.push({
-                        'play': {
-                            beatmap:   gameDetails['beatmapPlayed'],
-                            scores:     gameDetails['scores'],
-                            mods:       gameDetails['mods']
-                        }
+                    const gameDetails : gameDetail = {mods: game.mods, info: game.beatmap, scores: game.scores}
+                    playedBeatmaps.beatmap.push({
+                        info:       gameDetails['info'],
+                        scores:     gameDetails['scores'],
+                        mods:       gameDetails['mods']
                     })
                     break;
             }
 
         }
 
+        getInfo.push(playedBeatmaps);
         return getInfo;
     }
 }
