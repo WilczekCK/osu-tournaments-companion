@@ -6,15 +6,14 @@ interface Tournament extends Document {
     titleFlattened: String;
     //teams: Array<Number>;
     users: Array<Object>;
-    //judge: String;
+    judge: Number | undefined;
     timeCreated: Date;
     timeEnded: Date | Object; 
-    //roomURL: String;
+    mapsPlayed: Array<Object>;
     twitchURL: String;
-    //mapsIdPlayed: Array<Number>;
-    //isActive: Boolean;
     events: Array<Object>;
 }
+
 
 const tournamentSchema = new Schema({
     id: { type: Number, required: true, unique: true },
@@ -22,13 +21,11 @@ const tournamentSchema = new Schema({
     titleFlattened: { type: String, required: true },
     //teams: { type: Array },
     users: { type: Array },
-    //judge: { type: String },
+    judge: { type: Number || undefined},
     timeCreated: { type: Date, required: true },
     timeEnded: { type: Date || Object, required:true},
-    //roomURL: { type: String, required: true },
+    mapsPlayed: { type: Object },
     twitchURL: { type: String },
-    //mapsIdPlayed: { type: Array },
-    //isActive: {type: Boolean, required: true}
     events: { type: Array }
 })
 
