@@ -3,6 +3,7 @@ import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
 import tournaments from "../routes/tournaments";
 import users from "../routes/users";
+import axios from 'axios';
 
 type UpdateSchema = {
     whereQuery: {
@@ -71,7 +72,10 @@ class Tournaments {
         this.connect()
 
         let [{judge}] = await this.parseEventsObject( events );
-        
+
+        let test = await axios.get('/users/');
+
+        console.log(test);
         
         //let judgeInfo : object = 
         
