@@ -71,9 +71,10 @@ class Tournaments {
     public insert = async (match: insertSchema['match'], events: Array<Object>, players: insertSchema['players']) => {
         this.connect()
 
-        let [{judge, mapsPlayed, modUsed, scoresMade}] = await this.parseEventsObject( events );
+        let [kurwa] = await this.parseEventsObject( events );
+      
 
-        console.log(mapsPlayed, modUsed, scoresMade);
+        console.log(  await this.parseEventsObject( events ) );
 
         const newTournament = new tournamentsSchema({
             id: match.id,
@@ -81,7 +82,7 @@ class Tournaments {
             titleFlattened: match.name, //to flatten soon
             //teams: recent_participants, //to divide later === (n-1) /2
             users: players,
-            judge,
+            judge: kurwa.judge,
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
@@ -127,7 +128,7 @@ class Tournaments {
     }
 
     public parseEventsObject = async (eventsDetail: object[] ) => {
-        let getInfo : {[key: string]: number | string | object}[] = [];
+        
 
         type roomInfo = {
             detail?: any,
@@ -142,16 +143,19 @@ class Tournaments {
         }
 
         interface gameDetail {
-            mods?: Array<string> | string, //still not quite sure
-            beatmapsPlayed: Array<object>,
+            mods?: Array<object> | string, //still not quite sure
+            beatmapPlayed: Array<object>,
             scores: Array<object>
         }
 
 
+
+        let getInfo : {[key: string] : number | string | object | object[]}[] = [];
+
         for await(let event of eventsDetail){
             const {detail, game, user_id} : roomInfo = event;
             const eventTriggered : eventDetail = { id: detail.id, type: detail.type, user_id };
-        
+
             //maybe later it will be useful.
             switch( eventTriggered.type ){
                 case 'match-created':
@@ -166,15 +170,17 @@ class Tournaments {
                 case 'player-left':
                     break;
                 case 'other':
-                    const gameDetails : gameDetail = {mods: game.mods, beatmapsPlayed: game.beatmaps, scores: game.scores}
-                    
-                    getInfo.push(
-                        { 'mapsPlayed': gameDetails.beatmapsPlayed }, 
-                        { 'modUsed': gameDetails.mods },
-                        { 'scoresMade': gameDetails.scores }
-                        )
+                    const gameDetails : gameDetail = {mods: game.mods, beatmapPlayed: game.beatmap, scores: game.scores}
+                    getInfo.push({
+                        'play': {
+                            beatmap:   gameDetails['beatmapPlayed'],
+                            scores:     gameDetails['scores'],
+                            mods:       gameDetails['mods']
+                        }
+                    })
                     break;
             }
+
         }
 
         return getInfo;
