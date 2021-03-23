@@ -69,24 +69,22 @@ class Tournaments {
 
     public insert = async (match: insertSchema['match'], events: Array<Object>, players: insertSchema['players']) => {
         this.connect()
-        
+        console.log(await this.parseEventsObject( events ));
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,
             titleFlattened: match.name, //to flatten soon
             //teams: recent_participants, //to divide later === (n-1) /2
             users: players,
-            judge: undefined,
+            //judge,
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
             //mapsIdPlayed: playlist,
             events
         });
-        
         try{
             await newTournament.save();
-            await this.parseEventsObject(events, match.id);
         }catch(err){
             return {status : 422, response: "This tournament is already listed or some data is missing"};
         }
@@ -123,19 +121,28 @@ class Tournaments {
     return {status};
     }
 
-    public parseEventsObject = async (events: Array<object | string | number>, id: number) => {
-        type Detail = {
-          detail: object,
-          type: string,
+    public parseEventsObject = async (eventsDetail: object[] ) => {
+        let getInfo : {[key: string]: string | number}[] = [];
+
+        type roomInfo = {
+            detail?: any,
+            game?: Array<object>,
+            user_id?: number
         }
 
-        for await(let event of events){
-            //@ts-ignore
-            const {detail} : object = event;
+        interface eventDetail {
+            id: number,
+            type: string,
+            user_id: number,
+        }
 
-            switch(  detail.type ){
+        for await(let event of eventsDetail){
+            const {detail, game, user_id} : roomInfo = event;
+            const eventTriggered : eventDetail = { id: detail.id, type: detail.type, user_id: user_id };
+        
+            switch( eventTriggered.type ){
                 case 'match-created':
-                    console.log('Match created');
+                    getInfo.push( {'judge': eventTriggered.user_id} );
                     break;
                 case 'match-disbanded':
                     console.log('Match ended');
@@ -154,6 +161,8 @@ class Tournaments {
                     break;
             }
         }
+
+        return getInfo;
     }
 }
 
