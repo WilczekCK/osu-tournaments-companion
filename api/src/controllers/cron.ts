@@ -32,7 +32,7 @@ type roomInfo = {
 
 class Cron {
     private isCronInProgress : boolean = false;
-    private secondsEachCron : number = 30;
+    private secondsEachCron : number = 10;
     private tournamentsToUpdate : Array<object>;
 
     private prepareToUpdate = async () => {
@@ -44,27 +44,49 @@ class Cron {
         const differences = _.difference([matchInfo], [tournament]);
         const {id} : {id?:number} = tournament;
 
-        for await(let difference of _.flatten(differences)){
+        for await(let difference of differences){
             let {match, plays, users} : roomInfo = difference;
             let {end_time} : insertSchema['match'] = match;
 
 
-            await tournaments.update({
-                whereQuery:{prefix: 'id', content: id}, 
-                modifyQuery:{prefix: 'timeEnded', content: end_time}
+            await axios({
+                url: `/tournaments/m/${id}`,
+                method: 'PATCH',
+                data: { 
+                    prefix: 'timeEnded',
+                    content: end_time
+                },
+                auth: {
+                    username: 'admin',
+                    password: 'strongPassword'
+                }
             })
 
-            await tournaments.update({
-                whereQuery:{prefix: 'id', content: id}, 
-                modifyQuery:{prefix: 'mapsPlayed', content: plays.beatmap}
+            await axios({
+                url: `/tournaments/m/${id}`,
+                method: 'PATCH',
+                data: { 
+                    prefix: 'mapsPlayed',
+                    content: plays.beatmap
+                },
+                auth: {
+                    username: 'admin',
+                    password: 'strongPassword'
+                }
             })
 
-            await tournaments.update({
-                whereQuery:{prefix: 'id', content: id},  
-                modifyQuery:{prefix: 'users', content: users}
+            await axios({
+                url: `/tournaments/m/${id}`,
+                method: 'PATCH',
+                data: { 
+                    prefix: 'users',
+                    content: users
+                },
+                auth: {
+                    username: 'admin',
+                    password: 'strongPassword'
+                }
             })
-
-
         }
     }
 

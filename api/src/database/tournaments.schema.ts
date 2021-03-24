@@ -9,7 +9,7 @@ interface Tournament extends Document {
     judge: Number | undefined;
     timeCreated: Date;
     timeEnded: Date | null; 
-    mapsPlayed: Array<Object>;
+    mapsPlayed: Array<Object> | Object;
     twitchURL: String;
     events: Array<Object>;
 }
@@ -24,7 +24,7 @@ const tournamentSchema = new Schema({
     judge: { type: Number || undefined},
     timeCreated: { type: Date, required: true },
     timeEnded: { type: Date || null},
-    mapsPlayed: { type: Object },
+    mapsPlayed: { type: Array || Object },
     twitchURL: { type: String },
     events: { type: Array }
 })

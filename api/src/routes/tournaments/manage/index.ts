@@ -28,10 +28,10 @@ manageTournament.post('/:id', async (ctx) => {
 })
 
 manageTournament.patch('/:id', koaBody(), async (ctx) => {
-    const {prefix, content} = ctx.request.header;
+    const {prefix, content} = ctx.request.body;
 
     const response = await tournaments.update({
-        whereQuery: {prefix: "id", content: ctx.params.id},
+        whereQuery: {prefix: 'id', content: parseInt(ctx.params.id) },
         modifyQuery: {prefix: prefix, content: content} 
     })
 

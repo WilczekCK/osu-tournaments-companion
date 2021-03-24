@@ -111,6 +111,7 @@ class Tournaments {
         this.connect()
 
         const {whereQuery, modifyQuery} = tournamentInfo;
+        
         const resp = modifyQuery.content && modifyQuery.prefix 
         ? await tournamentsSchema.updateOne(
             {[whereQuery.prefix]: whereQuery.content}, 
