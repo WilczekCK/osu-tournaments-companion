@@ -8,12 +8,27 @@ class Cron {
     private isInProgress : boolean = false;
     private secondsEachCron : number = 30;
     private tournamentsToUpdate : Array<object>;
+
+    private checkIfPreviousCronEnded = async () => {
+        return;
+    };
+
+    private prepareToUpdate = async () => {
+        this.tournamentsToUpdate = await tournaments.displayCertain({'timeEnded': null});
+        this.isInProgress = true;
+    };
+
+    private updateTournaments = async () => {
+        return;
+    };
     
     public start = async () => {
         cron.schedule(`*/${this.secondsEachCron} * * * * *`, async () => {
-            console.log(await tournaments.displayCertain({'timeEnded': null}));
+            this.checkIfPreviousCronEnded();
+            this.prepareToUpdate();
+            this.updateTournaments();
         })
-    }
+    };
 }
 
 export = new Cron();
