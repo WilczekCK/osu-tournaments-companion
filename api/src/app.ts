@@ -1,10 +1,10 @@
 import Koa from 'koa';
 import Logger from 'koa-logger';
 import koaBody from 'koa-body';
-import * as cron from 'node-cron';
+
 
 import routes from './routes/index';
-import tournaments from './controllers/tournaments';
+import cronEvents from './controllers/cron';
 
 const app = new Koa();
 
@@ -25,14 +25,11 @@ app.use(async (ctx, next) => {
     }
 });
 
-
-cron.schedule('* * * * *', async () => {
-  console.log(await tournaments.displayCertain({'timeEnded': null}));
-})
-
 app.use(routes);
 app.use(Logger());
 app.use(koaBody());
 
+//Refresh the informations about 
+cronEvents.start();
 
 export = app;
