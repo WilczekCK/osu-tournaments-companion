@@ -4,6 +4,7 @@ import tournaments from './tournaments';
 import users from './users';
 import axios from 'axios';
 import * as cron from 'node-cron';
+import _ from 'underscore';
 
 class Cron {
     private isCronInProgress : boolean = false;
@@ -14,6 +15,18 @@ class Cron {
         this.tournamentsToUpdate = await tournaments.displayCertain({'timeEnded': null});
         this.isCronInProgress = true;
     };
+
+    private compareTournaments = async (matchInfo: object | object, tournament: object) => {
+        const differences = _.difference([matchInfo], [tournament]);
+        const {id} : {id?:number} = tournament;
+
+        for await(let difference of _.flatten(differences)){
+            await tournaments.update({
+                whereQuery:{},
+                modifyQuery:{}
+            })
+        }
+    }
 
     private updateTournaments = async () => {
         
@@ -31,11 +44,11 @@ class Cron {
                     let {match, events, users} = data;
                     let [{judge}, plays] = await tournaments.parseEventsObject( events );
 
-                    //@ts-ignore
-                    console.log({new:plays, old: tournament.mapsPlayed})
+                    this.compareTournaments({match, users, judge, plays}, tournament);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    return;
+                    //console.log(err);
                 })
         }
         this.isCronInProgress = false;
