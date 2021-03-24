@@ -5,6 +5,30 @@ import users from './users';
 import axios from 'axios';
 import * as cron from 'node-cron';
 import _ from 'underscore';
+import { match } from 'assert';
+
+
+type insertSchema = {
+    match: {
+        id?: number,
+        name?: string,
+        start_time?: Date,
+        end_time?: Date
+    },
+    players: Array<object>,
+    events: {
+        id: number,
+        detail: object,
+        user_id: number,
+    }
+}
+
+type roomInfo = {
+    match?: any,
+    plays?: any,
+    users?: any,
+}
+
 
 class Cron {
     private isCronInProgress : boolean = false;
@@ -21,10 +45,26 @@ class Cron {
         const {id} : {id?:number} = tournament;
 
         for await(let difference of _.flatten(differences)){
+            let {match, plays, users} : roomInfo = difference;
+            let {end_time} : insertSchema['match'] = match;
+
+
             await tournaments.update({
-                whereQuery:{},
-                modifyQuery:{}
+                whereQuery:{prefix: 'id', content: id}, 
+                modifyQuery:{prefix: 'timeEnded', content: end_time}
             })
+
+            await tournaments.update({
+                whereQuery:{prefix: 'id', content: id}, 
+                modifyQuery:{prefix: 'mapsPlayed', content: plays.beatmap}
+            })
+
+            await tournaments.update({
+                whereQuery:{prefix: 'id', content: id},  
+                modifyQuery:{prefix: 'users', content: users}
+            })
+
+
         }
     }
 
@@ -44,7 +84,7 @@ class Cron {
                     let {match, events, users} = data;
                     let [{judge}, plays] = await tournaments.parseEventsObject( events );
 
-                    this.compareTournaments({match, users, judge, plays}, tournament);
+                    await this.compareTournaments({match, users, judge, plays}, tournament);
                 })
                 .catch((err) => {
                     return;

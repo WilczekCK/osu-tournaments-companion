@@ -10,7 +10,7 @@ type UpdateSchema = {
         [key: string]: string | number,
     },
     modifyQuery: {
-        [key: string]: string | number;
+        [key: string]: any
     },
 }
 
@@ -117,10 +117,10 @@ class Tournaments {
             {[modifyQuery.prefix]: modifyQuery.content})
         : {ok: 0};
 
-    this.disconnect()
+        this.disconnect()
 
-    const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
-    return {status};
+        const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
+        return {status};
     }
 
     public parseEventsObject = async (eventsDetail: object[] ) => {
