@@ -28,7 +28,7 @@ type roomInfo = {
     user_id?: number,
     match?: any,
     plays?: any,
-    users?: any,
+    users?: object,
 }
 
 type eventDetail = {
@@ -38,7 +38,7 @@ type eventDetail = {
 }
 
 type gameDetail = {
-    mods?: Array<object> | string, //still not quite sure
+    mods?: String | Array<String> //still not quite sure
     info: Array<object>,
     scores: Array<object>
 }
