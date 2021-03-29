@@ -71,12 +71,7 @@ class Cron {
     }
 
     private updateTournaments = async () => {
-        
-        type roomInfo = {
-            detail?: any,
-            game?: any,
-            user_id?: number,
-        }
+    
 
         for await(let tournament of this.tournamentsToUpdate){
             const {id} : {id?:number} = tournament;

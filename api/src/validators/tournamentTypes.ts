@@ -25,7 +25,10 @@ type insertSchema = {
 type roomInfo = {
     detail?: any,
     game?: any,
-    user_id?: number
+    user_id?: number,
+    match?: any,
+    plays?: any,
+    users?: any,
 }
 
 type eventDetail = {
