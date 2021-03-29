@@ -1,16 +1,7 @@
 
 import mongo from "./mongo";
 import usersSchema from '../database/users.schema';
-
-type UpdateSchema = {
-    whereQuery: {
-        [key: string]: string | number,
-    },
-    modifyQuery: {
-        [key: string]: string | number;
-    },
-}
-
+import * as userTypes from '../validators/userTypes'
 class Users {
     private connect = () => mongo.getConnection();
     private disconnect = () => mongo.stopConnection();
@@ -96,7 +87,7 @@ class Users {
         return {status};
     }
 
-    public update = async (userInfo: UpdateSchema) => {
+    public update = async (userInfo: userTypes.updateSchema) => {
         this.connect()
         
         const {whereQuery, modifyQuery} = userInfo;

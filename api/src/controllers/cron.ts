@@ -4,30 +4,10 @@ import tournaments from './tournaments';
 import users from './users';
 import axios from 'axios';
 import * as cron from 'node-cron';
+import * as tournamentsTypes from '../validators/tournamentTypes';
 import _ from 'underscore';
 import {protectedRoutes} from '../../credentials.json';
 
-
-type insertSchema = {
-    match: {
-        id?: number,
-        name?: string,
-        start_time?: Date,
-        end_time?: Date
-    },
-    players: Array<object>,
-    events: {
-        id: number,
-        detail: object,
-        user_id: number,
-    }
-}
-
-type roomInfo = {
-    match?: any,
-    plays?: any,
-    users?: any,
-}
 
 
 class Cron {
@@ -45,8 +25,8 @@ class Cron {
         const {id} : {id?:number} = tournament;
 
         for await(let difference of differences){
-            let {match, plays, users} : roomInfo = difference;
-            let {end_time} : insertSchema['match'] = match;
+            let {match, plays, users} : tournamentsTypes.roomInfo = difference;
+            let {end_time} : tournamentsTypes.insertSchema['match'] = match;
 
             await axios({
                 url: `/tournaments/m/${id}`,
