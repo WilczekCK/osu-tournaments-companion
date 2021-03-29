@@ -5,7 +5,7 @@ import users from './users';
 import axios from 'axios';
 import * as cron from 'node-cron';
 import _ from 'underscore';
-import { match } from 'assert';
+import {protectedRoutes} from '../../credentials.json';
 
 
 type insertSchema = {
@@ -56,8 +56,8 @@ class Cron {
                     content: end_time
                 },
                 auth: {
-                    username: 'admin',
-                    password: 'strongPassword'
+                    username: protectedRoutes.username,
+                    password: protectedRoutes.password
                 }
             })
 
@@ -69,8 +69,8 @@ class Cron {
                     content: plays.beatmap
                 },
                 auth: {
-                    username: 'admin',
-                    password: 'strongPassword'
+                    username: protectedRoutes.username,
+                    password: protectedRoutes.password
                 }
             })
 
@@ -82,8 +82,8 @@ class Cron {
                     content: users
                 },
                 auth: {
-                    username: 'admin',
-                    password: 'strongPassword'
+                    username: protectedRoutes.username,
+                    password: protectedRoutes.password
                 }
             })
 
