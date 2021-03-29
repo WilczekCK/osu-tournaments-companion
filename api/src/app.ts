@@ -2,7 +2,9 @@ import Koa from 'koa';
 import Logger from 'koa-logger';
 import koaBody from 'koa-body';
 
+
 import routes from './routes/index';
+import cronEvents from './controllers/cron';
 
 const app = new Koa();
 
@@ -23,9 +25,11 @@ app.use(async (ctx, next) => {
     }
 });
 
-
 app.use(routes);
 app.use(Logger());
 app.use(koaBody());
+
+//Refresh the informations about 
+cronEvents.start();
 
 export = app;
