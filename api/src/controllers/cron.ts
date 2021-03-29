@@ -32,7 +32,7 @@ type roomInfo = {
 
 class Cron {
     private isCronInProgress : boolean = false;
-    private secondsEachCron : number = 10;
+    private secondsEachCron : number = 25;
     private tournamentsToUpdate : Array<object>;
 
     private prepareToUpdate = async () => {
@@ -47,7 +47,6 @@ class Cron {
         for await(let difference of differences){
             let {match, plays, users} : roomInfo = difference;
             let {end_time} : insertSchema['match'] = match;
-
 
             await axios({
                 url: `/tournaments/m/${id}`,
@@ -87,6 +86,7 @@ class Cron {
                     password: 'strongPassword'
                 }
             })
+
         }
     }
 

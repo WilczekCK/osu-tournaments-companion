@@ -8,7 +8,7 @@ class Mongo{
 
     public getConnection(){
         return mongoose.connect(this.uri, 
-            {useUnifiedTopology: true, useNewUrlParser: true},
+            {useUnifiedTopology: true, useNewUrlParser: true, poolSize: 4},
             (err: any) => {
                 if(err){
                     throw new Error(`Something went wrong while trying to connect to DB, ${err}`);
