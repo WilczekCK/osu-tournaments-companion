@@ -1,33 +1,12 @@
 
 import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
+import * as tournamentsTypes from '../validators/tournamentTypes';
 import tournaments from "../routes/tournaments";
 import users from "../routes/users";
 import axios from 'axios';
 
-type UpdateSchema = {
-    whereQuery: {
-        [key: string]: string | number,
-    },
-    modifyQuery: {
-        [key: string]: any
-    },
-}
 
-type insertSchema = {
-    match: {
-        id: number,
-        name: string,
-        start_time: Date,
-        end_time: Date
-    },
-    players: Array<object>,
-    events: {
-        id: number,
-        detail: object,
-        user_id: number,
-    }
-}
 
 class Tournaments {
     private connect = () => mongo.getConnection();
@@ -68,7 +47,7 @@ class Tournaments {
         return result;
     };
 
-    public insert = async (match: insertSchema['match'], events: Array<Object>, players: insertSchema['players']) => {
+    public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         this.connect()
         let [{judge}, plays] = await this.parseEventsObject( events );
 
@@ -107,7 +86,7 @@ class Tournaments {
         return {status, deletedCount};
     }
 
-    public update = async (tournamentInfo: UpdateSchema ) => {
+    public update = async (tournamentInfo: tournamentsTypes.updateSchema ) => {
         this.connect()
 
         const {whereQuery, modifyQuery} = tournamentInfo;
@@ -127,29 +106,11 @@ class Tournaments {
 
     public parseEventsObject = async (eventsDetail: object[] ) => {
         let getInfo : {[key: string] : number | string | object | object[]}[] = [];
-        let playedBeatmaps: {[key: string]: Array<object>} = { beatmap:[] };
-
-        type roomInfo = {
-            detail?: any,
-            game?: any,
-            user_id?: number
-        }
-
-        interface eventDetail {
-            id: number,
-            type: string,
-            user_id: number | Number,
-        }
-
-        interface gameDetail {
-            mods?: Array<object> | string, //still not quite sure
-            info: Array<object>,
-            scores: Array<object>
-        }
+        let playedBeatmaps: {[key: string]: Array<object>} = { beatmap:[] }
 
         for await(let event of eventsDetail){
-            const {detail, game, user_id} : roomInfo = event;
-            const eventTriggered : eventDetail = { id: detail.id, type: detail.type, user_id };
+            const {detail, game, user_id} : tournamentsTypes.roomInfo = event;
+            const eventTriggered : tournamentsTypes.eventDetail = { id: detail.id, type: detail.type, user_id };
 
             //maybe later it will be useful.
             switch( eventTriggered.type ){
@@ -165,7 +126,7 @@ class Tournaments {
                 case 'player-left':
                     break;
                 case 'other':
-                    const gameDetails : gameDetail = {mods: game.mods, info: game.beatmap, scores: game.scores}
+                    const gameDetails : tournamentsTypes.gameDetail = {mods: game.mods, info: game.beatmap, scores: game.scores}
                     playedBeatmaps.beatmap.push({
                         info:       gameDetails['info'],
                         scores:     gameDetails['scores'],
