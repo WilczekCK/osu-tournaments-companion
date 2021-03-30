@@ -24,10 +24,15 @@ class Cron {
         const differences = _.difference([matchInfo], [tournament]);
         const {id} : {id?:number} = tournament;
 
-        for await(let difference of differences){
-            let {match, plays, users, gameModes} : tournamentsTypes.roomInfo = difference;
-            let {end_time} : tournamentsTypes.insertSchema['match'] = match;
 
+
+
+        for await(let difference of _.pairs(differences[0])){
+            console.log(difference)
+            
+            /*let {match, plays, users, gameModes} : tournamentsTypes.roomInfo = difference;
+            let {end_time} : tournamentsTypes.insertSchema['match'] = match;
+            
             await axios({
                 url: `/tournaments/m/${id}`,
                 method: 'PATCH',
@@ -79,8 +84,10 @@ class Cron {
                     password: protectedRoutes.password
                 }
             })
+            */
 
         }
+        
     }
 
     private updateTournaments = async () => {
@@ -94,7 +101,10 @@ class Cron {
                     let {match, events, users} = data;
                     let [{judge}, {gamemodes}, plays] = await tournaments.parseEventsObject( events );
 
-                    await this.compareTournaments({match, users, judge, plays, gamemodes}, tournament);
+                    await this.compareTournaments(
+                        {match, users, judge, plays, gamemodes},
+                        tournament
+                        );
                 })
                 .catch((err) => {
                     return;
