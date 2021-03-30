@@ -29,6 +29,7 @@ type roomInfo = {
     match?: any,
     plays?: any,
     users?: object,
+    gameModes?: object,
 }
 
 type eventDetail = {

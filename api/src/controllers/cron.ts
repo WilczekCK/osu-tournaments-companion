@@ -25,7 +25,7 @@ class Cron {
         const {id} : {id?:number} = tournament;
 
         for await(let difference of differences){
-            let {match, plays, users} : tournamentsTypes.roomInfo = difference;
+            let {match, plays, users, gameModes} : tournamentsTypes.roomInfo = difference;
             let {end_time} : tournamentsTypes.insertSchema['match'] = match;
 
             await axios({
@@ -67,6 +67,19 @@ class Cron {
                 }
             })
 
+            await axios({
+                url: `/tournaments/m/${id}`,
+                method: 'PATCH',
+                data: { 
+                    prefix: 'gameModes',
+                    content: users
+                },
+                auth: {
+                    username: protectedRoutes.username,
+                    password: protectedRoutes.password
+                }
+            })
+
         }
     }
 
@@ -79,9 +92,9 @@ class Cron {
             await axios.get(`/tournaments/${id}?osuApi=true`)
                 .then( async ( {data} ) => {
                     let {match, events, users} = data;
-                    let [{judge}, plays] = await tournaments.parseEventsObject( events );
+                    let [{judge}, {gamemodes}, plays] = await tournaments.parseEventsObject( events );
 
-                    await this.compareTournaments({match, users, judge, plays}, tournament);
+                    await this.compareTournaments({match, users, judge, plays, gamemodes}, tournament);
                 })
                 .catch((err) => {
                     return;

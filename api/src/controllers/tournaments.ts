@@ -123,14 +123,14 @@ class Tournaments {
                 case 'host-changed':
                     break;
                 case 'player-joined':
-                    await axios({
+                   /* await axios({
                         url: `/users/m/${user_id}`,
                         method: 'POST',
                         auth: {
                             username: protectedRoutes.username,
                             password: protectedRoutes.password
                         }
-                    })
+                    })*/
                     break;
                 case 'player-left':
                     break;
