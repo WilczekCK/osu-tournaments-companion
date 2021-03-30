@@ -40,13 +40,16 @@ type eventDetail = {
 type gameDetail = {
     mods?: String | Array<String> //still not quite sure
     info: Array<object>,
-    scores: Array<object>
+    scores: Array<object>,
+    mode?: String,
 }
+
+
 
 export {
     updateSchema,
     insertSchema,
     roomInfo,
     eventDetail,
-    gameDetail
+    gameDetail,
 }

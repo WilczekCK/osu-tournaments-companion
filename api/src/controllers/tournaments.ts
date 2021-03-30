@@ -49,7 +49,7 @@ class Tournaments {
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         this.connect()
-        let [{judge}, plays] = await this.parseEventsObject( events );
+        let [{judge}, {gameModes} , plays] = await this.parseEventsObject( events );
 
         const newTournament = new tournamentsSchema({
             id: match.id,
@@ -61,7 +61,8 @@ class Tournaments {
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
-            mapsPlayed: plays.beatmap
+            mapsPlayed: plays.beatmap,
+            gameModes,
         });
         
         try{
@@ -107,7 +108,7 @@ class Tournaments {
     public parseEventsObject = async (eventsDetail: object[] ) => {
         let getInfo : {[key: string] : number | string | object | object[]}[] = [];
         let playedBeatmaps: {[key: string]: Array<object>} = { beatmap:[] }
-
+        let countModes: {[key:string]: number} = {osu: 0, mania:0, ctb:0, taiko:0};
         for await(let event of eventsDetail){
             const {detail, game, user_id} : tournamentsTypes.roomInfo = event;
             const eventTriggered : tournamentsTypes.eventDetail = { id: detail.id, type: detail.type, user_id };
@@ -132,11 +133,15 @@ class Tournaments {
                         scores:     gameDetails['scores'],
                         mods:       gameDetails['mods']
                     })
+
+                    
+                    countModes[game.mode]++;
                     break;
             }
 
         }
 
+        getInfo.push( {'gameModes': countModes} );
         getInfo.push(playedBeatmaps);
         return getInfo;
     }
