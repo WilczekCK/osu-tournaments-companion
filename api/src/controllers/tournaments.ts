@@ -5,7 +5,7 @@ import * as tournamentsTypes from '../validators/tournamentTypes';
 import tournaments from "../routes/tournaments";
 import users from "../routes/users";
 import axios from 'axios';
-
+import {protectedRoutes} from '../../credentials.json';
 
 
 class Tournaments {
@@ -123,6 +123,14 @@ class Tournaments {
                 case 'host-changed':
                     break;
                 case 'player-joined':
+                    await axios({
+                        url: `/users/m/${user_id}`,
+                        method: 'POST',
+                        auth: {
+                            username: protectedRoutes.username,
+                            password: protectedRoutes.password
+                        }
+                    })
                     break;
                 case 'player-left':
                     break;
