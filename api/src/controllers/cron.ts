@@ -28,63 +28,23 @@ class Cron {
 
 
         for await(let difference of _.pairs(differences[0])){
-            console.log(difference)
+            const result = _.values(difference);
+            let name = result[0];
+            let value = result[1];
             
-            /*let {match, plays, users, gameModes} : tournamentsTypes.roomInfo = difference;
-            let {end_time} : tournamentsTypes.insertSchema['match'] = match;
-            
+            //console.log(name, value)
             await axios({
                 url: `/tournaments/m/${id}`,
                 method: 'PATCH',
                 data: { 
-                    prefix: 'timeEnded',
-                    content: end_time
+                    prefix: name,
+                    content: value
                 },
                 auth: {
                     username: protectedRoutes.username,
                     password: protectedRoutes.password
                 }
             })
-
-            await axios({
-                url: `/tournaments/m/${id}`,
-                method: 'PATCH',
-                data: { 
-                    prefix: 'mapsPlayed',
-                    content: plays.beatmap
-                },
-                auth: {
-                    username: protectedRoutes.username,
-                    password: protectedRoutes.password
-                }
-            })
-
-            await axios({
-                url: `/tournaments/m/${id}`,
-                method: 'PATCH',
-                data: { 
-                    prefix: 'users',
-                    content: users
-                },
-                auth: {
-                    username: protectedRoutes.username,
-                    password: protectedRoutes.password
-                }
-            })
-
-            await axios({
-                url: `/tournaments/m/${id}`,
-                method: 'PATCH',
-                data: { 
-                    prefix: 'gameModes',
-                    content: users
-                },
-                auth: {
-                    username: protectedRoutes.username,
-                    password: protectedRoutes.password
-                }
-            })
-            */
 
         }
         
@@ -99,10 +59,14 @@ class Cron {
             await axios.get(`/tournaments/${id}?osuApi=true`)
                 .then( async ( {data} ) => {
                     let {match, events, users} = data;
-                    let [{judge}, {gamemodes}, plays] = await tournaments.parseEventsObject( events );
+                    let [{judge}, {gamemodes}, {beatmap: mapsPlayed}] = await tournaments.parseEventsObject( events );
+                    
+                    
+                    let {end_time: timeEnded} = match;
+                    console.log(timeEnded);
 
                     await this.compareTournaments(
-                        {match, users, judge, plays, gamemodes},
+                        {timeEnded, users, judge, mapsPlayed, gamemodes},
                         tournament
                         );
                 })
