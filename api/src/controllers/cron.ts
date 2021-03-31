@@ -1,10 +1,6 @@
-import osuApi from './osuApi';
-import mongo from './mongo';
-import tournaments from './tournaments';
-import users from './users';
+import tournaments from './tournaments'
 import axios from 'axios';
 import * as cron from 'node-cron';
-import * as tournamentsTypes from '../validators/tournamentTypes';
 import _ from 'underscore';
 import {protectedRoutes} from '../../credentials.json';
 
