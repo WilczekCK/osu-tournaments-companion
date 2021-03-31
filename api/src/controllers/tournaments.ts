@@ -98,7 +98,7 @@ class Tournaments {
             {[modifyQuery.prefix]: modifyQuery.content})
         : {ok: 0};        
 
-        console.log(resp);
+        //console.log(resp);
 
         const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
         

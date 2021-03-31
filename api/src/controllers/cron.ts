@@ -55,20 +55,16 @@ class Cron {
             await axios.get(`/tournaments/${id}?osuApi=true`)
                 .then( async ( {data} ) => {
                     let {match, events, users} = data;
+                    let {end_time: timeEnded}  = match;
                     let [{judge}, {gameModes}, {beatmap: mapsPlayed}] = await tournaments.parseEventsObject( events );
-                    
-                    
-                    let {end_time: timeEnded} = match;
-                    console.log(timeEnded);
 
                     await this.compareTournaments(
                         {timeEnded, users, judge, mapsPlayed, gameModes, events},
                         tournament
-                        );
+                    );
                 })
                 .catch((err) => {
                     return;
-                    //console.log(err);
                 })
         }
         this.isCronInProgress = false;

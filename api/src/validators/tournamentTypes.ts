@@ -45,8 +45,6 @@ type gameDetail = {
     mode?: String,
 }
 
-
-
 export {
     updateSchema,
     insertSchema,
