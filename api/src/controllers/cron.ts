@@ -24,15 +24,11 @@ class Cron {
         const differences = _.difference([matchInfo], [tournament]);
         const {id} : {id?:number} = tournament;
 
-
-
-
         for await(let difference of _.pairs(differences[0])){
             const result = _.values(difference);
             let name = result[0];
             let value = result[1];
             
-            //console.log(name, value)
             await axios({
                 url: `/tournaments/m/${id}`,
                 method: 'PATCH',
@@ -59,14 +55,14 @@ class Cron {
             await axios.get(`/tournaments/${id}?osuApi=true`)
                 .then( async ( {data} ) => {
                     let {match, events, users} = data;
-                    let [{judge}, {gamemodes}, {beatmap: mapsPlayed}] = await tournaments.parseEventsObject( events );
+                    let [{judge}, {gameModes}, {beatmap: mapsPlayed}] = await tournaments.parseEventsObject( events );
                     
                     
                     let {end_time: timeEnded} = match;
                     console.log(timeEnded);
 
                     await this.compareTournaments(
-                        {timeEnded, users, judge, mapsPlayed, gamemodes},
+                        {timeEnded, users, judge, mapsPlayed, gameModes},
                         tournament
                         );
                 })
