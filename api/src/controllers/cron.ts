@@ -62,7 +62,7 @@ class Cron {
                     console.log(timeEnded);
 
                     await this.compareTournaments(
-                        {timeEnded, users, judge, mapsPlayed, gameModes},
+                        {timeEnded, users, judge, mapsPlayed, gameModes, events},
                         tournament
                         );
                 })
