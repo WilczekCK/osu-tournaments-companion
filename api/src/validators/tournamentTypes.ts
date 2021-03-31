@@ -29,6 +29,7 @@ type roomInfo = {
     match?: any,
     plays?: any,
     users?: object,
+    gameModes?: object,
 }
 
 type eventDetail = {
@@ -43,8 +44,6 @@ type gameDetail = {
     scores: Array<object>,
     mode?: String,
 }
-
-
 
 export {
     updateSchema,

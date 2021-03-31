@@ -3,7 +3,8 @@ import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
 import * as tournamentsTypes from '../validators/tournamentTypes';
 import tournaments from "../routes/tournaments";
-import users from "../routes/users";
+import users from "./users";
+import osuApi from "./osuApi";
 import axios from 'axios';
 import {protectedRoutes} from '../../credentials.json';
 
@@ -123,14 +124,7 @@ class Tournaments {
                 case 'host-changed':
                     break;
                 case 'player-joined':
-                    await axios({
-                        url: `/users/m/${user_id}`,
-                        method: 'POST',
-                        auth: {
-                            username: protectedRoutes.username,
-                            password: protectedRoutes.password
-                        }
-                    })
+                    await users.insert(await osuApi(`users/${user_id}/osu`))
                     break;
                 case 'player-left':
                     break;
