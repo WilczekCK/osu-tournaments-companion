@@ -2,10 +2,11 @@
     .navigation__container(class="md-layout md-alignment-center-center")
         .md-layout-item(class="md-size-15")
         .navigation__container--wrapper(class="md-layout-item md-layout md-gutter")
-            router-link(to="/" class="md-layout-item md-size-66")
+            router-link(to="/" class="md-layout-item md-size-77")
                 ="osupoli!tournament companion"
-            span(class="material-icons")
-                ="event"
+            div(class="md-layout-item md-size-33 md-layout md-aligment-center-center")
+                span(class="material-icons md-layout-item")
+                    ="menu"
         .md-layout-item(class="md-size-15")
 </template>
 
@@ -23,4 +24,8 @@ export default class NavBar extends Vue {
     width 100%
     background #343434
     height 80px
+
+    &&--wrapper
+    .material-icons
+        text-align center
 </style>
