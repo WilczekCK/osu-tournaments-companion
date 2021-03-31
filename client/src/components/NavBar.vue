@@ -2,10 +2,10 @@
     .navigation__container(class="md-layout md-alignment-center-center")
         .md-layout-item(class="md-size-15")
         .navigation__container--wrapper(class="md-layout-item md-layout md-gutter")
-            router-link(to="/" class="md-layout-item")
-                ="Home"
-            router-link(to="/about" class="md-layout-item")
-                ="About"
+            router-link(to="/" class="md-layout-item md-size-66")
+                ="osupoli!tournament companion"
+            span(class="material-icons")
+                ="event"
         .md-layout-item(class="md-size-15")
 </template>
 
