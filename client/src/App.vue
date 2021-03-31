@@ -5,8 +5,7 @@
         ="Home"
       router-link(to="/about")
         ="About"
-      h1
-        ="elegancko"
+      router-view
 </template>
 
 <style lang="stylus">
