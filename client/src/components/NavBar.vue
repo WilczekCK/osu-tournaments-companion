@@ -1,9 +1,12 @@
 <template lang="pug">
-    #nav
-        router-link(to="/")
-            ="Home"
-        router-link(to="/about")
-            ="About"
+    .navigation__container(class="md-layout md-alignment-center-center")
+        .md-layout-item(class="md-size-15")
+        .navigation__container--wrapper(class="md-layout-item md-layout md-gutter")
+            router-link(to="/" class="md-layout-item")
+                ="Home"
+            router-link(to="/about" class="md-layout-item")
+                ="About"
+        .md-layout-item(class="md-size-15")
 </template>
 
 <script lang="ts">
@@ -16,5 +19,8 @@ export default class NavBar extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
-
+.navigation__container
+    width 100%
+    background #343434
+    height 80px
 </style>

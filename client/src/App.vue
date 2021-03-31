@@ -26,7 +26,6 @@ body
   width 100%
 
 #app
-  width 1280px
   margin 0 auto
   display flex
   flex-direction column
