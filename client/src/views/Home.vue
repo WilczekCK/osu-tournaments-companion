@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '../components/HelloWorld.vue';
-import SingleMatch from '../components/SingleMatch.vue';
+import SingleMatch from '../components/match/SingleMatch.vue';
 
 @Component({
   components: {
