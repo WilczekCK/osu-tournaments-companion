@@ -29,6 +29,14 @@ export default class SingleMatch extends Vue {
     max-width: 800px
     display: flex
     flex-wrap: wrap
+    align-items: center
+    box-sizing: border-box
+    padding: 0px 20px
+    &-media
+        flex-grow: 0
+    &-header
+        flex-grow: 3
+        padding-top: 16px !important
     &-expand-content
         display: flex
         width: 100%
