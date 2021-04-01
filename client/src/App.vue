@@ -17,18 +17,17 @@ import navbar from './components/NavBar.vue';
 export default class Home extends Vue {}
 </script>
 
-<style lang="stylus">
-@import url("https://fonts.googleapis.com/css?family=Material+Icons");
+<style lang="sass">
 html
 body
-  background #535353
-  margin 0
-  padding 0
-  width 100%
+  background: $bg-body
+  margin: 0
+  padding: 0
+  width: 100%
 
 #app
-  margin 0 auto
-  display flex
-  flex-direction column
-  align-items center
+  margin: 0 auto
+  display: flex
+  flex-direction: column
+  align-items: center
 </style>

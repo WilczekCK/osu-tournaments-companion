@@ -19,13 +19,9 @@ export default class NavBar extends Vue {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="stylus">
+<style lang="sass">
 .navigation__container
-    width 100%
-    background #343434
-    height 80px
-
-    &&--wrapper
-    .material-icons
-        text-align center
+    width: 100%
+    background: $bg-header
+    height: 80px
 </style>
