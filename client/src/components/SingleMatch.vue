@@ -18,13 +18,15 @@
         md-card-expand-content
             md-card-content
                 .match__container
-                    .match__container__teams
-                    .match__container__progress
-                md-tabs(md-alignment="fixed")
-                    md-tab(id="tab-teams" md-icon="teams")
-                    md-tab(id="tab-progress" md-icon="progress")
-                    md-tab(id="tab-playCharts" md-icon="games")
-                    md-tab(id="tab-share" md-icon="share")
+                    md-tabs(md-alignment="fixed")
+                        md-tab(id="tab-teams" md-icon="teams")
+                            ="Teams"
+                        md-tab(id="tab-progress" md-icon="progress")
+                            ="Progress"
+                        md-tab(id="tab-playCharts" md-icon="games")
+                            ="Games"
+                        md-tab(id="tab-share" md-icon="share")
+                            ="Share"
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -43,9 +45,12 @@ export default class SingleMatch extends Vue {
     align-items: center
     box-sizing: border-box
     padding: 0px 20px
+    overflow: hidden
+    z-index: 1
     &-media
         flex-grow: 0
     &-header
+        z-index: 1
         flex-grow: 3
         padding-top: 16px !important
     &-expand
@@ -57,13 +62,18 @@ export default class SingleMatch extends Vue {
             color: $bg-content
         &-content
             width: 100%
+            overflow: hidden
+            z-index: -1
+            position: relative
 .md-card-media
     img
         height: 20px
         width: 20px
 
 .match__container
-    min-height: 150px
-    &__teams
-    &__progress
+    .md-tabs
+        flex-direction: column-reverse
+        &-content
+            height: unset
+            min-height: 150px
 </style>
