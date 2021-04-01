@@ -1,5 +1,7 @@
 import Vue from 'vue';
-import { MdMenu, MdContent, MdTabs } from 'vue-material/dist/components';
+import {
+  MdMenu, MdCard, MdContent, MdTabs, MdButton,
+} from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import 'vue-material/dist/theme/default.css';
 
@@ -11,6 +13,8 @@ Vue.config.productionTip = false;
 Vue.use(MdMenu);
 Vue.use(MdContent);
 Vue.use(MdTabs);
+Vue.use(MdButton);
+Vue.use(MdCard);
 
 new Vue({
   router,
