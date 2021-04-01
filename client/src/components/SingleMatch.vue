@@ -12,12 +12,19 @@
                 ="Polska 4:3 Chiny"
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
-                    md-button
+                    md-button(class="md-mini")
                         span(class="material-icons md-layout-item")
                             ="keyboard_arrow_down"
         md-card-expand-content
             md-card-content
-                ="Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+                .match__container
+                    .match__container__teams
+                    .match__container__progress
+                md-tabs(md-alignment="fixed")
+                    md-tab(id="tab-teams" md-icon="teams")
+                    md-tab(id="tab-progress" md-icon="progress")
+                    md-tab(id="tab-playCharts" md-icon="games")
+                    md-tab(id="tab-share" md-icon="share")
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -54,4 +61,9 @@ export default class SingleMatch extends Vue {
     img
         height: 20px
         width: 20px
+
+.match__container
+    min-height: 150px
+    &__teams
+    &__progress
 </style>
