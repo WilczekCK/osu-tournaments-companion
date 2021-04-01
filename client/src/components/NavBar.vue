@@ -24,4 +24,10 @@ export default class NavBar extends Vue {
     width: 100%
     background: $bg-header
     height: 80px
+    &--wrapper
+        color: $icon-color !important
+        a
+            color: $link-color !important
+        span
+            text-align: center
 </style>
