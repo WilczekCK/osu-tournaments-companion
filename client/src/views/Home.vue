@@ -21,4 +21,8 @@ export default class Home extends Vue {}
   background: $bg-content
   width: 1080px
   min-height: 800px
+
+@media (max-width: 1080px)
+  .content__container
+    width: 100%
 </style>
