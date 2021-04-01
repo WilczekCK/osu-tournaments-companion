@@ -5,7 +5,11 @@
         md-card-header
             .md-title
                 ="TRNT: (X) vs (Y)"
+            .md-subtitle
+                ="In progress..."
         md-card-expand
+            .md-score
+                ="Polska 4:3 Chiny"
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button
@@ -37,9 +41,15 @@ export default class SingleMatch extends Vue {
     &-header
         flex-grow: 3
         padding-top: 16px !important
-    &-expand-content
+    &-expand
         display: flex
-        width: 100%
+        align-items: center
+        .md-score
+            font-weight: 600
+            font-size: 1.1em
+            color: $bg-content
+        &-content
+            width: 100%
 .md-card-media
     img
         height: 20px
