@@ -5,8 +5,22 @@
             router-link(to="/" class="md-layout-item md-size-77")
                 ="osupoli!tournament companion"
             div(class="md-layout-item md-size-33 md-layout md-aligment-center-center")
-                span(class="material-icons md-layout-item")
-                    ="menu"
+                 md-menu(md-size="medium" md-align-trigger @md-closed="isHamburgerActive = false" @md-opened="isHamburgerActive = true")
+                    md-button(md-menu-trigger)
+                        span(class="material-icons md-layout-item" v-if="!isHamburgerActive")
+                            ="menu"
+                        span(class="material-icons md-layout-item" v-else)
+                            ="menu_open"
+                    md-menu-content
+                        md-menu-item
+                            router-link(to="#")
+                                ="Link #1"
+                        md-menu-item
+                            router-link(to="#")
+                                ="Link #2"
+                        md-menu-item
+                            router-link(to="#")
+                                ="Link #3"
         .md-layout-item(class="md-size-15")
 </template>
 
@@ -15,6 +29,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class NavBar extends Vue {
+    isHamburgerActive = false
 }
 </script>
 
@@ -28,6 +43,14 @@ export default class NavBar extends Vue {
         color: $icon-color !important
         a
             color: $link-color !important
-        span
-            text-align: center
+        .md-menu
+            margin: 0 auto
+            &:hover
+                cursor: pointer
+.md-list
+    .md-menu-item
+        padding: 5px 10px
+        a
+            color: $bg-content
+            font-weight: 500
 </style>
