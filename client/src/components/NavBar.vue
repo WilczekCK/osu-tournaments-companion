@@ -52,5 +52,8 @@ export default class NavBar extends Vue {
         padding: 5px 10px
         a
             color: $bg-content
-            font-weight: 500
+            font-weight: 600
+            &:hover
+                color: $link-active
+                text-decoration: none
 </style>
