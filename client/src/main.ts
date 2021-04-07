@@ -3,7 +3,7 @@ import {
   MdMenu, MdCard, MdContent, MdTabs, MdButton,
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
-import 'vue-material/dist/theme/default.css';
+import './assets/sass/theme.sass';
 
 import router from './router';
 import App from './App.vue';
