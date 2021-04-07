@@ -1,6 +1,6 @@
 <template lang="pug">
   .teams__container
-    .teams__container--red
+    .teams__container--blue
         .teams__container__member(v-for="item in 5" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
                 img(src="https://a.ppy.sh/5286213" alt="user_avatar")
@@ -12,7 +12,7 @@
                 .teams__container__member--ranking--country
                     img(src="https://www.countryflags.io/pl/flat/64.png")
                     span="#1"
-    .teams__container--blue
+    .teams__container--red
         .teams__container__member(v-for="item in 5" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
                 img(src="https://a.ppy.sh/5286213" alt="user_avatar")
@@ -88,12 +88,13 @@ export default class Teams extends Vue {
         justify-content: space-around
         background-blend-mode: blend
     &--red
+        &
         &:after
             position: absolute
             content: ''
             width: 50%
             height: 100%
-            background: rgba(255,0,0,0.1)
+            background: rgba(255,0,0,0.2)
             z-index: 0
     &--blue
         &:after
@@ -101,7 +102,7 @@ export default class Teams extends Vue {
             content: ''
             width: 50%
             height: 100%
-            background: rgba(0,0,255,0.1)
+            background: rgba(0,0,255,0.2)
             z-index: 0
         flex-direction: column-reverse
         .teams__container__member
@@ -115,8 +116,7 @@ export default class Teams extends Vue {
             &--ranking
                 &--global
                     text-align: right
-                    margin-left: unset
-                    margin-right: .5px
+                    margin-left: -2px
                 &--country
                     flex-direction: row-reverse
 </style>
