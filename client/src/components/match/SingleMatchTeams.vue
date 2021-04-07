@@ -88,7 +88,6 @@ export default class Teams extends Vue {
         justify-content: space-around
         background-blend-mode: blend
     &--red
-        &
         &:after
             position: absolute
             content: ''

@@ -9,7 +9,7 @@
                 ="In progress..."
         md-card-expand
             .md-score
-                ="Polska 4:3 Chiny"
+                ="X 4:3 Y"
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini")
