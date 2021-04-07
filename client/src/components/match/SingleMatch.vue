@@ -20,7 +20,7 @@
                 .match__container
                     md-tabs(md-alignment="fixed")
                         md-tab(id="tab-teams" md-icon="teams")
-                            ="Teams"
+                            teams
                         md-tab(id="tab-progress" md-icon="progress")
                             ="Progress"
                         md-tab(id="tab-playCharts" md-icon="games")
@@ -30,11 +30,17 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import SingleMatchTeams from './SingleMatchTeams.vue';
 
-@Component
+@Component({
+  components: {
+    teams: SingleMatchTeams,
+  },
+})
 export default class SingleMatch extends Vue {
   @Prop() private msg!: string;
 }
+
 </script>
 
 <style lang="sass">
