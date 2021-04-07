@@ -25,9 +25,21 @@ export default class Teams extends Vue {
     height: 100%
     &__member
         align-self: space-between
+        height: 50px
+        background: rgba(0,0,0,.2)
+        color: black
+    &--red, &--blue
+        flex-basis: 50%
+        display: flex
+        flex-direction: column
+        justify-content: space-around
     &--red
-        flex-basis: 50%
+        background: $team-red
+        background: -webkit-linear-gradient(to left, $team-red, #ffffff)
+        background: linear-gradient(to left, $team-red, #ffffff)
     &--blue
-        flex-basis: 50%
+        background: $team-blue
+        background: -webkit-linear-gradient(to right, $team-blue, #ffffff)
+        background: linear-gradient(to right, $team-blue, #ffffff)
 
 </style>

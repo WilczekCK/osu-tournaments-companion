@@ -83,7 +83,7 @@ export default class SingleMatch extends Vue {
         flex-direction: column-reverse
         &-content
             height: unset
-            min-height: 150px
+            min-height: 250px
         &-container
             height: 100%
 
