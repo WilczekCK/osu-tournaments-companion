@@ -53,6 +53,8 @@ export default class SingleMatch extends Vue {
     padding: 0px 20px
     overflow: hidden
     z-index: 1
+    &-content
+        padding: 0
     &-media
         flex-grow: 0
     &-header
@@ -87,4 +89,5 @@ export default class SingleMatch extends Vue {
 
 .md-tab
     height: 100%
+    padding: 0
 </style>

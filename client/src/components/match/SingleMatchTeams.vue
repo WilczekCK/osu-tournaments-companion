@@ -1,11 +1,11 @@
 <template lang="pug">
   .teams__container
     .teams__container--red
-        .team__container__member(v-for="item in 5")
+        .teams__container__member(v-for="item in 5")
             ='RED'
             br/
     .teams__container--blue
-        .team__container__member(v-for="item in 5")
+        .teams__container__member(v-for="item in 5")
             ='BLUE'
             br/
 </template>
@@ -23,8 +23,11 @@ export default class Teams extends Vue {
     flex-wrap: wrap
     flex-direction: row
     height: 100%
+    &__member
+        align-self: space-between
     &--red
         flex-basis: 50%
     &--blue
         flex-basis: 50%
+
 </style>
