@@ -82,4 +82,9 @@ export default class SingleMatch extends Vue {
         &-content
             height: unset
             min-height: 150px
+        &-container
+            height: 100%
+
+.md-tab
+    height: 100%
 </style>

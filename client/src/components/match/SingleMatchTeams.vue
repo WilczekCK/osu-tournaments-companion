@@ -22,4 +22,9 @@ export default class Teams extends Vue {
     display: flex
     flex-wrap: wrap
     flex-direction: row
+    height: 100%
+    &--red
+        flex-basis: 50%
+    &--blue
+        flex-basis: 50%
 </style>
