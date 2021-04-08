@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  MdMenu, MdCard, MdContent, MdTabs, MdButton, MdSteppers
+  MdMenu, MdCard, MdContent, MdTabs, MdButton, MdSteppers,
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import './assets/sass/theme.sass';
