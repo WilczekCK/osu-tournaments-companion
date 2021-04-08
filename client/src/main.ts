@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  MdMenu, MdCard, MdContent, MdTabs, MdButton,
+  MdMenu, MdCard, MdContent, MdTabs, MdButton, MdSteppers
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import './assets/sass/theme.sass';
@@ -15,6 +15,7 @@ Vue.use(MdContent);
 Vue.use(MdTabs);
 Vue.use(MdButton);
 Vue.use(MdCard);
+Vue.use(MdSteppers);
 
 new Vue({
   router,

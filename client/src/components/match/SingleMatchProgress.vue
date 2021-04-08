@@ -1,5 +1,6 @@
 <template lang="pug">
   .progress__container
+    
 </template>
 
 <script lang="ts">
