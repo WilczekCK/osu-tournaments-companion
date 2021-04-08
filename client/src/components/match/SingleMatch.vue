@@ -22,7 +22,7 @@
                         md-tab(id="tab-teams" md-icon="teams")
                             teams
                         md-tab(id="tab-progress" md-icon="progress")
-                            ="Progress"
+                            progress
                         md-tab(id="tab-playCharts" md-icon="games")
                             ="Games"
                         md-tab(id="tab-share" md-icon="share")
@@ -31,10 +31,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SingleMatchTeams from './SingleMatchTeams.vue';
+import SingleMatchProgress from './SingleMatchTeams.vue';
 
 @Component({
   components: {
     teams: SingleMatchTeams,
+    progress: SingleMatchProgress
   },
 })
 export default class SingleMatch extends Vue {
