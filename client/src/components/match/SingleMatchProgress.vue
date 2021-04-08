@@ -1,6 +1,6 @@
 <template lang="pug">
   .progress__container
-    md-steppers
+    md-steppers(@md-changed='stepChanged()')
         md-step(md-label="Match created")
             p="Lorem ipsum dolor sit amet"
         md-step(md-label="X won")
@@ -18,11 +18,13 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import { Vue } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 
 @Component
 export default class Progress extends Vue {
+  stepChanged = (): void => {
+    console.log('xD');
+  }
 }
 </script>
 

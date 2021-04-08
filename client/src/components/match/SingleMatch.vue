@@ -45,8 +45,6 @@ import SingleMatchGames from './SingleMatchGames.vue';
 export default class SingleMatch extends Vue {
   @Prop() private msg!: string;
 }
-
-console.log(SingleMatch);
 </script>
 
 <style lang="sass">
