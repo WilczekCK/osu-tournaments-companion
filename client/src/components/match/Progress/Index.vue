@@ -2,25 +2,34 @@
   .progress__container
     md-steppers(md-vertical='true')
         md-step(md-label="Match created" :md-done="true")
-            p="Lorem ipsum dolor sit amet"
+            ProgressMatchStarted
         md-step(md-label="X won" :md-done="true")
-            p="Lorem ipsum dolor sit amet"
+            ProgressMatchWon
         md-step(md-label="Y won" :md-done="true")
-            p="Lorem ipsum dolor sit amet"
+            ProgressMatchWon
         md-step(md-label="Y won" :md-done="true")
-            p="Lorem ipsum dolor sit amet"
+            ProgressMatchWon
         md-step(md-label="X won" :md-done="true")
-            p="Lorem ipsum dolor sit amet"
+            ProgressMatchWon
         md-step(md-label="X won" :md-done="true")
-            p="Lorem ipsum dolor sit amet"
+            ProgressMatchWon
         md-step(md-label="X won the match!" :md-done="true")
-            p="Lorem ipsum dolor sit amet"
+            ProgressMatchEnded
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import ProgressMatchWon from './ProgressMapWon.vue';
+import ProgressMatchEnded from './ProgressMatchEnded.vue';
+import ProgressMatchStarted from './ProgressMatchStarted.vue';
 
-@Component
+@Component({
+  components: {
+    ProgressMatchWon,
+    ProgressMatchEnded,
+    ProgressMatchStarted,
+  },
+})
 export default class Progress extends Vue {
 }
 </script>

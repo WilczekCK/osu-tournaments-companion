@@ -31,7 +31,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SingleMatchTeams from './SingleMatchTeams.vue';
-import SingleMatchProgress from './SingleMatchProgress.vue';
+import SingleMatchProgress from './Progress/Index.vue';
 import SingleMatchGames from './SingleMatchGames.vue';
 
 @Component({
