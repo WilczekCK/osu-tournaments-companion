@@ -1,6 +1,5 @@
 <template lang="pug">
     .progress__match__started
-        ="Match started by somebody"
 </template>
 
 <script lang="ts">
