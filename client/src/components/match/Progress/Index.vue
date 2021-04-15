@@ -4,15 +4,15 @@
         md-step(md-label="Match created" md-description!="2021-03-30 at 08:34" md-done="true")
             ProgressMatchStarted
         md-step(md-label="X won" md-description!="2021-03-30 at 08:34" md-done="true")
-            ProgressMatchWon
+            ProgressMatchWon(:team="{team:'blue'}" :map="{title:'Big Black', author:'val0108'}")
         md-step(md-label="Y won" md-description!="2021-03-30 at 08:45" md-done="true")
-            ProgressMatchWon
+            ProgressMatchWon(:team="{team:'blue'}" :map="{title:'Big Black', author:'val0108'}")
         md-step(md-label="Y won" md-description!="2021-03-30 at 08:57" md-done="true")
-            ProgressMatchWon
+            ProgressMatchWon(:team="{team:'blue'}" :map="{title:'Big Black', author:'val0108'}")
         md-step(md-label="X won" md-description!="2021-03-30 at 09:02" md-done="true")
-            ProgressMatchWon
+            ProgressMatchWon(:team="{team:'blue'}" :map="{title:'Big Black', author:'val0108'}")
         md-step(md-label="X won" md-description!="2021-03-30 at 09:10" md-done="true")
-            ProgressMatchWon
+            ProgressMatchWon(:team="{team:'blue'}" :map="{title:'Big Black', author:'val0108'}")
         md-step(md-label="X won the match!" md-description!="2021-03-30 at 09:15" md-done="true")
             ProgressMatchEnded
 </template>
