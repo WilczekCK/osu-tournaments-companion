@@ -25,8 +25,6 @@
                             SingleMatchProgress
                         md-tab(id="tab-playCharts" md-icon="games ( tba )" md-disabled)
                             SingleMatchGames
-                        md-tab(id="tab-share" md-icon="share")
-                            ="Share"
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
