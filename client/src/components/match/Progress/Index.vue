@@ -14,7 +14,7 @@
         md-step(md-label="X won" md-description!="2021-03-30 at 09:10" md-done="true")
             ProgressMatchWon(:team={name:'blue'} :map={title:'Big Black', artist:'The quick brown fox', difficulty: 'Holy', creator:'val0108', covers:[], preview_url: '//b.ppy.sh/preview/385248.mp3'})
         md-step(md-label="X won the match!" md-description!="2021-03-30 at 09:15" md-done="true")
-            ProgressMatchEnded
+            ProgressMatchEnded(:team={name: blue} :results={blue: 5, red: 2})
 </template>
 
 <script lang="ts">

@@ -4,10 +4,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 
 @Component
 export default class Progress extends Vue {
+    @Prop() public team!: Record<string, unknown>;
+
+    @Prop() public results!: Record<string, unknown>;
+
+    teamWon = this.team;
+
+    sumResults = this.results;
 }
 </script>
 
