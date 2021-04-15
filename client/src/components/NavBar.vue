@@ -1,0 +1,59 @@
+<template lang="pug">
+    .navigation__container(class="md-layout md-alignment-center-center")
+        .md-layout-item(class="md-size-15")
+        .navigation__container--wrapper(class="md-layout-item md-layout md-gutter")
+            router-link(to="/" class="md-layout-item md-size-77")
+                ="osupoli!tournament companion"
+            div(class="md-layout-item md-size-33 md-layout md-aligment-center-center")
+                 md-menu(md-size="medium" md-align-trigger @md-closed="isHamburgerActive = false" @md-opened="isHamburgerActive = true")
+                    md-button(md-menu-trigger)
+                        span(class="material-icons md-layout-item" v-if="!isHamburgerActive")
+                            ="menu"
+                        span(class="material-icons md-layout-item" v-else)
+                            ="menu_open"
+                    md-menu-content
+                        md-menu-item
+                            router-link(to="#")
+                                ="Link #1"
+                        md-menu-item
+                            router-link(to="#")
+                                ="Link #2"
+                        md-menu-item
+                            router-link(to="#")
+                                ="Link #3"
+        .md-layout-item(class="md-size-15")
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component
+export default class NavBar extends Vue {
+    isHamburgerActive = false
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="sass">
+.navigation__container
+    width: 100%
+    background: $bg-header
+    height: 80px
+    &--wrapper
+        color: $icon-color !important
+        a
+            color: $link-color !important
+        .md-menu
+            margin: 0 auto
+            &:hover
+                cursor: pointer
+.md-list
+    .md-menu-item
+        padding: 5px 10px
+        a
+            color: $bg-content
+            font-weight: 600
+            &:hover
+                color: $link-active
+                text-decoration: none
+</style>
