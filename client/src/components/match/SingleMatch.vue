@@ -23,7 +23,7 @@
                             SingleMatchTeams
                         md-tab(id="tab-progress" md-icon="progress")
                             SingleMatchProgress
-                        md-tab(id="tab-playCharts" md-icon="games")
+                        md-tab(id="tab-playCharts" md-icon="games ( tba )" md-disabled)
                             SingleMatchGames
                         md-tab(id="tab-share" md-icon="share")
                             ="Share"
