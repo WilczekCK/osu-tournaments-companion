@@ -6,6 +6,7 @@
 </template>
 
 <script lang="ts">
+import axios from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '../components/HelloWorld.vue';
 import SingleMatch from '../components/match/SingleMatch.vue';
@@ -16,7 +17,21 @@ import SingleMatch from '../components/match/SingleMatch.vue';
     SingleMatch,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  fetchMatches = async () => {
+    await axios({
+      method: 'get',
+      url: 'https://localhost:3000/tournaments/',
+    })
+      .then((data: any) => {
+        console.log(data);
+      });
+  }
+
+  mounted() {
+    this.fetchMatches();
+  }
+}
 </script>
 
 <style lang="sass">
