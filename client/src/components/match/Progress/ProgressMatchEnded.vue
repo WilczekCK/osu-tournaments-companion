@@ -1,6 +1,16 @@
 <template lang="pug">
     .progress__match__ended
-        ="Match won by somebody"
+        .progress__match__ended--finalText
+            ="Match won by the "
+            b {{ teamWon.name }}
+            =" team"
+        .progress__match__ended--results
+            = 'Blue '
+            b {{sumResults.blue}}
+            = ":"
+            b {{sumResults.red}}
+            = " Red"
+
 </template>
 
 <script lang="ts">
