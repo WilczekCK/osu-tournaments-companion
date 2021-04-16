@@ -16,7 +16,8 @@ class Tournaments {
     private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => tournamentsSchema.where(where);
-
+    public regex = /(\w*[a-zA-Z]): \(([^)]+)\) ((vs)|(VS)) \(([^)]+)\)/;
+    
     public displayAll = async () => {
         this.connect();
         
