@@ -3,7 +3,7 @@
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
       div(v-for="tournament in allTournaments")
-        SingleMatch
+        SingleMatch(:tournamentInfo="tournament")
 </template>
 
 <script lang="ts">

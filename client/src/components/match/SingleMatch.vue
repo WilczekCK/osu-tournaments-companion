@@ -4,7 +4,7 @@
             img(src="@/assets/logo.png")
         md-card-header
             .md-title
-                ="TRNT: (X) vs (Y)"
+                span {{tournamentInfo.title}}
             .md-subtitle
                 ="In progress..."
         md-card-expand
@@ -41,7 +41,7 @@ import SingleMatchGames from './SingleMatchGames.vue';
 })
 
 export default class SingleMatch extends Vue {
-  @Prop() private msg!: string;
+  @Prop() private tournamentInfo!: Array<Record<string, unknown>>;
 }
 </script>
 
