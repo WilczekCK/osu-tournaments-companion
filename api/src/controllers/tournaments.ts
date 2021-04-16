@@ -124,7 +124,11 @@ class Tournaments {
                 case 'host-changed':
                     break;
                 case 'player-joined':
-                    await users.insert(await osuApi(`users/${user_id}/osu`))
+                    const isUserInDB = await users.displayOne(user_id);
+                    if(isUserInDB.status !== 200){
+                        await users.insert(await osuApi(`users/${user_id}/osu`))
+                    }
+
                     break;
                 case 'player-left':
                     break;

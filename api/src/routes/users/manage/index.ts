@@ -16,6 +16,9 @@ manageUser.all('/:id', auth({name:protectedRoutes.username, pass:protectedRoutes
 })
 
 manageUser.post('/:id', async (ctx) => {
+    const isUserInDB = await users.displayOne(ctx.params.id);
+    if(isUserInDB.status === 200) return;
+
     const response = await users.insert(await osuApi(`users/${ctx.params.id}/osu`))
 
     ctx.status = response.status;
