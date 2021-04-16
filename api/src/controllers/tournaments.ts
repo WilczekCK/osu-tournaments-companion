@@ -64,6 +64,7 @@ class Tournaments {
             twitchURL: 'TBA',
             mapsPlayed: plays.beatmap,
             gameModes,
+            events
         });
         
         try{
