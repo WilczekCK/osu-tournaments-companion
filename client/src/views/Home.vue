@@ -21,7 +21,7 @@ export default class Home extends Vue {
   fetchMatches = async () => {
     await axios({
       method: 'get',
-      url: 'https://localhost:3000/tournaments/',
+      url: 'http://localhost:3000/tournaments/',
     })
       .then((data: any) => {
         console.log(data);
