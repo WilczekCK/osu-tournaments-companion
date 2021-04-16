@@ -6,7 +6,11 @@
             .md-title
                 span {{tournamentInfo.title}}
             .md-subtitle
-                ="In progress..."
+                span(v-if="tournamentInfo.timeEnded")
+                    ="Ended at: "
+                    span {{tournamentInfo.timeEnded}}
+                span(v-else)
+                    ='In progres...'
         md-card-expand
             .md-score
                 ="X 4:3 Y"
