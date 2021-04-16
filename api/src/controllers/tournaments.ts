@@ -7,6 +7,8 @@ import users from "./users";
 import osuApi from "./osuApi";
 import axios from 'axios';
 import {protectedRoutes} from '../../credentials.json';
+import { object } from "underscore";
+import { match } from "assert";
 
 
 class Tournaments {
@@ -52,11 +54,14 @@ class Tournaments {
         this.connect()
         let [{judge}, {gameModes} , plays] = await this.parseEventsObject( events );
 
+        // In plays.beatmap players have the team color!
+        let sortedTeams = await this.sortTeams( plays.beatmap );
+
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,
             titleFlattened: match.name, //to flatten soon
-            //teams: recent_participants, //to divide later === (n-1) /2
+            teams: sortedTeams, //to divide later === (n-1) /2
             users: players,
             judge: judge,
             timeCreated: match.start_time,
@@ -151,6 +156,25 @@ class Tournaments {
         getInfo.push( {'gameModes': countModes} );
         getInfo.push(playedBeatmaps);
         return getInfo;
+    }
+
+    public sortTeams = async ( beatmapsPlayed: any) => {    
+        let sortedTeams: { blue: Array<number>, red: Array<number> } = {
+            blue: [],
+            red: []
+        }
+
+        for(let beatmap of beatmapsPlayed){
+            for(let score of beatmap.scores){
+                if(score.match.team === 'blue' && !sortedTeams['blue'].includes(score.user_id)){
+                    sortedTeams['blue'].push(score.user_id);
+                }else if(score.match.team === 'red' && !sortedTeams['red'].includes(score.user_id)){
+                    sortedTeams['red'].push(score.user_id);
+                }
+            }
+        }
+
+        return sortedTeams;
     }
 }
 
