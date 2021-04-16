@@ -4,9 +4,13 @@
             img(src="@/assets/logo.png")
         md-card-header
             .md-title
-                ="TRNT: (X) vs (Y)"
+                span {{tournamentInfo.title}}
             .md-subtitle
-                ="In progress..."
+                span(v-if="tournamentInfo.timeEnded")
+                    ="Ended at: "
+                    span {{tournamentInfo.timeEnded}}
+                span(v-else)
+                    ='In progres...'
         md-card-expand
             .md-score
                 ="X 4:3 Y"
@@ -22,7 +26,7 @@
                         md-tab(id="tab-teams" md-icon="teams")
                             SingleMatchTeams
                         md-tab(id="tab-progress" md-icon="progress")
-                            SingleMatchProgress
+                            SingleMatchProgress(:progress="tournamentInfo.events")
                         md-tab(id="tab-playCharts" md-icon="games ( tba )" md-disabled)
                             SingleMatchGames
 </template>
@@ -41,7 +45,7 @@ import SingleMatchGames from './SingleMatchGames.vue';
 })
 
 export default class SingleMatch extends Vue {
-  @Prop() private msg!: string;
+  @Prop() private tournamentInfo!: Array<Record<string, unknown>>;
 }
 </script>
 

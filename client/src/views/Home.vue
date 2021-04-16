@@ -2,10 +2,12 @@
   .content__container
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
-      SingleMatch
+      div(v-for="tournament in allTournaments")
+        SingleMatch(:tournamentInfo="tournament")
 </template>
 
 <script lang="ts">
+import axios from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '../components/HelloWorld.vue';
 import SingleMatch from '../components/match/SingleMatch.vue';
@@ -16,7 +18,26 @@ import SingleMatch from '../components/match/SingleMatch.vue';
     SingleMatch,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  allTournaments:Array<any> = [];
+
+  fetchMatches = async () => {
+    const results = await axios({
+      method: 'get',
+      url: 'http://localhost:3000/tournaments/',
+    })
+      .then((data: any) => data.data);
+
+    return results;
+  }
+
+  async mounted() {
+    const getTournamentsFromApi = await this.fetchMatches();
+
+    this.allTournaments = getTournamentsFromApi;
+    return 0;
+  }
+}
 </script>
 
 <style lang="sass">

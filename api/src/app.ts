@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import Logger from 'koa-logger';
 import koaBody from 'koa-body';
-
+import cors from '@koa/cors';
 
 import routes from './routes/index';
 import cronEvents from './controllers/cron';
@@ -25,9 +25,16 @@ app.use(async (ctx, next) => {
     }
 });
 
+// Front-end, allows CORS
+app.use(cors({
+  allowMethods: 'GET',
+  origin: 'http://localhost:8081'
+}));
+
 app.use(routes);
 app.use(Logger());
 app.use(koaBody());
+
 
 //Refresh the informations about 
 cronEvents.start();

@@ -26,8 +26,6 @@ class Users {
             return user;
         });
 
-        this.disconnect();
-
         return result.length 
             ? {status: 200, result}
             : {status: 404, message: 'We do not have this user at our DB :('};
