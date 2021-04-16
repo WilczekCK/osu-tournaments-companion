@@ -5,11 +5,12 @@
             .progress__match__started--judge--avatar
                 img(:src="avatarLink" alt="user_avatar")
             .progress__match__started--judge--nickname
-                ="Cookiezi"
+                span {{userInfo.username}}
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
+import axios from 'axios';
 
 @Component
 export default class ProgressStarted extends Vue {
@@ -17,7 +18,26 @@ export default class ProgressStarted extends Vue {
 
     judgeOsuId = this.judgeId;
 
+    userInfo:any = {};
+
     avatarLink = `https://a.ppy.sh/${this.judgeOsuId}`;
+
+    fetchUser = async () => {
+      const results = await axios({
+        method: 'get',
+        url: `http://localhost:3000/users/${this.judgeOsuId}`,
+      })
+        .then((data: any) => data.data.result[0]);
+
+      return results;
+    }
+
+    async mounted() {
+      const getUserFromApi = await this.fetchUser();
+
+      this.userInfo = getUserFromApi;
+      return 0;
+    }
 }
 
 </script>
