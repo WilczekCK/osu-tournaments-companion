@@ -3,17 +3,23 @@
         h4="Owner of the room:"
         .progress__match__started--judge
             .progress__match__started--judge--avatar
-                img(src="https://a.ppy.sh/4286213" alt="user_avatar")
+                img(:src="avatarLink" alt="user_avatar")
             .progress__match__started--judge--nickname
                 ="Cookiezi"
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 
 @Component
-export default class Progress extends Vue {
+export default class ProgressStarted extends Vue {
+    @Prop() private judgeId!: number;
+
+    judgeOsuId = this.judgeId;
+
+    avatarLink = `https://a.ppy.sh/${this.judgeOsuId}`;
 }
+
 </script>
 
 <style lang="sass">
