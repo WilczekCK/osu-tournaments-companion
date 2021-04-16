@@ -16,16 +16,14 @@ import axios from 'axios';
 export default class ProgressStarted extends Vue {
     @Prop() private judgeId!: number;
 
-    judgeOsuId = this.judgeId;
+    userInfo:Record<string, unknown> = {};
 
-    userInfo:any = {};
-
-    avatarLink = `https://a.ppy.sh/${this.judgeOsuId}`;
+    avatarLink = `https://a.ppy.sh/${this.judgeId}`;
 
     fetchUser = async () => {
       const results = await axios({
         method: 'get',
-        url: `http://localhost:3000/users/${this.judgeOsuId}`,
+        url: `http://localhost:3000/users/${this.judgeId}`,
       })
         .then((data: any) => data.data.result[0]);
 
