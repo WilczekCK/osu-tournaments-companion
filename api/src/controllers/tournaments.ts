@@ -62,7 +62,7 @@ class Tournaments {
             id: match.id,
             title: match.name,
             titleFlattened: match.name, //to flatten soon
-            teams: sortedTeams, //to divide later === (n-1) /2
+            teams: sortedTeams, 
             users: players,
             judge: judge,
             timeCreated: match.start_time,
