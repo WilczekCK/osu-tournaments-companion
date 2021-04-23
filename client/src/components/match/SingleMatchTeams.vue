@@ -1,9 +1,9 @@
 <template lang="pug">
   .teams__container
     .teams__container--blue
-        .teams__container__member(v-for="item in 5" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="userId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(src="https://a.ppy.sh/5286213" alt="user_avatar")
+                img(:src="getAvatarLink(userId)" alt="user_avatar")
             .teams__container__member--nickname
                 ="Cookiezi"
             .teams__container__member--ranking
@@ -13,9 +13,9 @@
                     img(src="https://www.countryflags.io/pl/flat/64.png")
                     span="#1"
     .teams__container--red
-        .teams__container__member(v-for="item in 5" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="userId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(src="https://a.ppy.sh/5286213" alt="user_avatar")
+                img(:src="getAvatarLink(userId)" alt="user_avatar")
             .teams__container__member--nickname
                 ="Cookiezi"
             .teams__container__member--ranking
@@ -27,11 +27,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Teams extends Vue {
+    @Prop() private teams!: Array<Record<string, unknown>>;
+
+    getAvatarLink = (userId: number) => `https://a.ppy.sh/${userId}`;
+
+  /*    fetchUserInfo = async (userId: number) => {
+        userId = 997;
+        return userInfo;
+  } */
 }
 </script>
 

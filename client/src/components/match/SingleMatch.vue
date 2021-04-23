@@ -24,7 +24,7 @@
                 .match__container
                     md-tabs(md-alignment="fixed")
                         md-tab(id="tab-teams" md-icon="teams")
-                            SingleMatchTeams
+                            SingleMatchTeams(:teams="tournamentInfo.teams")
                         md-tab(id="tab-progress" md-icon="progress")
                             SingleMatchProgress(:progress="tournamentInfo.events")
                         md-tab(id="tab-playCharts" md-icon="games ( tba )" md-disabled)
