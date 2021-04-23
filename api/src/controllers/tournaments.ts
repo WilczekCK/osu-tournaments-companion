@@ -141,12 +141,15 @@ class Tournaments {
                     break;
                 case 'other':
                     const gameDetails : tournamentsTypes.gameDetail = {mods: game.mods, info: game.beatmap, scores: game.scores}
+
+                    gameDetails['info'] = {...gameDetails['info'] }
+
                     playedBeatmaps.beatmap.push({
                         info:       gameDetails['info'],
                         scores:     gameDetails['scores'],
-                        mods:       gameDetails['mods']
+                        mods:       gameDetails['mods'],
+                        summaryScore: this.getSummaryScore( gameDetails['scores'] )
                     })
-
                     
                     countModes[game.mode]++;
                     break;
@@ -159,7 +162,7 @@ class Tournaments {
         return getInfo;
     }
 
-    public sortTeams = async ( beatmapsPlayed: any) => {    
+    public sortTeams = async ( beatmapsPlayed: any ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
             red: []
@@ -176,6 +179,23 @@ class Tournaments {
         }
 
         return sortedTeams;
+    }
+
+    public getSummaryScore = (beatmapPlayed: any) => {
+        let sortedScores: { blue: number, red: number } = {
+            blue: 0,
+            red: 0,
+        }
+
+        for(let score of beatmapPlayed){
+            if(score.match.team === 'blue'){
+                sortedScores['blue'] += score.score;
+            }else if(score.match.team === 'red'){
+                sortedScores['red'] += score.score;
+            }
+        }
+
+        return sortedScores;
     }
 }
 
