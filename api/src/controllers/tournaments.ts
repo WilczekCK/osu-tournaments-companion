@@ -7,6 +7,8 @@ import users from "./users";
 import osuApi from "./osuApi";
 import axios from 'axios';
 import {protectedRoutes} from '../../credentials.json';
+import { object } from "underscore";
+import { match } from "assert";
 
 
 class Tournaments {
@@ -14,7 +16,8 @@ class Tournaments {
     private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => tournamentsSchema.where(where);
-
+    public regex = /(\w*[a-zA-Z]): \(([^)]+)\) ((vs)|(VS)) \(([^)]+)\)/;
+    
     public displayAll = async () => {
         this.connect();
         
@@ -52,11 +55,18 @@ class Tournaments {
         this.connect()
         let [{judge}, {gameModes} , plays] = await this.parseEventsObject( events );
 
+        // In plays.beatmap players have the team color!
+        let sortedTeams = await this.sortTeams( plays.beatmap );
+
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,
             titleFlattened: match.name, //to flatten soon
-            //teams: recent_participants, //to divide later === (n-1) /2
+            teams: {
+                blue: sortedTeams.blue,
+                red: sortedTeams.red,
+                names: this.getTeamsName(match.name)
+            }, 
             users: players,
             judge: judge,
             timeCreated: match.start_time,
@@ -135,12 +145,15 @@ class Tournaments {
                     break;
                 case 'other':
                     const gameDetails : tournamentsTypes.gameDetail = {mods: game.mods, info: game.beatmap, scores: game.scores}
+
+                    gameDetails['info'] = {...gameDetails['info'] }
+
                     playedBeatmaps.beatmap.push({
                         info:       gameDetails['info'],
                         scores:     gameDetails['scores'],
-                        mods:       gameDetails['mods']
+                        mods:       gameDetails['mods'],
+                        summaryScore: this.getSummaryScore( gameDetails['scores'] )
                     })
-
                     
                     countModes[game.mode]++;
                     break;
@@ -151,6 +164,75 @@ class Tournaments {
         getInfo.push( {'gameModes': countModes} );
         getInfo.push(playedBeatmaps);
         return getInfo;
+    }
+
+    public sortTeams = async ( beatmapsPlayed: any ) => {    
+        let sortedTeams: { blue: Array<number>, red: Array<number> } = {
+            blue: [],
+            red: []
+        }
+
+        for(let beatmap of beatmapsPlayed){
+            for(let score of beatmap.scores){
+                if(score.match.team === 'blue' && !sortedTeams['blue'].includes(score.user_id)){
+                    sortedTeams['blue'].push(score.user_id);
+                }else if(score.match.team === 'red' && !sortedTeams['red'].includes(score.user_id)){
+                    sortedTeams['red'].push(score.user_id);
+                }
+            }
+        }
+
+        return sortedTeams;
+    }
+
+    public getSummaryScore = (beatmapPlayed: any) => {
+        let sortedScores: { blue: number, red: number } = {
+            blue: 0,
+            red: 0,
+        }
+
+        for(let score of beatmapPlayed){
+            if(score.match.team === 'blue'){
+                sortedScores['blue'] += score.score;
+            }else if(score.match.team === 'red'){
+                sortedScores['red'] += score.score;
+            }
+        }
+
+        return sortedScores;
+    }
+
+    public getTeamsName = (tournamentName: string) => {
+        let flags = { isColonNoticed: false, isBracketOpen: false, firstTeamGot: false }
+        let teamsName: { blue: string, red: string } = {
+            blue: '',
+            red: ''
+        }
+
+        for(let letter of tournamentName){
+
+            switch(true) {
+                case (':' === letter):
+                    flags.isColonNoticed = true;
+                    break;
+                case ('(' === letter && flags.isColonNoticed):
+                    flags.isBracketOpen = true;
+                    break;
+                case (')' === letter && flags.isBracketOpen):
+                    flags.firstTeamGot = true;
+                    flags.isBracketOpen = false;
+                    break;
+                case ('(' === letter && flags.firstTeamGot):
+                    flags.isBracketOpen = true;
+                default:
+                    if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.blue += letter;
+                    if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.red += letter;
+                    break;
+            }
+
+        }
+
+        return teamsName;
     }
 }
 
