@@ -62,7 +62,11 @@ class Tournaments {
             id: match.id,
             title: match.name,
             titleFlattened: match.name, //to flatten soon
-            teams: sortedTeams, 
+            teams: {
+                blue: sortedTeams.blue,
+                red: sortedTeams.red,
+                names: this.getTeamsName(match.name)
+            }, 
             users: players,
             judge: judge,
             timeCreated: match.start_time,
@@ -196,6 +200,39 @@ class Tournaments {
         }
 
         return sortedScores;
+    }
+
+    public getTeamsName = (tournamentName: string) => {
+        let flags = { isColonNoticed: false, isBracketOpen: false, firstTeamGot: false }
+        let teamsName: { blue: string, red: string } = {
+            blue: '',
+            red: ''
+        }
+
+        for(let letter of tournamentName){
+
+            switch(true) {
+                case (':' === letter):
+                    flags.isColonNoticed = true;
+                    break;
+                case ('(' === letter && flags.isColonNoticed):
+                    flags.isBracketOpen = true;
+                    break;
+                case (')' === letter && flags.isBracketOpen):
+                    flags.firstTeamGot = true;
+                    flags.isBracketOpen = false;
+                    break;
+                case ('(' === letter && flags.firstTeamGot):
+                    flags.isBracketOpen = true;
+                default:
+                    if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.blue += letter;
+                    if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.red += letter;
+                    break;
+            }
+
+        }
+
+        return teamsName;
     }
 }
 
