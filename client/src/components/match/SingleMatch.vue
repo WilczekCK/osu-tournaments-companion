@@ -71,6 +71,7 @@ export default class SingleMatch extends Vue {
     padding: 0px 20px
     overflow: hidden
     z-index: 1
+    margin-bottom: 75px
     &-content
         padding: 0
     &-media

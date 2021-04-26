@@ -128,7 +128,7 @@ export default class Teams extends Vue {
         flex-basis: 50%
         display: flex
         flex-direction: column
-        justify-content: space-around
+        justify-content: flex-start
         background-blend-mode: blend
     &--red
         &:after
@@ -139,6 +139,7 @@ export default class Teams extends Vue {
             background: rgba(255,0,0,0.2)
             z-index: 0
     &--blue
+        justify-content: flex-end
         &:after
             position: absolute
             content: ''
