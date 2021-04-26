@@ -1,7 +1,7 @@
 <template lang="pug">
   .teams__container(v-if="loaded == true")
     .teams__container--blue
-        .teams__container__member(v-for="userId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="userId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
                 img(:src="getAvatarLink(userId)" alt="user_avatar")
             .teams__container__member--nickname
@@ -13,7 +13,7 @@
                     img(:src="getCountryFlag(userId)" alt="country_flag")
                     span="#1"
     .teams__container--red
-        .teams__container__member(v-for="userId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="userId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
                 img(:src="getAvatarLink(userId)" alt="user_avatar")
             .teams__container__member--nickname
