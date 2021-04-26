@@ -1,7 +1,7 @@
 <template lang="pug">
     md-card
         md-card-media
-            img(src="@/assets/logo.png")
+            img(:src="require(`@/assets/${getGamemode()}.svg`)")
         md-card-header
             .md-title
                 span {{tournamentInfo.title}}
@@ -32,6 +32,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import _ from 'underscore';
 import SingleMatchTeams from './SingleMatchTeams.vue';
 import SingleMatchProgress from './Progress/Index.vue';
 import SingleMatchGames from './SingleMatchGames.vue';
@@ -46,6 +47,17 @@ import SingleMatchGames from './SingleMatchGames.vue';
 
 export default class SingleMatch extends Vue {
   @Prop() private tournamentInfo!: Array<Record<string, unknown>>;
+
+  getGamemode = () :string => {
+    const { gameModes } = this.tournamentInfo;
+
+    function whichIsMostPlayed(playedCount) {
+      if (playedCount === _.max(gameModes)) return true;
+      return false;
+    }
+
+    return _.findKey(gameModes, whichIsMostPlayed);
+  };
 }
 </script>
 
@@ -81,8 +93,8 @@ export default class SingleMatch extends Vue {
             position: relative
 .md-card-media
     img
-        height: 20px
-        width: 20px
+        height: 50px
+        width: 50px
 
 .match__container
     .md-tabs
