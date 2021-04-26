@@ -1,7 +1,7 @@
 <template lang="pug">
   .progress__container
-    md-steppers(md-vertical='true' v-for="event in events")
-        md-step(v-if="event.detail.type === 'match-created'" :md-description="event.timestamp" md-label="Match created" md-done="true")
+    md-steppers(md-vertical=true v-for="event in events")
+        md-step(v-if="event.detail.type === 'match-created'" :md-description="event.timestamp" md-label="Match created" md-done=true)
             ProgressMatchStarted(:judgeId="event.user_id")
 </template>
 
