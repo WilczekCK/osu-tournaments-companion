@@ -88,8 +88,9 @@ export default class SingleMatch extends Vue {
     .md-tabs
         flex-direction: column-reverse
         &-content
-            height: unset
+            height: unset !important
             min-height: 250px
+            max-height: 100%
         &-container
             height: 100%
 
