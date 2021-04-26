@@ -3,26 +3,26 @@
     .teams__container--blue
         .teams__container__member(v-for="userId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(:src="getAvatarLink(userId)" alt="user_avatar")
+                img(:src="user.getAvatarUrl(userId)" alt="user_avatar")
             .teams__container__member--nickname
-                p {{getUserInfo(userId)['username']}}
+                p {{user.getInfo(userId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(:src="getCountryFlag(userId)" alt="country_flag")
+                    img(:src="user.getCountryFlag(userId)" alt="country_flag")
                     span="#1"
     .teams__container--red
         .teams__container__member(v-for="userId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(:src="getAvatarLink(userId)" alt="user_avatar")
+                img(:src="user.getAvatarUrl(userId)" alt="user_avatar")
             .teams__container__member--nickname
-                p {{getUserInfo(userId)['username']}}
+                p {{user.getInfo(userId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(:src="getCountryFlag(userId)" alt="country_flag")
+                    img(:src="user.getCountryFlag(userId)" alt="country_flag")
                     span="#1"
 </template>
 
@@ -38,32 +38,30 @@ export default class Teams extends Vue {
 
     loaded = false;
 
-    fetchUserInfo = async (userId: number) => {
-      await axios({
-        method: 'get',
-        url: `http://localhost:3000/users/${userId}`,
-      })
-        .then(({ data }: any) => {
-          const result = data.result[0];
-          this.usersInTournament[userId] = result;
-        });
+    user = {
+        getInfo: (userId: number) :Record<string, unknown> => this.usersInTournament[userId],
+        getAvatarUrl: (userId: number) :string => `https://a.ppy.sh/${userId}`,
+        getCountryFlag: (userId: number) :string => `
+          https://flagcdn.com/60x45/
+          ${ (this.user.getInfo(userId).country.code).toLowerCase() }.png`,
+        getDbInfo: async (userId: number) => {
+          await axios({
+            method: 'get',
+            url: `http://localhost:3000/users/${userId}`,
+            })
+          .then(({ data }: any) => {
+            //push into object of objects, key is user_id
+            this.usersInTournament[userId] = data.result[0];
+          })
     }
-
-    getUserInfo = (userId: number) :Record<string, unknown> => this.usersInTournament[userId];
-
-    getAvatarLink = (userId: number) :string => `https://a.ppy.sh/${userId}`;
-
-    getCountryFlag = (userId: number) :string => `
-      https://flagcdn.com/60x45/${
-        (this.getUserInfo(userId).country.code).toLowerCase()
-      }.png`;
+    }
 
     async created() {
       const { blue, red } : {blue: any, red: any} = this.teams;
       const playersToLoad = [...blue, ...red];
 
       playersToLoad.forEach(async (playerId) => {
-        await this.fetchUserInfo(playerId);
+        await this.user.getDbInfo(playerId);
 
         playersToLoad.shift();
         if (!playersToLoad.length) {
