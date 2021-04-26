@@ -13,7 +13,7 @@
                     ='In progres...'
         md-card-expand
             .md-score
-                ="X 4:3 Y"
+                p {{getFinishScore()}}
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini")
@@ -58,6 +58,23 @@ export default class SingleMatch extends Vue {
 
     return _.findKey(gameModes, whichIsMostPlayed);
   };
+
+  getFinishScore = () :string => {
+    const { mapsPlayed } = this.tournamentInfo;
+    const scores = { red: 0, blue: 0 };
+
+    mapsPlayed.forEach((map) => {
+      if (map.summaryScore.blue > map.summaryScore.red) {
+        scores.blue += 1;
+      } else {
+        scores.red += 1;
+      }
+    });
+
+    console.log(scores);
+
+    return `${this.tournamentInfo.teams.names.blue} ${scores.blue}:${scores.red} ${this.tournamentInfo.teams.names.red}`;
+  }
 }
 </script>
 
@@ -80,12 +97,14 @@ export default class SingleMatch extends Vue {
         z-index: 1
         flex-grow: 3
         padding-top: 16px !important
+        .md-title
+            font-size: 1.5em
     &-expand
         display: flex
         align-items: center
         .md-score
-            font-weight: 600
-            font-size: 1.1em
+            font-weight: 800
+            font-size: 1em
             color: $bg-content
         &-content
             width: 100%
