@@ -59,24 +59,14 @@ export default class Teams extends Vue {
       }.png`;
 
     async created() {
-      const { blue, red } : {blue: Array, red: Array} = this.teams;
-      const redClone = [...red];
-      const blueClone = [...blue];
+      const { blue, red } : {blue: any, red: any} = this.teams;
+      const playersToLoad = [...blue, ...red];
 
-      blue.forEach(async (userId) => {
-        await this.fetchUserInfo(userId);
-        blueClone.shift();
+      playersToLoad.forEach(async (playerId) => {
+        await this.fetchUserInfo(playerId);
 
-        if (redClone.length === 0 && blueClone.length === 0) {
-          this.loaded = true;
-        }
-      });
-
-      red.forEach(async (userId) => {
-        await this.fetchUserInfo(userId);
-        redClone.shift();
-
-        if (redClone.length === 0 && blueClone.length === 0) {
+        playersToLoad.shift();
+        if (!playersToLoad.length) {
           this.loaded = true;
         }
       });
