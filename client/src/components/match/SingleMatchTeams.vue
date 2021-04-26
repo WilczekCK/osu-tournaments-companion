@@ -1,44 +1,88 @@
 <template lang="pug">
-  .teams__container
+  .teams__container(v-if="loaded == true")
     .teams__container--blue
         .teams__container__member(v-for="userId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
                 img(:src="getAvatarLink(userId)" alt="user_avatar")
             .teams__container__member--nickname
-                ="Cookiezi"
+                p {{getUserInfo(userId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(src="https://www.countryflags.io/pl/flat/64.png")
+                    img(:src="getCountryFlag(userId)" alt="country_flag")
                     span="#1"
     .teams__container--red
         .teams__container__member(v-for="userId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
                 img(:src="getAvatarLink(userId)" alt="user_avatar")
             .teams__container__member--nickname
-                ="Cookiezi"
+                p {{getUserInfo(userId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(src="https://www.countryflags.io/pl/flat/64.png")
+                    img(:src="getCountryFlag(userId)" alt="country_flag")
                     span="#1"
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import axios from 'axios';
 
 @Component
 export default class Teams extends Vue {
-    @Prop() private teams!: Array<Record<string, unknown>>;
+    @Prop() private teams!: Record<string, unknown>;
 
-    getAvatarLink = (userId: number) => `https://a.ppy.sh/${userId}`;
+    usersInTournament = {};
 
-  /*    fetchUserInfo = async (userId: number) => {
-        userId = 997;
-        return userInfo;
-  } */
+    loaded = false;
+
+    fetchUserInfo = async (userId: number) => {
+      await axios({
+        method: 'get',
+        url: `http://localhost:3000/users/${userId}`,
+      })
+        .then(({ data }: any) => {
+          const result = data.result[0];
+          this.usersInTournament[userId] = result;
+        });
+    }
+
+    getUserInfo = (userId: number) :Record<string, unknown> => this.usersInTournament[userId];
+
+    getAvatarLink = (userId: number) :string => `https://a.ppy.sh/${userId}`;
+
+    getCountryFlag = (userId: number) :string => `
+      https://flagcdn.com/60x45/${
+        (this.getUserInfo(userId).country.code).toLowerCase()
+      }.png`;
+
+    async created() {
+      const { blue, red } : {blue: Array, red: Array} = this.teams;
+      const redClone = [...red];
+      const blueClone = [...blue];
+
+      blue.forEach(async (userId) => {
+        await this.fetchUserInfo(userId);
+        blueClone.shift();
+
+        if (redClone.length === 0 && blueClone.length === 0) {
+          this.loaded = true;
+        }
+      });
+
+      red.forEach(async (userId) => {
+        await this.fetchUserInfo(userId);
+        redClone.shift();
+
+        if (redClone.length === 0 && blueClone.length === 0) {
+          this.loaded = true;
+        }
+      });
+
+      return 0;
+    }
 }
 </script>
 
