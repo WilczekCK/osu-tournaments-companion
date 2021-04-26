@@ -1,28 +1,28 @@
 <template lang="pug">
   .teams__container(v-if="loaded == true")
     .teams__container--blue
-        .teams__container__member(v-for="userId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="playerId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(:src="user.getAvatarUrl(userId)" alt="user_avatar")
+                img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
             .teams__container__member--nickname
-                p {{user.getInfo(userId)['username']}}
+                p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(:src="user.getCountryFlag(userId)" alt="country_flag")
+                    img(:src="player.getCountryFlag(playerId)" alt="country_flag")
                     span="#1"
     .teams__container--red
-        .teams__container__member(v-for="userId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="playerId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(:src="user.getAvatarUrl(userId)" alt="user_avatar")
+                img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
             .teams__container__member--nickname
-                p {{user.getInfo(userId)['username']}}
+                p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(:src="user.getCountryFlag(userId)" alt="country_flag")
+                    img(:src="player.getCountryFlag(playerId)" alt="country_flag")
                     span="#1"
 </template>
 
@@ -34,24 +34,24 @@ import axios from 'axios';
 export default class Teams extends Vue {
     @Prop() private teams!: Record<string, unknown>;
 
-    usersInTournament = {};
-
     loaded = false;
 
-    user = {
-        getInfo: (userId: number) :Record<string, unknown> => this.usersInTournament[userId],
-        getAvatarUrl: (userId: number) :string => `https://a.ppy.sh/${userId}`,
-        getCountryFlag: (userId: number) :string => `
-          https://flagcdn.com/60x45/
-          ${ (this.user.getInfo(userId).country.code).toLowerCase() }.png`,
-        getDbInfo: async (userId: number) => {
+    player = {
+        allPlayers: {},
+        getInfo: (playerId: number) :Record<string, unknown> => this.player.allPlayers[playerId],
+        getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
+        getCountryFlag: (playerId: number) :string => `
+          https://flagcdn.com/60x45/${ 
+              (this.player.getInfo(playerId).country.code).toLowerCase()
+               }.png`,
+        getDbInfo: async (playerId: number) => {
           await axios({
             method: 'get',
-            url: `http://localhost:3000/users/${userId}`,
+            url: `http://localhost:3000/users/${playerId}`,
             })
           .then(({ data }: any) => {
-            //push into object of objects, key is user_id
-            this.usersInTournament[userId] = data.result[0];
+            //push into object of objects, object key is playerId
+            this.player.allPlayers[playerId] = data.result[0];
           })
     }
     }
@@ -61,7 +61,7 @@ export default class Teams extends Vue {
       const playersToLoad = [...blue, ...red];
 
       playersToLoad.forEach(async (playerId) => {
-        await this.user.getDbInfo(playerId);
+        await this.player.getDbInfo(playerId);
 
         playersToLoad.shift();
         if (!playersToLoad.length) {
