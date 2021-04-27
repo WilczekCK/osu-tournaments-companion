@@ -24,11 +24,11 @@
             md-card-content
                 .match__container
                     md-tabs(md-alignment="fixed")
-                        md-tab(id="tab-teams" md-icon="teams")
+                        md-tab(id="tab-teams" md-label="teams")
                             SingleMatchTeams(:teams="tournamentInfo.teams")
-                        md-tab(id="tab-progress" md-icon="progress")
+                        md-tab(id="tab-progress" md-label="progress")
                             SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
-                        md-tab(id="tab-playCharts" md-icon="games ( tba )" md-disabled)
+                        md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
                             SingleMatchGames
 </template>
 <script lang="ts">

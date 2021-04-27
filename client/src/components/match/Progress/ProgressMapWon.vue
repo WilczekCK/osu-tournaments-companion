@@ -26,7 +26,6 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import _ from 'underscore';
 
 @Component
 export default class Progress extends Vue {
@@ -35,11 +34,6 @@ export default class Progress extends Vue {
     match = this.matchInfo;
 
     getBeatmapUrl = () :string => `https://osu.ppy.sh/b/${this.match.info.id}`;
-
-    getWinnerAndScoreDifference = () :Record<any, any> => {
-      console.log(_.keys(_.max(this.match.summaryScore)));
-      return { winBy: 'lol', scoreDiff: _.max(this.match.summaryScore) - _.min(this.match.summaryScore) };
-    }
 }
 </script>
 
