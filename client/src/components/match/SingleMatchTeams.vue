@@ -1,5 +1,5 @@
 <template lang="pug">
-  .teams__container(v-if="loaded == true")
+  .teams__container(v-if="teamsLoaded == true")
     .teams__container--blue
         .teams__container__member(v-for="playerId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
@@ -34,7 +34,7 @@ import axios from 'axios';
 export default class Teams extends Vue {
     @Prop() private teams!: Record<string, Array<number>>;
 
-    loaded = false;
+    teamsLoaded = false;
 
     player = {
       allPlayers: {},
@@ -59,12 +59,13 @@ export default class Teams extends Vue {
     async created() {
       const playersToLoad = [...this.teams.blue, ...this.teams.red];
 
+      // async like, just to collect info
       playersToLoad.forEach(async (playerId) => {
         await this.player.getDbInfo(playerId);
 
         playersToLoad.shift();
         if (!playersToLoad.length) {
-          this.loaded = true;
+          this.teamsLoaded = true;
         }
       });
 
