@@ -3,9 +3,11 @@
     .teams__container--blue
         .teams__container__member(v-for="playerId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
             .teams__container__member--nickname
-                p {{player.getInfo(playerId)['username']}}
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
@@ -15,9 +17,11 @@
     .teams__container--red
         .teams__container__member(v-for="playerId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
             .teams__container__member--nickname
-                p {{player.getInfo(playerId)['username']}}
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
@@ -40,6 +44,7 @@ export default class Teams extends Vue {
       allPlayers: {},
       getInfo: (playerId: number) :Record<string, Record<string, string>> => this.player.allPlayers[playerId],
       getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
+      getOsuProfileUrl: (playerId: number) :string => `https://osu.ppy.sh/u/${playerId}`,
       getCountryFlag: (playerId: number) :string => `
         https://flagcdn.com/60x45/${
             (this.player.getInfo(playerId).country.code).toLowerCase()
@@ -90,6 +95,9 @@ export default class Teams extends Vue {
         align-items: center
         padding-left: 10px
         background-position: center center
+        a
+            color: inherit !important
+            text-decoration: none !important
         &--avatar
             max-height: 100%
             width: 45px
