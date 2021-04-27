@@ -50,7 +50,7 @@ export default class SingleMatch extends Vue {
   @Prop() private tournamentInfo!: any;
   // that's too big object, I cannot tell the type :/
 
-  getLinkToOsuPage = () => `https://osu.ppy.sh/community/matches/${this.tournamentInfo.id}`;
+  getLinkToOsuPage = () :string => `https://osu.ppy.sh/community/matches/${this.tournamentInfo.id}`;
 
   getGamemode = () :string => {
     const { gameModes } = this.tournamentInfo;
