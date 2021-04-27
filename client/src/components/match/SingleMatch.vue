@@ -63,19 +63,20 @@ export default class SingleMatch extends Vue {
     return _.findKey(gameModes, whichIsMostPlayed);
   };
 
+  matchScore = { red: 0, blue: 0 };
+
   getFinishScore = () :string => {
     const { mapsPlayed } = this.tournamentInfo;
-    const scores = { red: 0, blue: 0 };
 
     mapsPlayed.forEach((map) => {
       if (map.summaryScore.blue > map.summaryScore.red) {
-        scores.blue += 1;
+        this.matchScore.blue += 1;
       } else {
-        scores.red += 1;
+        this.matchScore.red += 1;
       }
     });
 
-    return `${this.tournamentInfo.teams.names.blue} ${scores.blue}:${scores.red} ${this.tournamentInfo.teams.names.red}`;
+    return `${this.tournamentInfo.teams.names.blue} ${this.matchScore.blue}:${this.matchScore.red} ${this.tournamentInfo.teams.names.red}`;
   }
 }
 </script>
