@@ -4,7 +4,8 @@
             img(:src="require(`@/assets/${getGamemode()}.svg`)")
         md-card-header
             .md-title
-                span {{tournamentInfo.title}}
+                a(:href="getLinkToOsuPage()" target="_blank")
+                    span {{tournamentInfo.title}}
             .md-subtitle
                 span(v-if="tournamentInfo.timeEnded")
                     ="Ended at: "
@@ -47,6 +48,8 @@ import SingleMatchGames from './SingleMatchGames.vue';
 
 export default class SingleMatch extends Vue {
   @Prop() private tournamentInfo!: Array<Record<string, unknown>>;
+
+  getLinkToOsuPage = () => `https://osu.ppy.sh/community/matches/${this.tournamentInfo.id}`;
 
   getGamemode = () :string => {
     const { gameModes } = this.tournamentInfo;
@@ -99,6 +102,9 @@ export default class SingleMatch extends Vue {
         padding-top: 16px !important
         .md-title
             font-size: 1.5em
+            a
+                color: inherit
+                text-decoration: none
     &-expand
         display: flex
         align-items: center
