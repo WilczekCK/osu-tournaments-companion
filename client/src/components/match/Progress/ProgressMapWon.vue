@@ -10,7 +10,7 @@
             .progress__map__container__mapInfo__columnToRow
                 .progress__map__container__mapInfo__image
                     a(:href="getBeatmapUrl()" target="_blank" v-if="match.info")
-                        img(:src="match.info.beatmapset.covers['list@2x']")
+                        img(:src="match.info.beatmapset.covers['list@2x']" alt="beatmap_image")
                     .progress__map__container__mapInfo__image--missing(v-else)="?"
                 .progress__map__container__mapInfo__description
                     .progress__map__container__mapInfo__description--creator

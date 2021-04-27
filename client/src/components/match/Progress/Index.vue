@@ -3,8 +3,10 @@
     md-steppers(md-vertical=true v-for="event in events")
         md-step(v-if="event.detail.type === 'match-created'" :md-description="event.timestamp" md-label="Match created" md-done=true)
             ProgressMatchStarted(:judgeId="event.user_id")
-        md-step(v-if="event.detail.type === 'other'"  md-label="Map played" :md-description="event.timeStamp" md-done=true)
+        md-step(v-if="event.detail.type === 'other'"  md-label="Map played" :md-description="event.timestamp" md-done=true)
             ProgressMatchWon(:matchInfo="getMapInfo()")
+        md-step(v-if="event.detail.type === 'match-disbanded'" md-label="End of the match" :md-description="event.timestamp" md-done=true)
+            ProgressMatchEnded(:matchInfo="getMapInfo()")
 </template>
 
 <script lang="ts">
