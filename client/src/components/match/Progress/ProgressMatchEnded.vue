@@ -25,15 +25,20 @@ export default class Progress extends Vue {
 
     sumScore = { red: 0, blue: 0 };
 
+    sumPoints = { red: 0, blue: 0 };
+
     getSumScore = () :void => {
       this.beatmaps.forEach(({ summaryScore }) => {
         this.sumScore.blue += summaryScore.blue;
         this.sumScore.red += summaryScore.red;
+
+        if (summaryScore.blue > summaryScore.red) this.sumPoints.blue += 1;
+        if (summaryScore.blue < summaryScore.red) this.sumPoints.red += 1;
       });
     }
 
     getWinnerOfTournament = () :string => {
-      if (this.sumScore.blue > this.sumScore.red) {
+      if (this.sumPoints.blue > this.sumPoints.red) {
         return 'Blue';
       }
 
