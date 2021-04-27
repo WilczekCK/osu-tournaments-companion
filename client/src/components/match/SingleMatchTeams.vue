@@ -37,23 +37,23 @@ export default class Teams extends Vue {
     loaded = false;
 
     player = {
-        allPlayers: {},
-        getInfo: (playerId: number) :Record<string, unknown> => this.player.allPlayers[playerId],
-        getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
-        getCountryFlag: (playerId: number) :string => `
-          https://flagcdn.com/60x45/${ 
-              (this.player.getInfo(playerId).country.code).toLowerCase()
-               }.png`,
-        getDbInfo: async (playerId: number) => {
-          await axios({
-            method: 'get',
-            url: `http://localhost:3000/users/${playerId}`,
-            })
+      allPlayers: {},
+      getInfo: (playerId: number) :Record<string, unknown> => this.player.allPlayers[playerId],
+      getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
+      getCountryFlag: (playerId: number) :string => `
+        https://flagcdn.com/60x45/${
+            (this.player.getInfo(playerId).country.code).toLowerCase()
+            }.png`,
+      getDbInfo: async (playerId: number) => {
+        await axios({
+          method: 'get',
+          url: `http://localhost:3000/users/${playerId}`,
+        })
           .then(({ data }: any) => {
-            //push into object of objects, object key is playerId
-            this.player.allPlayers[playerId] = data.result[0];
-          })
-    }
+            // push into object of objects, object key is playerId
+            [this.player.allPlayers[playerId]] = data.result;
+          });
+      },
     }
 
     async created() {
