@@ -7,21 +7,25 @@
                 b='lol'
         .progress__map__container__mapInfo
             h3="Map details"
-            a(:href="getBeatmapUrl()")
-                .progress__map__container__mapInfo__columnToRow
-                    .progress__map__container__mapInfo__image
-                        img(:src="match.info.beatmapset.covers['list@2x']")
-                    .progress__map__container__mapInfo__description
-                        .progress__map__container__mapInfo__description--creator
-                            ="Map by: "
-                            span {{ match.info.beatmapset.creator }}
-                        .progress__map__container__mapInfo__description--artist
-                            span {{ match.info.beatmapset.artist }}
-                        .progress__map__container__mapInfo__description--title
-                            span {{ match.info.beatmapset.title }}
-                        .progress__map__container__mapInfo__description--difficulty
-                            ="Difficulty: "
-                            span {{ match.info.version }}
+            .progress__map__container__mapInfo__columnToRow
+                .progress__map__container__mapInfo__image
+                    img(:src="match.info.beatmapset.covers['list@2x']" v-if="match.info")
+                    .progress__map__container__mapInfo__image--missing(v-else)="?"
+                .progress__map__container__mapInfo__description
+                    .progress__map__container__mapInfo__description--creator
+                        ="Map by: "
+                        span(v-if="match.info") {{ match.info.beatmapset.creator }}
+                        span(v-else)="Unknown"
+                    .progress__map__container__mapInfo__description--artist
+                        span(v-if="match.info") {{ match.info.beatmapset.artist }}
+                        span(v-else)="Unknown"
+                    .progress__map__container__mapInfo__description--title
+                        span(v-if="match.info") {{ match.info.beatmapset.title }}
+                        span(v-else)="Beatmap removed!"
+                    .progress__map__container__mapInfo__description--difficulty
+                        ="Difficulty: "
+                        span(v-if="match.info") {{ match.info.version }}
+                        span(v-else)="Beatmap removed!"
 </template>
 
 <script lang="ts">
@@ -29,11 +33,9 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() private matchInfo!: Record<string, unknown>;
+    @Prop() public matchInfo!: Record<string, unknown>;
 
     match = this.matchInfo;
-
-    getBeatmapUrl = () :string => `https://osu.ppy.sh/b/${this.match.info.id}`;
 }
 </script>
 
@@ -62,6 +64,14 @@ export default class Progress extends Vue {
                     flex-direction: column
             &__image
                 flex-basis: 35%
+                &--missing
+                    display: flex
+                    font-size: 4em
+                    height: 100%
+                    width: 95%
+                    justify-content: center
+                    align-items: center
+                    background: rgba(0,0,0,.5)
                 @media (max-width: 768px)
                     flex-basis: 100%
             &__description
