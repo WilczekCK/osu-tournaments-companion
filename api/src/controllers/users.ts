@@ -43,7 +43,11 @@ class Users {
                 code: userInfo.country.code,
                 name: userInfo.country.name
             },
-            avatarUrl: userInfo.avatar_url,
+            ranking: {
+                global: userInfo.statistics.global_rank,
+                country: userInfo.statistics.country_rank,
+            },
+            coverUrl: userInfo.cover_url,
             profileColor: userInfo.profile_colour
         })
 
