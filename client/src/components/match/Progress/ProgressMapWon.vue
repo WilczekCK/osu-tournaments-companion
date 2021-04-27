@@ -2,39 +2,74 @@
     .progress__map__container
         .progress__map__container__teamWon
             p
-                b {{ team.name }}
-                = ' team won by'
-                b= ' 400 points!'
+                b {{get.winnerTeamName}}
+                = ' team won by '
+                b {{get.winnerScoreDifference}}
         .progress__map__container__mapInfo
             h3="Map details"
             .progress__map__container__mapInfo__columnToRow
                 .progress__map__container__mapInfo__image
-                    img(src="https://assets.ppy.sh/beatmaps/385248/covers/list@2x.jpg?1521103183")
+                    a(:href="get.beatmapUrl" target="_blank" v-if="match.info")
+                        img(:src="match.info.beatmapset.covers['list@2x']" alt="beatmap_image")
+                    .progress__map__container__mapInfo__image--missing(v-else)="?"
                 .progress__map__container__mapInfo__description
                     .progress__map__container__mapInfo__description--creator
                         ="Map by: "
-                        span {{ map.creator }}
+                        span(v-if="match.info") {{ match.info.beatmapset.creator }}
+                        span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--artist
-                        span {{ map.artist }}
+                        span(v-if="match.info")
+                            a(:href="get.beatmapUrl" target="_blank") {{ match.info.beatmapset.artist }}
+                        span(v-else)="Beatmap removed!"
                     .progress__map__container__mapInfo__description--title
-                        span {{ map.title }}
+                        span(v-if="match.info")
+                            a(:href="get.beatmapUrl" target="_blank") {{ match.info.beatmapset.title }}
+                        span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--difficulty
                         ="Difficulty: "
-                        span {{ map.difficulty }}
+                        span(v-if="match.info") {{ match.info.version }}
+                        span(v-else)='Unknown'
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
+import _ from 'underscore';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() public team!: Record<string, unknown>;
+    @Prop() public matchInfo!: Record<string, Record<string, any>>;
 
-    @Prop() public map!: Record<string, unknown>;
+    match = this.matchInfo;
 
-    teamWon = this.team;
+    get = {
+      beatmapUrl: '',
+      winnerTeamName: '',
+      winnerScoreDifference: 0,
+    };
 
-    mapPlayed = this.map;
+    setBeatmapUrl = () : void => { this.get.beatmapUrl = `https://osu.ppy.sh/b/${this.match.info.id}`; };
+
+    setWinnerScoreDifference = () :void => { this.get.winnerScoreDifference = _.max(this.match.summaryScore) - _.min(this.match.summaryScore); };
+
+    setWinnerTeamName = () :void => {
+      const { summaryScore } = this.match;
+
+      function getBiggestScore(score) {
+        if (score === _.max(summaryScore)) return true;
+        return false;
+      }
+
+      this.get.winnerTeamName = _.findKey(summaryScore, getBiggestScore);
+    }
+
+    mounted() {
+      if (this.match.info) {
+        this.setBeatmapUrl();
+      }
+
+      this.setWinnerTeamName();
+      this.setWinnerScoreDifference();
+    }
 }
 </script>
 
@@ -53,6 +88,9 @@ export default class Progress extends Vue {
                 border-bottom: 2px solid $link-active
                 font-weight: 400
                 padding-bottom: 5px
+            a
+                color: inherit !important
+                text-decoration: none !important
             &__columnToRow
                 display: flex
                 flex-direction: row
@@ -60,6 +98,14 @@ export default class Progress extends Vue {
                     flex-direction: column
             &__image
                 flex-basis: 35%
+                &--missing
+                    display: flex
+                    font-size: 4em
+                    height: 100%
+                    width: 95%
+                    justify-content: center
+                    align-items: center
+                    background: rgba(0,0,0,.5)
                 @media (max-width: 768px)
                     flex-basis: 100%
             &__description

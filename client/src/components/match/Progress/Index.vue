@@ -1,8 +1,12 @@
 <template lang="pug">
   .progress__container
-    md-steppers(md-vertical='true' v-for="event in events")
-        md-step(v-if="event.detail.type === 'match-created'" :md-description="event.timestamp" md-label="Match created" md-done="true")
+    md-steppers(md-vertical=true v-for="event in events")
+        md-step(v-if="event.detail.type === 'match-created'" :md-description="event.timestamp" md-label="Match created" md-done=true)
             ProgressMatchStarted(:judgeId="event.user_id")
+        md-step(v-if="event.detail.type === 'other'"  md-label="Map played" :md-description="event.timestamp" md-done=true)
+            ProgressMatchWon(:matchInfo="getMapInfo()")
+        md-step(v-if="event.detail.type === 'match-disbanded'" md-label="End of the match" :md-description="event.timestamp" md-done=true)
+            ProgressMatchEnded(:matchInfo="mapArray")
 </template>
 
 <script lang="ts">
@@ -21,7 +25,21 @@ import ProgressMatchStarted from './ProgressMatchStarted.vue';
 export default class Progress extends Vue {
     @Prop() private progress!: Array<Record<string, unknown>>;
 
+    @Prop() private mapsPlayed!: Array<Record<string, unknown>>;
+
     events = this.progress;
+
+    maps = this.mapsPlayed;
+
+    mapArray = [];
+
+    // it includes summary scores and map info
+    getMapInfo = () :Record<string, unknown> => {
+      const removedMap = this.maps.shift();
+      this.mapArray.push(removedMap);
+
+      return removedMap;
+    };
 }
 </script>
 
@@ -30,7 +48,7 @@ export default class Progress extends Vue {
     overflow-x: auto
     height: 100%
     counter-reset: numbering
-
+    max-height: 350px
 /* Stepper icons change to numbers */
 .md-stepper-number
     &:before

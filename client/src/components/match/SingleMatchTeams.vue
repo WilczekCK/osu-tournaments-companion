@@ -1,37 +1,81 @@
 <template lang="pug">
-  .teams__container
+  .teams__container(v-if="teamsLoaded == true")
     .teams__container--blue
-        .teams__container__member(v-for="item in 5" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="playerId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(src="https://a.ppy.sh/5286213" alt="user_avatar")
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
             .teams__container__member--nickname
-                ="Cookiezi"
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(src="https://www.countryflags.io/pl/flat/64.png")
+                    img(:src="player.getCountryFlag(playerId)" alt="country_flag")
                     span="#1"
     .teams__container--red
-        .teams__container__member(v-for="item in 5" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="playerId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
             .teams__container__member--avatar
-                img(src="https://a.ppy.sh/5286213" alt="user_avatar")
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
             .teams__container__member--nickname
-                ="Cookiezi"
+                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
+                    p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     span="#2"
                 .teams__container__member--ranking--country
-                    img(src="https://www.countryflags.io/pl/flat/64.png")
+                    img(:src="player.getCountryFlag(playerId)" alt="country_flag")
                     span="#1"
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import axios from 'axios';
 
 @Component
 export default class Teams extends Vue {
+    @Prop() private teams!: Record<string, Array<number>>;
+
+    teamsLoaded = false;
+
+    player = {
+      allPlayers: {},
+      getInfo: (playerId: number) :Record<string, Record<string, string>> => this.player.allPlayers[playerId],
+      getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
+      getOsuProfileUrl: (playerId: number) :string => `https://osu.ppy.sh/u/${playerId}`,
+      getCountryFlag: (playerId: number) :string => `
+        https://flagcdn.com/60x45/${
+            (this.player.getInfo(playerId).country.code).toLowerCase()
+            }.png`,
+      getDbInfo: async (playerId: number) => {
+        await axios({
+          method: 'get',
+          url: `http://localhost:3000/users/${playerId}`,
+        })
+          .then(({ data }: any) => {
+            // push into object of objects, object key is playerId
+            [this.player.allPlayers[playerId]] = data.result;
+          });
+      },
+    }
+
+    async created() {
+      const playersToLoad = [...this.teams.blue, ...this.teams.red];
+
+      // async like, just to collect info
+      playersToLoad.forEach(async (playerId) => {
+        await this.player.getDbInfo(playerId);
+
+        playersToLoad.shift();
+        if (!playersToLoad.length) {
+          this.teamsLoaded = true;
+        }
+      });
+
+      return 0;
+    }
 }
 </script>
 
@@ -51,6 +95,9 @@ export default class Teams extends Vue {
         align-items: center
         padding-left: 10px
         background-position: center center
+        a
+            color: inherit !important
+            text-decoration: none !important
         &--avatar
             max-height: 100%
             width: 45px
@@ -87,7 +134,7 @@ export default class Teams extends Vue {
         flex-basis: 50%
         display: flex
         flex-direction: column
-        justify-content: space-around
+        justify-content: flex-start
         background-blend-mode: blend
     &--red
         &:after
@@ -98,6 +145,7 @@ export default class Teams extends Vue {
             background: rgba(255,0,0,0.2)
             z-index: 0
     &--blue
+        justify-content: flex-end
         &:after
             position: absolute
             content: ''
