@@ -2,7 +2,7 @@
     .progress__map__container
         .progress__map__container__teamWon
             p
-                b='xd'
+                b {{getWinnerTeamName()}}
                 = ' team won by '
                 b {{getWinnerScoreDifference()}}
         .progress__map__container__mapInfo
@@ -39,6 +39,17 @@ export default class Progress extends Vue {
     match = this.matchInfo;
 
     getWinnerScoreDifference = () :number => _.max(this.match.summaryScore) - _.min(this.match.summaryScore);
+
+    getWinnerTeamName = () :string => {
+      const { summaryScore } = this.match;
+
+      function getBiggestScore(score) {
+        if (score === _.max(summaryScore)) return true;
+        return false;
+      }
+
+      return _.findKey(summaryScore, getBiggestScore);
+    }
 }
 </script>
 
