@@ -30,11 +30,7 @@ export default class Progress extends Vue {
     maps = this.mapsPlayed;
 
     // it includes summary scores and map info
-    getMapInfo = () :Record<string, unknown> => {
-      const mapShifted = this.maps.shift();
-      console.log(mapShifted);
-      return mapShifted;
-    };
+    getMapInfo = () :Record<string, unknown> => this.maps.shift();
 }
 </script>
 

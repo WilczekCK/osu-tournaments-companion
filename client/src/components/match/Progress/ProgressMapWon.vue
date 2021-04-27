@@ -3,8 +3,8 @@
         .progress__map__container__teamWon
             p
                 b='xd'
-                = ' team won by'
-                b='lol'
+                = ' team won by '
+                b {{getWinnerScoreDifference()}}
         .progress__map__container__mapInfo
             h3="Map details"
             .progress__map__container__mapInfo__columnToRow
@@ -18,24 +18,27 @@
                         span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--artist
                         span(v-if="match.info") {{ match.info.beatmapset.artist }}
-                        span(v-else)="Unknown"
+                        span(v-else)="Beatmap removed!"
                     .progress__map__container__mapInfo__description--title
                         span(v-if="match.info") {{ match.info.beatmapset.title }}
-                        span(v-else)="Beatmap removed!"
+                        span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--difficulty
                         ="Difficulty: "
                         span(v-if="match.info") {{ match.info.version }}
-                        span(v-else)="Beatmap removed!"
+                        span(v-else)='Unknown'
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
+import _ from 'underscore';
 
 @Component
 export default class Progress extends Vue {
     @Prop() public matchInfo!: Record<string, unknown>;
 
     match = this.matchInfo;
+
+    getWinnerScoreDifference = () :number => _.max(this.match.summaryScore) - _.min(this.match.summaryScore);
 }
 </script>
 
