@@ -32,13 +32,13 @@ import axios from 'axios';
 
 @Component
 export default class Teams extends Vue {
-    @Prop() private teams!: Record<string, unknown>;
+    @Prop() private teams!: Record<string, Array<number>>;
 
     loaded = false;
 
     player = {
       allPlayers: {},
-      getInfo: (playerId: number) :Record<string, unknown> => this.player.allPlayers[playerId],
+      getInfo: (playerId: number) :Record<string, Record<string, string>> => this.player.allPlayers[playerId],
       getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
       getCountryFlag: (playerId: number) :string => `
         https://flagcdn.com/60x45/${
@@ -57,8 +57,7 @@ export default class Teams extends Vue {
     }
 
     async created() {
-      const { blue, red } : {blue: any, red: any} = this.teams;
-      const playersToLoad = [...blue, ...red];
+      const playersToLoad = [...this.teams.blue, ...this.teams.red];
 
       playersToLoad.forEach(async (playerId) => {
         await this.player.getDbInfo(playerId);
