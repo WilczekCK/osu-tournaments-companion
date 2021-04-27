@@ -6,7 +6,7 @@
         md-step(v-if="event.detail.type === 'other'"  md-label="Map played" :md-description="event.timestamp" md-done=true)
             ProgressMatchWon(:matchInfo="getMapInfo()")
         md-step(v-if="event.detail.type === 'match-disbanded'" md-label="End of the match" :md-description="event.timestamp" md-done=true)
-            ProgressMatchEnded(:matchInfo="getMapInfo()")
+            ProgressMatchEnded(:matchInfo="mapArray")
 </template>
 
 <script lang="ts">
@@ -31,8 +31,15 @@ export default class Progress extends Vue {
 
     maps = this.mapsPlayed;
 
+    mapArray = [];
+
     // it includes summary scores and map info
-    getMapInfo = () :Record<string, unknown> => this.maps.shift();
+    getMapInfo = () :Record<string, unknown> => {
+      const removedMap = this.maps.shift();
+      this.mapArray.push(removedMap);
+
+      return removedMap;
+    };
 }
 </script>
 

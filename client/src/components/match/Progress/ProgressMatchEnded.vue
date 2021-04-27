@@ -1,15 +1,16 @@
 <template lang="pug">
     .progress__match__ended
         .progress__match__ended--finalText
-            ="Match won by the "
-            b {{ teamWon.name }}
-            =" team"
+            h2="Match won by the "
+                b {{getWinnerOfTournament()}}
+                =" team"
         .progress__match__ended--results
-            = 'Blue '
-            b {{sumResults.blue}}
-            = ":"
-            b {{sumResults.red}}
-            = " Red"
+            h3="Summary scores:"
+            = 'Blue: '
+            b {{sumScore.blue}}
+            br
+            = "Red: "
+            b {{sumScore.red}}
 
 </template>
 
@@ -18,13 +19,30 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() public team!: Record<string, unknown>;
+    @Prop() private matchInfo!: Record<string, unknown>;
 
-    @Prop() public results!: Record<string, unknown>;
+    beatmaps = this.matchInfo;
 
-    teamWon = this.team;
+    sumScore = { red: 0, blue: 0 };
 
-    sumResults = this.results;
+    getSumScore = () :void => {
+      this.beatmaps.forEach(({ summaryScore }) => {
+        this.sumScore.blue += summaryScore.blue;
+        this.sumScore.red += summaryScore.red;
+      });
+    }
+
+    getWinnerOfTournament = () :string => {
+      if (this.sumScore.blue > this.sumScore.red) {
+        return 'Blue';
+      }
+
+      return 'Red';
+    }
+
+    mounted() {
+      this.getSumScore();
+    }
 }
 </script>
 
