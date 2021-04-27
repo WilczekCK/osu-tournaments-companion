@@ -47,7 +47,8 @@ import SingleMatchGames from './SingleMatchGames.vue';
 })
 
 export default class SingleMatch extends Vue {
-  @Prop() private tournamentInfo!: Array<Record<string, unknown>>;
+  @Prop() private tournamentInfo!: any;
+  // that's too big object, I cannot tell the type :/
 
   getLinkToOsuPage = () => `https://osu.ppy.sh/community/matches/${this.tournamentInfo.id}`;
 
@@ -73,8 +74,6 @@ export default class SingleMatch extends Vue {
         scores.red += 1;
       }
     });
-
-    console.log(scores);
 
     return `${this.tournamentInfo.teams.names.blue} ${scores.blue}:${scores.red} ${this.tournamentInfo.teams.names.red}`;
   }
