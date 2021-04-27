@@ -9,19 +9,14 @@ class Users {
     private query = (where: string | number | object) => usersSchema.where(where);
 
     public displayAll = async () => {
-        this.connect();
-        
         const result = await usersSchema.find((err: any, tournament: any) => {
             return tournament;
         });
 
-        this.disconnect();
         return result;
     };
 
     public displayOne = async (userId: Number) => {
-        this.connect();
-
         const result = await this.query( {id: userId} ).find((err: any, user: any) => {
             return user;
         });
@@ -32,20 +27,15 @@ class Users {
     };
 
     public displayCertain = async (whereQuery: Object) => {
-        this.connect();
-        
         const result = await this.query(whereQuery).find((err: any, user: any) => {
             return user;
         });
 
-        this.disconnect();
         return result;
     };
 
 
     public insert = async (userInfo: any) => {
-        this.connect()
-
         const newUser = new usersSchema({
             id: userInfo.id,
             username: userInfo.username,
@@ -63,8 +53,6 @@ class Users {
             return {status : 422, response: "This user is already registered or some data is missing"};
         }
     
-        this.disconnect();
-
         return {status : 200, response: "Inserted succesfully"};
     };
 
@@ -75,19 +63,13 @@ class Users {
     }
 
     public delete = async (userId: Number) => {
-        this.connect()
-
         const {ok, deletedCount} = await usersSchema.deleteOne({id: userId}, (cb) => cb);
-        
-        this.disconnect();
 
         const status = ok ? 200 : 400;
         return {status};
     }
 
     public update = async (userInfo: userTypes.updateSchema) => {
-        this.connect()
-        
         const {whereQuery, modifyQuery} = userInfo;
 
         const resp = modifyQuery.content && modifyQuery.prefix 
@@ -95,8 +77,6 @@ class Users {
                 {[whereQuery.prefix]: whereQuery.content}, 
                 {[modifyQuery.prefix]: modifyQuery.content})
             : {ok: 0};
-
-        this.disconnect()
 
         const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
         return {status};
