@@ -7,20 +7,21 @@
                 b='lol'
         .progress__map__container__mapInfo
             h3="Map details"
-            .progress__map__container__mapInfo__columnToRow
-                .progress__map__container__mapInfo__image
-                    img(src="https://assets.ppy.sh/beatmaps/385248/covers/list@2x.jpg?1521103183")
-                .progress__map__container__mapInfo__description
-                    .progress__map__container__mapInfo__description--creator
-                        ="Map by: "
-                        span {{ match.info.beatmapset.creator }}
-                    .progress__map__container__mapInfo__description--artist
-                        span {{ match.info.beatmapset.artist }}
-                    .progress__map__container__mapInfo__description--title
-                        span {{ match.info.beatmapset.title }}
-                    .progress__map__container__mapInfo__description--difficulty
-                        ="Difficulty: "
-                        span {{ match.info.beatmapset.difficulty }}
+            a(:href="getBeatmapUrl()")
+                .progress__map__container__mapInfo__columnToRow
+                    .progress__map__container__mapInfo__image
+                        img(:src="match.info.beatmapset.covers['list@2x']")
+                    .progress__map__container__mapInfo__description
+                        .progress__map__container__mapInfo__description--creator
+                            ="Map by: "
+                            span {{ match.info.beatmapset.creator }}
+                        .progress__map__container__mapInfo__description--artist
+                            span {{ match.info.beatmapset.artist }}
+                        .progress__map__container__mapInfo__description--title
+                            span {{ match.info.beatmapset.title }}
+                        .progress__map__container__mapInfo__description--difficulty
+                            ="Difficulty: "
+                            span {{ match.info.version }}
 </template>
 
 <script lang="ts">
@@ -32,6 +33,8 @@ export default class Progress extends Vue {
     @Prop() private matchInfo!: Record<string, unknown>;
 
     match = this.matchInfo;
+
+    getBeatmapUrl = () :string => `https://osu.ppy.sh/b/${this.match.info.id}`;
 
     getWinnerAndScoreDifference = () :Record<any, any> => {
       console.log(_.keys(_.max(this.match.summaryScore)));
@@ -55,6 +58,9 @@ export default class Progress extends Vue {
                 border-bottom: 2px solid $link-active
                 font-weight: 400
                 padding-bottom: 5px
+            a
+                color: inherit !important
+                text-decoration: none !important
             &__columnToRow
                 display: flex
                 flex-direction: row
