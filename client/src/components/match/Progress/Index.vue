@@ -29,14 +29,8 @@ export default class Progress extends Vue {
 
     maps = this.mapsPlayed;
 
-    // 0 is first map, we need to start from -1
-    actualMap: -1;
-
     // it includes summary scores and map info
-    getMapInfo = () :Record<string, unknown> => {
-      this.actualMap += 1;
-      return this.maps[this.actualMap];
-    }
+    getMapInfo = () :Record<string, unknown> => this.maps.shift();
 }
 </script>
 

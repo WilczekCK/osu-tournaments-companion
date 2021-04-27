@@ -2,9 +2,9 @@
     .progress__map__container
         .progress__map__container__teamWon
             p
-                b {{ team.name }}
+                b='xd'
                 = ' team won by'
-                b= ' 400 points!'
+                b='lol'
         .progress__map__container__mapInfo
             h3="Map details"
             .progress__map__container__mapInfo__columnToRow
@@ -13,28 +13,30 @@
                 .progress__map__container__mapInfo__description
                     .progress__map__container__mapInfo__description--creator
                         ="Map by: "
-                        span {{ map.creator }}
+                        span {{ match.info.beatmapset.creator }}
                     .progress__map__container__mapInfo__description--artist
-                        span {{ map.artist }}
+                        span {{ match.info.beatmapset.artist }}
                     .progress__map__container__mapInfo__description--title
-                        span {{ map.title }}
+                        span {{ match.info.beatmapset.title }}
                     .progress__map__container__mapInfo__description--difficulty
                         ="Difficulty: "
-                        span {{ map.difficulty }}
+                        span {{ match.info.beatmapset.difficulty }}
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
+import _ from 'underscore';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() public team!: Record<string, unknown>;
+    @Prop() private matchInfo!: Record<string, unknown>;
 
-    @Prop() public map!: Record<string, unknown>;
+    match = this.matchInfo;
 
-    teamWon = this.team;
-
-    mapPlayed = this.map;
+    getWinnerAndScoreDifference = () :Record<any, any> => {
+      console.log(_.keys(_.max(this.match.summaryScore)));
+      return { winBy: 'lol', scoreDiff: _.max(this.match.summaryScore) - _.min(this.match.summaryScore) };
+    }
 }
 </script>
 
