@@ -176,12 +176,12 @@ class Tournaments {
 
         for(let score of beatmapPlayed){
             if(score.match.team === 'blue'){
-                sortedScores['blue'] += score.score;
+                sortedScores['blue'] += parseInt(score.score);
             }else if(score.match.team === 'red'){
-                sortedScores['red'] += score.score;
+                sortedScores['red'] += parseInt(score.score);
             }
         }
-
+        
         return sortedScores;
     }
 
@@ -208,8 +208,8 @@ class Tournaments {
                 case ('(' === letter && flags.firstTeamGot):
                     flags.isBracketOpen = true;
                 default:
-                    if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.blue += letter;
-                    if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.red += letter;
+                    if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.red += letter;
+                    if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.blue += letter;
                     break;
             }
 
