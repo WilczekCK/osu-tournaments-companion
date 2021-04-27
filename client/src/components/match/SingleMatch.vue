@@ -27,7 +27,7 @@
                         md-tab(id="tab-teams" md-icon="teams")
                             SingleMatchTeams(:teams="tournamentInfo.teams")
                         md-tab(id="tab-progress" md-icon="progress")
-                            SingleMatchProgress(:progress="tournamentInfo.events")
+                            SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
                         md-tab(id="tab-playCharts" md-icon="games ( tba )" md-disabled)
                             SingleMatchGames
 </template>

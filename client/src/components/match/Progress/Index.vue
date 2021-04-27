@@ -3,6 +3,8 @@
     md-steppers(md-vertical=true v-for="event in events")
         md-step(v-if="event.detail.type === 'match-created'" :md-description="event.timestamp" md-label="Match created" md-done=true)
             ProgressMatchStarted(:judgeId="event.user_id")
+        md-step(v-if="event.detail.type === 'other'"  md-label="somebody wins - todo later" :md-description="event.timeStamp" md-done=true)
+            ProgressMatchWon(:matchInfo="getMapInfo()")
 </template>
 
 <script lang="ts">
@@ -21,7 +23,20 @@ import ProgressMatchStarted from './ProgressMatchStarted.vue';
 export default class Progress extends Vue {
     @Prop() private progress!: Array<Record<string, unknown>>;
 
+    @Prop() private mapsPlayed!: Array<Record<string, unknown>>;
+
     events = this.progress;
+
+    maps = this.mapsPlayed;
+
+    // 0 is first map, we need to start from -1
+    actualMap: -1;
+
+    // it includes summary scores and map info
+    getMapInfo = () :Record<string, unknown> => {
+      this.actualMap += 1;
+      return this.maps[this.actualMap];
+    }
 }
 </script>
 
@@ -30,7 +45,7 @@ export default class Progress extends Vue {
     overflow-x: auto
     height: 100%
     counter-reset: numbering
-
+    max-height: 350px
 /* Stepper icons change to numbers */
 .md-stepper-number
     &:before
