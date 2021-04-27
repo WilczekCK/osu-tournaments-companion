@@ -9,7 +9,8 @@
             h3="Map details"
             .progress__map__container__mapInfo__columnToRow
                 .progress__map__container__mapInfo__image
-                    img(:src="match.info.beatmapset.covers['list@2x']" v-if="match.info")
+                    a(:href="getBeatmapUrl()" target="_blank" v-if="match.info")
+                        img(:src="match.info.beatmapset.covers['list@2x']")
                     .progress__map__container__mapInfo__image--missing(v-else)="?"
                 .progress__map__container__mapInfo__description
                     .progress__map__container__mapInfo__description--creator
@@ -17,10 +18,12 @@
                         span(v-if="match.info") {{ match.info.beatmapset.creator }}
                         span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--artist
-                        span(v-if="match.info") {{ match.info.beatmapset.artist }}
+                        span(v-if="match.info")
+                            a(:href="getBeatmapUrl()" target="_blank") {{ match.info.beatmapset.artist }}
                         span(v-else)="Beatmap removed!"
                     .progress__map__container__mapInfo__description--title
-                        span(v-if="match.info") {{ match.info.beatmapset.title }}
+                        span(v-if="match.info")
+                            a(:href="getBeatmapUrl()" target="_blank") {{ match.info.beatmapset.title }}
                         span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--difficulty
                         ="Difficulty: "
@@ -34,9 +37,11 @@ import _ from 'underscore';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() public matchInfo!: Record<string, unknown>;
+    @Prop() public matchInfo!: Record<string, Record<string, any>>;
 
     match = this.matchInfo;
+
+    getBeatmapUrl = () : string => `https://osu.ppy.sh/b/${this.match.info.id}`
 
     getWinnerScoreDifference = () :number => _.max(this.match.summaryScore) - _.min(this.match.summaryScore);
 
