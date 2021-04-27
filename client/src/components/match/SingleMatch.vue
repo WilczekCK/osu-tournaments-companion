@@ -87,7 +87,7 @@ export default class SingleMatch extends Vue {
     flex-wrap: wrap
     align-items: center
     box-sizing: border-box
-    padding: 0px 20px
+    padding: 0px 15px
     overflow: hidden
     z-index: 1
     margin-bottom: 75px
@@ -95,6 +95,9 @@ export default class SingleMatch extends Vue {
         padding: 0
     &-media
         flex-grow: 0
+        background: rgba(0,0,0,.05)
+        padding: 5px
+        border-radius: 5px
     &-header
         z-index: 1
         flex-grow: 3
