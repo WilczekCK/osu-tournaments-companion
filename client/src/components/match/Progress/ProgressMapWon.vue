@@ -2,14 +2,14 @@
     .progress__map__container
         .progress__map__container__teamWon
             p
-                b {{getWinnerTeamName()}}
+                b {{get.winnerTeamName}}
                 = ' team won by '
-                b {{getWinnerScoreDifference()}}
+                b {{get.winnerScoreDifference}}
         .progress__map__container__mapInfo
             h3="Map details"
             .progress__map__container__mapInfo__columnToRow
                 .progress__map__container__mapInfo__image
-                    a(:href="getBeatmapUrl()" target="_blank" v-if="match.info")
+                    a(:href="get.beatmapUrl" target="_blank" v-if="match.info")
                         img(:src="match.info.beatmapset.covers['list@2x']" alt="beatmap_image")
                     .progress__map__container__mapInfo__image--missing(v-else)="?"
                 .progress__map__container__mapInfo__description
@@ -19,11 +19,11 @@
                         span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--artist
                         span(v-if="match.info")
-                            a(:href="getBeatmapUrl()" target="_blank") {{ match.info.beatmapset.artist }}
+                            a(:href="get.beatmapUrl" target="_blank") {{ match.info.beatmapset.artist }}
                         span(v-else)="Beatmap removed!"
                     .progress__map__container__mapInfo__description--title
                         span(v-if="match.info")
-                            a(:href="getBeatmapUrl()" target="_blank") {{ match.info.beatmapset.title }}
+                            a(:href="get.beatmapUrl" target="_blank") {{ match.info.beatmapset.title }}
                         span(v-else)="Unknown"
                     .progress__map__container__mapInfo__description--difficulty
                         ="Difficulty: "
@@ -41,11 +41,17 @@ export default class Progress extends Vue {
 
     match = this.matchInfo;
 
-    getBeatmapUrl = () : string => `https://osu.ppy.sh/b/${this.match.info.id}`
+    get = {
+      beatmapUrl: '',
+      winnerTeamName: '',
+      winnerScoreDifference: 0,
+    };
 
-    getWinnerScoreDifference = () :number => _.max(this.match.summaryScore) - _.min(this.match.summaryScore);
+    setBeatmapUrl = () : void => { this.get.beatmapUrl = `https://osu.ppy.sh/b/${this.match.info.id}`; };
 
-    getWinnerTeamName = () :string => {
+    setWinnerScoreDifference = () :void => { this.get.winnerScoreDifference = _.max(this.match.summaryScore) - _.min(this.match.summaryScore); };
+
+    setWinnerTeamName = () :void => {
       const { summaryScore } = this.match;
 
       function getBiggestScore(score) {
@@ -53,7 +59,16 @@ export default class Progress extends Vue {
         return false;
       }
 
-      return _.findKey(summaryScore, getBiggestScore);
+      this.get.winnerTeamName = _.findKey(summaryScore, getBiggestScore);
+    }
+
+    mounted() {
+      if (this.match.info) {
+        this.setBeatmapUrl();
+      }
+
+      this.setWinnerTeamName();
+      this.setWinnerScoreDifference();
     }
 }
 </script>
