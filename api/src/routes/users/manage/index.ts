@@ -19,7 +19,7 @@ manageUser.post('/:id', async (ctx) => {
     const isUserInDB = await users.displayOne(ctx.params.id);
     if(isUserInDB.status === 200) return;
 
-    const response = await users.insert(await osuApi(`users/${ctx.params.id}/osu`))
+    const response = await users.insert(ctx.params.id);
 
     ctx.status = response.status;
     ctx.body = response;

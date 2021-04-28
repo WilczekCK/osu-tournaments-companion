@@ -1,27 +1,23 @@
 
 import mongo from "./mongo";
+import osuApi from './osuApi';
 import usersSchema from '../database/users.schema';
 import * as userTypes from '../validators/userTypes'
 class Users {
-    private connect = () => mongo.getConnection();
-    private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => usersSchema.where(where);
 
+    public getUserApiInfo = async (userId: number) => await osuApi(`users/${userId}/osu`);
+
     public displayAll = async () => {
-        this.connect();
-        
         const result = await usersSchema.find((err: any, tournament: any) => {
             return tournament;
         });
 
-        this.disconnect();
         return result;
     };
 
     public displayOne = async (userId: Number) => {
-        this.connect();
-
         const result = await this.query( {id: userId} ).find((err: any, user: any) => {
             return user;
         });
@@ -32,19 +28,16 @@ class Users {
     };
 
     public displayCertain = async (whereQuery: Object) => {
-        this.connect();
-        
         const result = await this.query(whereQuery).find((err: any, user: any) => {
             return user;
         });
 
-        this.disconnect();
         return result;
     };
 
 
-    public insert = async (userInfo: any) => {
-        this.connect()
+    public insert = async (userId: any) => {
+        const userInfo = await this.getUserApiInfo(userId);
 
         const newUser = new usersSchema({
             id: userInfo.id,
@@ -53,7 +46,11 @@ class Users {
                 code: userInfo.country.code,
                 name: userInfo.country.name
             },
-            avatarUrl: userInfo.avatar_url,
+            ranking: {
+                global: userInfo.statistics.global_rank,
+                country: userInfo.statistics.country_rank,
+            },
+            coverUrl: userInfo.cover_url,
             profileColor: userInfo.profile_colour
         })
 
@@ -63,31 +60,27 @@ class Users {
             return {status : 422, response: "This user is already registered or some data is missing"};
         }
     
-        this.disconnect();
-
         return {status : 200, response: "Inserted succesfully"};
     };
 
-    public insertBulk = async (users: Array<Object>) => {
-        for await(let user of users){
-            this.insert(user)
+    public insertBulk = async (users: Array<object | any>) => {
+        for await(let {id} of users){
+            //prevent adding them to db, if they are already in the db.
+            const isUserInDB = await this.displayOne(id);
+            if(isUserInDB.status === 200) return;
+
+            await this.insert(id)
         }
     }
 
     public delete = async (userId: Number) => {
-        this.connect()
-
         const {ok, deletedCount} = await usersSchema.deleteOne({id: userId}, (cb) => cb);
-        
-        this.disconnect();
 
         const status = ok ? 200 : 400;
         return {status};
     }
 
     public update = async (userInfo: userTypes.updateSchema) => {
-        this.connect()
-        
         const {whereQuery, modifyQuery} = userInfo;
 
         const resp = modifyQuery.content && modifyQuery.prefix 
@@ -95,8 +88,6 @@ class Users {
                 {[whereQuery.prefix]: whereQuery.content}, 
                 {[modifyQuery.prefix]: modifyQuery.content})
             : {ok: 0};
-
-        this.disconnect()
 
         const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
         return {status};

@@ -8,7 +8,7 @@ import {protectedRoutes} from '../../credentials.json';
 
 class Cron {
     private isCronInProgress : boolean = false;
-    private secondsEachCron : number = 25;
+    private secondsEachCron : number = 10;
     private tournamentsToUpdate : Array<object>;
 
     private prepareToUpdate = async () => {
@@ -43,7 +43,6 @@ class Cron {
     }
 
     private updateTournaments = async () => {
-    
 
         for await(let tournament of this.tournamentsToUpdate){
             const {id} : {id?:number} = tournament;
@@ -66,6 +65,27 @@ class Cron {
         this.isCronInProgress = false;
         return;
     };
+
+    private lookForNewTournaments = async () => {
+        await axios.get(`/tournaments/?osuApi=true`)
+        .then( async ( {data} ) => {
+            for await(let match of data.matches){
+                if(tournaments.isTournament(match.name)){
+                    await axios({
+                        url: `/tournaments/m/${match.id}`,
+                        method: 'POST',
+                        auth: {
+                            username: protectedRoutes.username,
+                            password: protectedRoutes.password
+                        }
+                    })
+                }
+            }
+        })
+        .catch((err) => {
+            return;
+        })
+    }
     
     public start = async () => {
         cron.schedule(`*/${this.secondsEachCron} * * * * *`, async () => {
@@ -73,6 +93,7 @@ class Cron {
             if( !this.isCronInProgress ){
                 await this.prepareToUpdate();
                 await this.updateTournaments();
+                await this.lookForNewTournaments();
             }
 
         })

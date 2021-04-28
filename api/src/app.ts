@@ -5,6 +5,7 @@ import cors from '@koa/cors';
 
 import routes from './routes/index';
 import cronEvents from './controllers/cron';
+import mongo from './controllers/mongo';
 
 const app = new Koa();
 
@@ -35,6 +36,8 @@ app.use(routes);
 app.use(Logger());
 app.use(koaBody());
 
+//Start mongo connection!
+mongo.getConnection();
 
 //Refresh the informations about 
 cronEvents.start();

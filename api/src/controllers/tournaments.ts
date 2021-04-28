@@ -12,51 +12,45 @@ import { match } from "assert";
 
 
 class Tournaments {
-    private connect = () => mongo.getConnection();
-    private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => tournamentsSchema.where(where);
-    public regex = /(\w*[a-zA-Z]): \(([^)]+)\) ((vs)|(VS)) \(([^)]+)\)/;
+    public regex = /(\w*[\w!();:@$]): \((.*?)\) ((vs)|(VS)) \((.*?)\)/;
+    
+    //check by the name, tournaments have the same structures
+    public isTournament = (tournamentName:string) :boolean => this.regex.test(tournamentName);
     
     public displayAll = async () => {
-        this.connect();
-        
+    
         const result = await tournamentsSchema.find((err: any, tournament: any) => {
             return tournament;
         });
 
-        this.disconnect();
         return result.length ? result : {status: 404, message: 'We do not have any tournament in DB yet :('};
     };
 
     public displayOne = async (tournamentId: Number) => {
-        this.connect();
         
         const result = await this.query( {id: tournamentId} ).find((err: any, tournament: any) => {
             return tournament;
         });
 
-        this.disconnect();
         return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
     };
 
     public displayCertain = async (whereQuery: Object) => {
-        this.connect();
         
         const result = await this.query(whereQuery).find((err: any, tournament: any) => {
             return tournament;
         });
 
-        this.disconnect();
         return result;
     };
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
-        this.connect()
-        let [{judge}, {gameModes} , plays] = await this.parseEventsObject( events );
-
+        let [{judge}, {gameModes}, {playedBeatmaps}] = await this.parseEventsObject( events );
+        
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( plays.beatmap );
+        let sortedTeams = await this.sortTeams( playedBeatmaps );
 
         const newTournament = new tournamentsSchema({
             id: match.id,
@@ -72,7 +66,7 @@ class Tournaments {
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
-            mapsPlayed: plays.beatmap,
+            mapsPlayed: playedBeatmaps,
             gameModes,
             events
         });
@@ -83,25 +77,17 @@ class Tournaments {
             return {status : 422, response: "This tournament is already listed or some data is missing"};
         }
 
-        this.disconnect();
-
         return {status: 200}
     };
 
     public delete = async (tournamentId: Number) => {
-        this.connect()
-
         const {ok, deletedCount} = await tournamentsSchema.deleteOne({id: tournamentId}, (cb) => cb);
-        
-        this.disconnect();
 
         const status = ok ? 200 : 400;
         return {status, deletedCount};
     }
 
     public update = async (tournamentInfo: tournamentsTypes.updateSchema ) => {
-        this.connect()
-
         const {whereQuery, modifyQuery} = tournamentInfo;
 
         const resp = modifyQuery.content && modifyQuery.prefix 
@@ -110,8 +96,6 @@ class Tournaments {
             {[modifyQuery.prefix]: modifyQuery.content})
         : {ok: 0};        
 
-        console.log(resp);
-
         const status = resp.ok ? {status:200, message:'Modified info, OK!'} : {status:400, message:"Missing/Issued data or not found user with that ID"};
         
         return {status};
@@ -119,8 +103,12 @@ class Tournaments {
 
     public parseEventsObject = async (eventsDetail: object[] ) => {
         let getInfo : {[key: string] : number | string | object | object[]}[] = [];
-        let playedBeatmaps: {[key: string]: Array<object>} = { beatmap:[] }
+        let playedBeatmaps : Array<object> = [];
         let countModes: {[key:string]: number} = {osu: 0, mania:0, ctb:0, taiko:0};
+
+        //not sure why, it's forcing me to use Number instead of number (?)
+        let judge : Number = 0;
+
         for await(let event of eventsDetail){
             const {detail, game, user_id} : tournamentsTypes.roomInfo = event;
             const eventTriggered : tournamentsTypes.eventDetail = { id: detail.id, type: detail.type, user_id };
@@ -128,7 +116,7 @@ class Tournaments {
             //maybe later it will be useful.
             switch( eventTriggered.type ){
                 case 'match-created':
-                    getInfo.push( {'judge': eventTriggered.user_id } );
+                    judge = eventTriggered.user_id;
                     break;
                 case 'match-disbanded':
                     break;
@@ -137,7 +125,7 @@ class Tournaments {
                 case 'player-joined':
                     const isUserInDB = await users.displayOne(user_id);
                     if(isUserInDB.status !== 200){
-                        await users.insert(await osuApi(`users/${user_id}/osu`))
+                        await users.insert(user_id);
                     }
 
                     break;
@@ -148,7 +136,7 @@ class Tournaments {
 
                     gameDetails['info'] = {...gameDetails['info'] }
 
-                    playedBeatmaps.beatmap.push({
+                    playedBeatmaps.push({
                         info:       gameDetails['info'],
                         scores:     gameDetails['scores'],
                         mods:       gameDetails['mods'],
@@ -161,8 +149,10 @@ class Tournaments {
 
         }
 
+        //when events end, push all info into array of objects!
+        getInfo.push( {judge} );
         getInfo.push( {'gameModes': countModes} );
-        getInfo.push(playedBeatmaps);
+        getInfo.push( {playedBeatmaps});
         return getInfo;
     }
 
@@ -193,12 +183,12 @@ class Tournaments {
 
         for(let score of beatmapPlayed){
             if(score.match.team === 'blue'){
-                sortedScores['blue'] += score.score;
+                sortedScores['blue'] += parseInt(score.score);
             }else if(score.match.team === 'red'){
-                sortedScores['red'] += score.score;
+                sortedScores['red'] += parseInt(score.score);
             }
         }
-
+        
         return sortedScores;
     }
 
@@ -225,8 +215,8 @@ class Tournaments {
                 case ('(' === letter && flags.firstTeamGot):
                     flags.isBracketOpen = true;
                 default:
-                    if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.blue += letter;
-                    if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.red += letter;
+                    if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.red += letter;
+                    if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.blue += letter;
                     break;
             }
 
