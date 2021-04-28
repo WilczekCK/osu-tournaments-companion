@@ -7,7 +7,7 @@ import users from "./users";
 import osuApi from "./osuApi";
 import axios from 'axios';
 import {protectedRoutes} from '../../credentials.json';
-import { object } from "underscore";
+import _, { object } from "underscore";
 import { match } from "assert";
 
 
@@ -140,7 +140,7 @@ class Tournaments {
                         info:       gameDetails['info'],
                         scores:     gameDetails['scores'],
                         mods:       gameDetails['mods'],
-                        teamType:  gameDetails['teamType'],
+                        teamType:   gameDetails['teamType'],
                         summaryScore: this.getSummaryScore( gameDetails['scores'] )
                     })
                     
@@ -196,13 +196,26 @@ class Tournaments {
         }
 
         for(let score of beatmapPlayed){
-            if(score.match.team === 'blue'){
-                sortedScores['blue'] += parseInt(score.score);
-            }else if(score.match.team === 'red'){
-                sortedScores['red'] += parseInt(score.score);
+            switch(true){
+                /* Team vs Team */
+                case 'blue' === score.match.team:
+                    sortedScores['blue'] += parseInt(score.score);
+                    break;
+                case 'red' === score.match.team:
+                    sortedScores['red'] += parseInt(score.score);
+                    break;
+
+                /* 1 vs 1! */
+                case 'none' === score.match.team && score.match.slot === 0:
+                    sortedScores['blue'] += parseInt(score.score);
+                    break;
+                case 'none' === score.match.team && score.match.slot === 1:
+                    sortedScores['red'] += parseInt(score.score);
+                    break;
             }
         }
         
+        console.log(sortedScores);
         return sortedScores;
     }
 

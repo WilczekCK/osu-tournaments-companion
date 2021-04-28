@@ -52,7 +52,7 @@ class Cron {
                     let {match, events, users} = data;
                     let {end_time: timeEnded}  = match;
                     let [{judge}, {gameModes}, {playedBeatmaps}] = await tournaments.parseEventsObject( events );
-                    console.log({...await tournaments.sortTeams( playedBeatmaps ), names: tournaments.getTeamsName(match.name)});
+                    
                     let teams = {...await tournaments.sortTeams( playedBeatmaps ), names: tournaments.getTeamsName(match.name)};
                     
                     await this.compareTournaments(
