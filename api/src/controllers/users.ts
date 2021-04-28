@@ -1,12 +1,13 @@
 
 import mongo from "./mongo";
+import osuApi from './osuApi';
 import usersSchema from '../database/users.schema';
 import * as userTypes from '../validators/userTypes'
 class Users {
-    private connect = () => mongo.getConnection();
-    private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => usersSchema.where(where);
+
+    public getUserApiInfo = async (userId: number) => await osuApi(`users/${userId}/osu`);
 
     public displayAll = async () => {
         const result = await usersSchema.find((err: any, tournament: any) => {
@@ -35,7 +36,9 @@ class Users {
     };
 
 
-    public insert = async (userInfo: any) => {
+    public insert = async (userId: any) => {
+        const userInfo = await this.getUserApiInfo(userId);
+
         const newUser = new usersSchema({
             id: userInfo.id,
             username: userInfo.username,
@@ -60,9 +63,9 @@ class Users {
         return {status : 200, response: "Inserted succesfully"};
     };
 
-    public insertBulk = async (users: Array<Object>) => {
-        for await(let user of users){
-            this.insert(user)
+    public insertBulk = async (users: Array<object | any>) => {
+        for await(let {id} of users){
+            await this.insert(id)
         }
     }
 

@@ -46,10 +46,11 @@ class Tournaments {
     };
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
-        let [{judge}, {gameModes}, plays] = await this.parseEventsObject( events );
+        let [{judge} = null, {gameModes} = null, playedBeatmaps = null] = await this.parseEventsObject( events );
 
+        console.log(playedBeatmaps);
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( plays.beatmap );
+        let sortedTeams = await this.sortTeams( playedBeatmaps );
 
         const newTournament = new tournamentsSchema({
             id: match.id,
@@ -65,7 +66,7 @@ class Tournaments {
             timeCreated: match.start_time,
             timeEnded: match.end_time,
             twitchURL: 'TBA',
-            mapsPlayed: plays.beatmap,
+            mapsPlayed: playedBeatmaps,
             gameModes,
             events
         });
@@ -120,7 +121,7 @@ class Tournaments {
                 case 'player-joined':
                     const isUserInDB = await users.displayOne(user_id);
                     if(isUserInDB.status !== 200){
-                        await users.insert(await osuApi(`users/${user_id}/osu`))
+                        await users.insert(user_id);
                     }
 
                     break;
@@ -145,7 +146,7 @@ class Tournaments {
         }
 
         getInfo.push( {'gameModes': countModes} );
-        getInfo.push(playedBeatmaps);
+        getInfo.push( playedBeatmaps );
         return getInfo;
     }
 
