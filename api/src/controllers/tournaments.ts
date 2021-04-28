@@ -16,7 +16,16 @@ class Tournaments {
     private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => tournamentsSchema.where(where);
-    public regex = /(\w*[a-zA-Z]): \(([^)]+)\) ((vs)|(VS)) \(([^)]+)\)/;
+    public regex = /(\w*[\w!();:@$]): \((.*?)\) ((vs)|(VS)) \((.*?)\)/;
+    
+    public isTournament = (tournamentName:string) :boolean => {
+        const isFound = this.regex.test(tournamentName);
+
+        console.log(tournamentName);
+        console.log(isFound);
+
+        return true;
+    }
     
     public displayAll = async () => {
     
@@ -47,10 +56,8 @@ class Tournaments {
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         
-        console.log(await this.parseEventsObject( events ));
+        this.isTournament(match.name);
         let [{judge}, {gameModes}, {playedBeatmaps}] = await this.parseEventsObject( events );
-
-        console.log(playedBeatmaps)
         
         // In plays.beatmap players have the team color!
         let sortedTeams = await this.sortTeams( playedBeatmaps );
