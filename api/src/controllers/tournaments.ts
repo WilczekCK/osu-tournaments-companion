@@ -48,7 +48,7 @@ class Tournaments {
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         let [{judge}, {gameModes}, {playedBeatmaps}] = await this.parseEventsObject( events );
-        
+    
         // In plays.beatmap players have the team color!
         let sortedTeams = await this.sortTeams( playedBeatmaps );
 
@@ -132,7 +132,7 @@ class Tournaments {
                 case 'player-left':
                     break;
                 case 'other':
-                    const gameDetails : tournamentsTypes.gameDetail = {mods: game.mods, info: game.beatmap, scores: game.scores}
+                    const gameDetails : tournamentsTypes.gameDetail = {mods: game.mods, info: game.beatmap, scores: game.scores, teamType: game.team_type}
 
                     gameDetails['info'] = {...gameDetails['info'] }
 
@@ -140,6 +140,7 @@ class Tournaments {
                         info:       gameDetails['info'],
                         scores:     gameDetails['scores'],
                         mods:       gameDetails['mods'],
+                        teamType:  gameDetails['teamType'],
                         summaryScore: this.getSummaryScore( gameDetails['scores'] )
                     })
                     
@@ -162,12 +163,25 @@ class Tournaments {
             red: []
         }
 
+        
         for(let beatmap of beatmapsPlayed){
             for(let score of beatmap.scores){
-                if(score.match.team === 'blue' && !sortedTeams['blue'].includes(score.user_id)){
-                    sortedTeams['blue'].push(score.user_id);
-                }else if(score.match.team === 'red' && !sortedTeams['red'].includes(score.user_id)){
-                    sortedTeams['red'].push(score.user_id);
+                switch(true){
+                    /* Team vs Team */
+                    case 'team-vs' === beatmap.teamType && 'blue' === score.match.team  && !sortedTeams['blue'].includes(score.user_id):
+                        sortedTeams['blue'].push(score.user_id);
+                        break;
+                    case 'team-vs' === beatmap.teamType && 'red' === score.match.team  && !sortedTeams['red'].includes(score.user_id):
+                        sortedTeams['red'].push(score.user_id);
+                        break;
+
+                    /* 1 vs 1! */
+                    case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0:
+                        sortedTeams['red'].push(score.user_id);
+                        break;
+                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0:
+                        sortedTeams['blue'].push(score.user_id);
+                        break;
                 }
             }
         }

@@ -8,7 +8,7 @@ import {protectedRoutes} from '../../credentials.json';
 
 class Cron {
     private isCronInProgress : boolean = false;
-    private secondsEachCron : number = 10;
+    private secondsEachCron : number = 20;
     private tournamentsToUpdate : Array<object>;
 
     private prepareToUpdate = async () => {
@@ -24,7 +24,7 @@ class Cron {
             const result = _.values(difference);
             let name = result[0];
             let value = result[1];
-            
+
             await axios({
                 url: `/tournaments/m/${id}`,
                 method: 'PATCH',
@@ -51,10 +51,12 @@ class Cron {
                 .then( async ( {data} ) => {
                     let {match, events, users} = data;
                     let {end_time: timeEnded}  = match;
-                    let [{judge}, {gameModes}, {beatmap: mapsPlayed}] = await tournaments.parseEventsObject( events );
-
+                    let [{judge}, {gameModes}, {playedBeatmaps}] = await tournaments.parseEventsObject( events );
+                    console.log({...await tournaments.sortTeams( playedBeatmaps ), names: tournaments.getTeamsName(match.name)});
+                    let teams = {...await tournaments.sortTeams( playedBeatmaps ), names: tournaments.getTeamsName(match.name)};
+                    
                     await this.compareTournaments(
-                        {timeEnded, users, judge, mapsPlayed, gameModes, events},
+                        {timeEnded, users, judge, playedBeatmaps, gameModes, events, teams},
                         tournament
                     );
                 })

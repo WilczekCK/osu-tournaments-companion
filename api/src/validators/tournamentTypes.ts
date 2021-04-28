@@ -43,6 +43,7 @@ type gameDetail = {
     info: Array<object>,
     scores: Array<object>,
     mode?: String,
+    teamType: String
 }
 
 export {
