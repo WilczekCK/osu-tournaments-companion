@@ -12,20 +12,12 @@ import { match } from "assert";
 
 
 class Tournaments {
-    private connect = () => mongo.getConnection();
-    private disconnect = () => mongo.stopConnection();
     //@ts-ignore
     private query = (where: string | number | object) => tournamentsSchema.where(where);
     public regex = /(\w*[\w!();:@$]): \((.*?)\) ((vs)|(VS)) \((.*?)\)/;
     
-    public isTournament = (tournamentName:string) :boolean => {
-        const isFound = this.regex.test(tournamentName);
-
-        console.log(tournamentName);
-        console.log(isFound);
-
-        return true;
-    }
+    //check by the name, tournaments have the same structures
+    public isTournament = (tournamentName:string) :boolean => this.regex.test(tournamentName);
     
     public displayAll = async () => {
     
