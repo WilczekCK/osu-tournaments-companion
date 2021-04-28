@@ -51,12 +51,12 @@ class Cron {
                 .then( async ( {data} ) => {
                     let {match, events, users} = data;
                     let {end_time: timeEnded}  = match;
-                    let [{judge}, {gameModes}, {playedBeatmaps}] = await tournaments.parseEventsObject( events );
-                    
-                    let teams = {...await tournaments.sortTeams( playedBeatmaps ), names: tournaments.getTeamsName(match.name)};
+                    let [{judge}, {gameModes}, {playedBeatmaps: mapsPlayed}] = await tournaments.parseEventsObject( events );
+
+                    let teams = {...await tournaments.sortTeams( mapsPlayed ), names: tournaments.getTeamsName(match.name)};
                     
                     await this.compareTournaments(
-                        {timeEnded, users, judge, playedBeatmaps, gameModes, events, teams},
+                        {timeEnded, users, judge, mapsPlayed, gameModes, events, teams},
                         tournament
                     );
                 })
