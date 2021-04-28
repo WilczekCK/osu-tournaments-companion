@@ -65,6 +65,10 @@ class Users {
 
     public insertBulk = async (users: Array<object | any>) => {
         for await(let {id} of users){
+            //prevent adding them to db, if they are already in the db.
+            const isUserInDB = await this.displayOne(id);
+            if(isUserInDB.status === 200) return;
+
             await this.insert(id)
         }
     }
