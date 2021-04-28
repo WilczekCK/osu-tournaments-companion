@@ -46,9 +46,12 @@ class Tournaments {
     };
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
-        let [{judge} = null, {gameModes} = null, playedBeatmaps = null] = await this.parseEventsObject( events );
+        
+        console.log(await this.parseEventsObject( events ));
+        let [{judge}, {gameModes}, {playedBeatmaps}] = await this.parseEventsObject( events );
 
-        console.log(playedBeatmaps);
+        console.log(playedBeatmaps)
+        
         // In plays.beatmap players have the team color!
         let sortedTeams = await this.sortTeams( playedBeatmaps );
 
@@ -103,8 +106,12 @@ class Tournaments {
 
     public parseEventsObject = async (eventsDetail: object[] ) => {
         let getInfo : {[key: string] : number | string | object | object[]}[] = [];
-        let playedBeatmaps: {[key: string]: Array<object>} = { beatmap:[] }
+        let playedBeatmaps : Array<object> = [];
         let countModes: {[key:string]: number} = {osu: 0, mania:0, ctb:0, taiko:0};
+
+        //not sure why, it's forcing me to use Number instead of number (?)
+        let judge : Number = 0;
+
         for await(let event of eventsDetail){
             const {detail, game, user_id} : tournamentsTypes.roomInfo = event;
             const eventTriggered : tournamentsTypes.eventDetail = { id: detail.id, type: detail.type, user_id };
@@ -112,7 +119,7 @@ class Tournaments {
             //maybe later it will be useful.
             switch( eventTriggered.type ){
                 case 'match-created':
-                    getInfo.push( {'judge': eventTriggered.user_id } );
+                    judge = eventTriggered.user_id;
                     break;
                 case 'match-disbanded':
                     break;
@@ -132,7 +139,7 @@ class Tournaments {
 
                     gameDetails['info'] = {...gameDetails['info'] }
 
-                    playedBeatmaps.beatmap.push({
+                    playedBeatmaps.push({
                         info:       gameDetails['info'],
                         scores:     gameDetails['scores'],
                         mods:       gameDetails['mods'],
@@ -145,8 +152,10 @@ class Tournaments {
 
         }
 
+        //when events end, push all info into array of objects!
+        getInfo.push( {judge} );
         getInfo.push( {'gameModes': countModes} );
-        getInfo.push( playedBeatmaps );
+        getInfo.push( {playedBeatmaps});
         return getInfo;
     }
 
