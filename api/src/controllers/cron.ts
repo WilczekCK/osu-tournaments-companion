@@ -10,8 +10,8 @@ import {protectedRoutes} from '../../credentials.json';
 class Cron {
     private isTournamentCronInProgress : boolean = false;
     private isUserCronInProgress : boolean = false;
-    private secondsEachTournamentCron : number = 20;
-    private hoursEachUserCron : number = 1;
+    private secondsEachTournamentCron : number = 60;
+    private hoursEachUserCron : number = 23;
     private tournamentsToUpdate : Array<object>;
     private usersToUpdate : Array<any>
 
@@ -98,10 +98,10 @@ class Cron {
             this.isUserCronInProgress = true;
         },
         getNewInfo: async (userId: number) => {
-          const {cover_url, statistics} = await users.getUserApiInfo(userId);
+          const {cover_url, statistics, playmode} = await users.getUserApiInfo(userId);
           const {global_rank, country_rank} = statistics;
 
-          return [{coverUrl: cover_url}, {ranking:{global: global_rank, country: country_rank}}];
+          return [{coverUrl: cover_url}, {playMode: playmode}, {ranking:{global: global_rank, country: country_rank}}];
         },
         update: async () => {
             for await(let {id} of this.usersToUpdate){
@@ -134,8 +134,7 @@ class Cron {
 
     public start = async () => {
         /* User info update */
-        cron.schedule(`*/${this.hoursEachUserCron} * * *`, async () => {
-            console.log('usercron!');
+        cron.schedule('0 0 23 * * *', async () => {
             if( !this.isUserCronInProgress ) {
                 await this.usersCRON.prepareToUpdate();
                 await this.usersCRON.update();

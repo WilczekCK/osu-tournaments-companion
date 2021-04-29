@@ -7,7 +7,7 @@ class Users {
     //@ts-ignore
     private query = (where: string | number | object) => usersSchema.where(where);
 
-    public getUserApiInfo = async (userId: number) => await osuApi(`users/${userId}/osu`);
+    public getUserApiInfo = async (userId: number) => await osuApi(`users/${userId}`);
 
     public displayAll = async () => {
         const result = await usersSchema.find((err: any, tournament: any) => {
@@ -50,6 +50,7 @@ class Users {
                 global: userInfo.statistics.global_rank,
                 country: userInfo.statistics.country_rank,
             },
+            playMode: userInfo.playmode,
             coverUrl: userInfo.cover_url,
             profileColor: userInfo.profile_colour
         })

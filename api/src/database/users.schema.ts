@@ -5,8 +5,9 @@ interface User extends Document {
     username: String,
     country: Array<String>,
     coverUrl: String,
-    profileColor: String
-    raking: Object
+    profileColor: String,
+    ranking: Object,
+    playMode: String
 }
 
 const userSchema = new Schema({
@@ -15,7 +16,8 @@ const userSchema = new Schema({
     country: { type: Object, required: true },
     coverUrl: { type: String },
     profileColor: { type: String },
-    ranking: { type: Object}
+    ranking: { type: Object},
+    playMode: { type: String}
 })
 
 const userCreator = mongoose.model<User>('User', userSchema);
