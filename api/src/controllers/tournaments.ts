@@ -47,6 +47,7 @@ class Tournaments {
     };
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
+        //prepare informations about the tournament
         let [{judge}, {gameModes}, {playedBeatmaps}] = await this.parseEventsObject( events );
     
         // In plays.beatmap players have the team color!

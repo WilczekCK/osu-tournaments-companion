@@ -64,7 +64,6 @@ class Cron {
                     return;
                 })
         }
-        this.isCronInProgress = false;
         return;
     };
 
@@ -82,6 +81,9 @@ class Cron {
                         }
                     })
                 }
+
+
+                this.isCronInProgress = false;
             }
         })
         .catch((err) => {
