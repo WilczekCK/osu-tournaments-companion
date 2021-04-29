@@ -11,7 +11,7 @@ class Cron {
     private isTournamentCronInProgress : boolean = false;
     private isUserCronInProgress : boolean = false;
     private secondsEachTournamentCron : number = 20;
-    private hoursEachUserCron : number = 23;
+    private hoursEachUserCron : number = 1;
     private tournamentsToUpdate : Array<object>;
     private usersToUpdate : Array<any>
 
@@ -123,6 +123,9 @@ class Cron {
                             password: protectedRoutes.password
                         }
                     })
+
+                    //give a osu!api some rest, .3s each user!
+                    await new Promise(resolve => setTimeout(resolve, 300));
                 } 
             }
             this.isUserCronInProgress = false;
@@ -131,8 +134,9 @@ class Cron {
 
     public start = async () => {
         /* User info update */
-        cron.schedule(`*/${this.hoursEachUserCron} * * * * * *`, async () => {
-            if( !this.isTournamentCronInProgress ) {
+        cron.schedule(`*/${this.hoursEachUserCron} * * *`, async () => {
+            console.log('usercron!');
+            if( !this.isUserCronInProgress ) {
                 await this.usersCRON.prepareToUpdate();
                 await this.usersCRON.update();
             }
@@ -140,7 +144,7 @@ class Cron {
 
         /* Tournaments fetch and update */
         cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
-            if( !this.isTournamentCronInProgress || !this.isUserCronInProgress ){
+            if( !this.isTournamentCronInProgress && !this.isUserCronInProgress ){
                 await this.tournamentsCRON.prepareToUpdate();
                 await this.tournamentsCRON.update();
                 await this.tournamentsCRON.lookForNew();
