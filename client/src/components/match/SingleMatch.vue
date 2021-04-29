@@ -71,12 +71,14 @@ export default class SingleMatch extends Vue {
     mapsPlayed.forEach((map) => {
       if (map.summaryScore.blue > map.summaryScore.red) {
         this.matchScore.blue += 1;
+        console.log('blue');
       } else {
         this.matchScore.red += 1;
+        console.log('red');
       }
     });
 
-    return `${this.tournamentInfo.teams.names.blue} ${this.matchScore.blue}:${this.matchScore.red} ${this.tournamentInfo.teams.names.red}`;
+    return `${this.tournamentInfo.teams.names.red} ${this.matchScore.red} : ${this.matchScore.blue} ${this.tournamentInfo.teams.names.blue}`;
   }
 }
 </script>
