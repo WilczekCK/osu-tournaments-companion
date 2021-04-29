@@ -1,4 +1,5 @@
 import tournaments from './tournaments'
+import users from './tournaments'
 import axios from 'axios';
 import * as cron from 'node-cron';
 import _ from 'underscore';
@@ -12,7 +13,7 @@ class Cron {
     private secondsEachTournamentCron : number = 20;
     private hoursEachUserCron : number = 23;
     private tournamentsToUpdate : Array<object>;
-    private usersToUpdate : Array<object>;
+    private usersToUpdate : Array<object> | object;
 
     private tournamentsCRON = {
         prepareToUpdate: async () => {
@@ -91,13 +92,23 @@ class Cron {
         }
     }
 
+    private usersCRON = {
+        prepareToUpdate: async () => {
+            this.usersToUpdate = await tournaments.displayAll();
+            this.isUserCronInProgress = true;
+        },
+        update: async () => {
+
+            this.isUserCronInProgress = false;
+        }
+    }
+
     public start = async () => {
         /* User info update */
         cron.schedule(`*/${this.hoursEachUserCron} * * * *`, async () => {
             if( !this.isTournamentCronInProgress ) {
-                this.isUserCronInProgress = true;
-
-                this.isUserCronInProgress = false;
+                await this.usersCRON.prepareToUpdate();
+                await this.usersCRON.update();
             }
         })
 
