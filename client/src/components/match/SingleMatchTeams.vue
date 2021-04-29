@@ -1,7 +1,7 @@
 <template lang="pug">
   .teams__container(v-if="teamsLoaded == true")
     .teams__container--red
-        .teams__container__member(v-for="playerId in teams.red" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="playerId in teams.red" :style="player.getCoverUrl(playerId)")
             .teams__container__member--avatar
                 a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
                     img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
@@ -15,7 +15,7 @@
                     img(:src="player.getCountryFlag(playerId)" alt="country_flag")
                     span="#1"
     .teams__container--blue
-        .teams__container__member(v-for="playerId in teams.blue" style="background:url('https://osu.ppy.sh/images/headers/profile-covers/c4.jpg')")
+        .teams__container__member(v-for="playerId in teams.blue" :style="player.getCoverUrl(playerId)")
             .teams__container__member--avatar
                 a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
                     img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
@@ -44,6 +44,7 @@ export default class Teams extends Vue {
       allPlayers: {},
       getInfo: (playerId: number) :Record<string, Record<string, string>> => this.player.allPlayers[playerId],
       getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
+      getCoverUrl: (playerId: number) :string => `background-image: url('${this.player.getInfo(playerId).coverUrl}');`,
       getOsuProfileUrl: (playerId: number) :string => `https://osu.ppy.sh/u/${playerId}`,
       getCountryFlag: (playerId: number) :string => `
         https://flagcdn.com/60x45/${
