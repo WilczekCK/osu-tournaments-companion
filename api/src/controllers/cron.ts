@@ -7,13 +7,15 @@ import {protectedRoutes} from '../../credentials.json';
 
 
 class Cron {
-    private isCronInProgress : boolean = false;
-    private secondsEachCron : number = 20;
+    private isTournamentCronInProgress : boolean = false;
+    private isUserCronInProgress : boolean = false;
+    private secondsEachTournamentCron : number = 20;
+    private hoursEachUserCron : number = 23;
     private tournamentsToUpdate : Array<object>;
 
     private prepareToUpdate = async () => {
         this.tournamentsToUpdate = await tournaments.displayCertain({'timeEnded': null});
-        this.isCronInProgress = true;
+        this.isTournamentCronInProgress = true;
     };
 
     private compareTournaments = async (matchInfo: object | object, tournament: object) => {
@@ -83,7 +85,7 @@ class Cron {
                 }
 
 
-                this.isCronInProgress = false;
+                this.isTournamentCronInProgress = false;
             }
         })
         .catch((err) => {
@@ -92,14 +94,20 @@ class Cron {
     }
     
     public start = async () => {
-        cron.schedule(`*/${this.secondsEachCron} * * * * *`, async () => {
-            
-            if( !this.isCronInProgress ){
+        /* User info update */
+        cron.schedule(`*/${this.hoursEachUserCron} * * * *`, async () => {
+            if( !this.isTournamentCronInProgress ) {
+                //this.isUserCronInProgress = true;
+            }
+        })
+
+        /* Tournaments fetch and update */
+        cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
+            if( !this.isTournamentCronInProgress || !this.isUserCronInProgress ){
                 await this.prepareToUpdate();
                 await this.updateTournaments();
                 await this.lookForNewTournaments();
             }
-
         })
     };
 }
