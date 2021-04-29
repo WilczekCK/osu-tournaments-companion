@@ -99,12 +99,31 @@ class Cron {
         },
         getNewInfo: async (userId: number) => {
           const {cover_url, statistics} = await users.getUserApiInfo(userId);
-          return {cover_url, statistics};
+          const {global_rank, country_rank} = statistics;
+
+          return [{coverUrl: cover_url}, {ranking:{global: global_rank, country: country_rank}}];
         },
         update: async () => {
             for await(let {id} of this.usersToUpdate){
-                const newApiInfo = await this.usersCRON.getNewInfo(id);
-                console.log(newApiInfo);
+                const newInfo = await this.usersCRON.getNewInfo(id);
+
+                for await(let info of newInfo){
+                    let attrName = _.keys(info)[0];
+                    let attrVal = _.values(info)[0];
+
+                    await axios({
+                        url: `/users/m/${id}`,
+                        method: 'PATCH',
+                        data: { 
+                            prefix: attrName,
+                            content: attrVal
+                        },
+                        auth: {
+                            username: protectedRoutes.username,
+                            password: protectedRoutes.password
+                        }
+                    })
+                } 
             }
             this.isUserCronInProgress = false;
         }
