@@ -10,10 +10,12 @@
                     p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
-                    span="#2"
+                    span!="#"
+                    span {{player.getGlobalRank(playerId)}}
                 .teams__container__member--ranking--country
                     img(:src="player.getCountryFlag(playerId)" alt="country_flag")
-                    span="#1"
+                    span!="#"
+                    span {{player.getCountryRank(playerId)}}
     .teams__container--blue
         .teams__container__member(v-for="playerId in teams.blue" :style="player.getCoverUrl(playerId)")
             .teams__container__member--avatar
@@ -24,10 +26,12 @@
                     p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
-                    span="#2"
+                    span!="#"
+                    span {{player.getGlobalRank(playerId)}}
                 .teams__container__member--ranking--country
                     img(:src="player.getCountryFlag(playerId)" alt="country_flag")
-                    span="#1"
+                    span {{player.getGlobalRank(playerId)}}
+                    span!="#"
 </template>
 
 <script lang="ts">
@@ -46,6 +50,8 @@ export default class Teams extends Vue {
       getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
       getCoverUrl: (playerId: number) :string => `background-image: url('${this.player.getInfo(playerId).coverUrl}');`,
       getOsuProfileUrl: (playerId: number) :string => `https://osu.ppy.sh/u/${playerId}`,
+      getGlobalRank: (playerId: number) :string => this.player.getInfo(playerId).ranking.global,
+      getCountryRank: (playerId: number) :string => this.player.getInfo(playerId).ranking.country,
       getCountryFlag: (playerId: number) :string => `
         https://flagcdn.com/60x45/${
             (this.player.getInfo(playerId).country.code).toLowerCase()
