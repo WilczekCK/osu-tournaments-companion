@@ -1,5 +1,5 @@
 import tournaments from './tournaments'
-import users from './tournaments'
+import users from './users'
 import axios from 'axios';
 import * as cron from 'node-cron';
 import _ from 'underscore';
@@ -13,7 +13,7 @@ class Cron {
     private secondsEachTournamentCron : number = 20;
     private hoursEachUserCron : number = 23;
     private tournamentsToUpdate : Array<object>;
-    private usersToUpdate : Array<object> | object;
+    private usersToUpdate : Array<any>
 
     private tournamentsCRON = {
         prepareToUpdate: async () => {
@@ -94,18 +94,25 @@ class Cron {
 
     private usersCRON = {
         prepareToUpdate: async () => {
-            this.usersToUpdate = await tournaments.displayAll();
+            this.usersToUpdate = await users.displayAll();
             this.isUserCronInProgress = true;
         },
+        getNewInfo: async (userId: number) => {
+          const {cover_url, statistics} = await users.getUserApiInfo(userId);
+          return {cover_url, statistics};
+        },
         update: async () => {
-
+            for await(let {id} of this.usersToUpdate){
+                const newApiInfo = await this.usersCRON.getNewInfo(id);
+                console.log(newApiInfo);
+            }
             this.isUserCronInProgress = false;
         }
     }
 
     public start = async () => {
         /* User info update */
-        cron.schedule(`*/${this.hoursEachUserCron} * * * *`, async () => {
+        cron.schedule(`*/${this.hoursEachUserCron} * * * * * *`, async () => {
             if( !this.isTournamentCronInProgress ) {
                 await this.usersCRON.prepareToUpdate();
                 await this.usersCRON.update();
