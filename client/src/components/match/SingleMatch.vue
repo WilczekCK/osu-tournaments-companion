@@ -71,10 +71,8 @@ export default class SingleMatch extends Vue {
     mapsPlayed.forEach((map) => {
       if (map.summaryScore.blue > map.summaryScore.red) {
         this.matchScore.blue += 1;
-        console.log('blue');
       } else {
         this.matchScore.red += 1;
-        console.log('red');
       }
     });
 

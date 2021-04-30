@@ -1,10 +1,12 @@
 <template lang="pug">
     .progress__map__container
         .progress__map__container__teamWon
-            p
+            p(v-if="get.winnerScoreDifference !== 0")
                 b {{get.winnerTeamName}}
                 = ' team won by '
                 b {{get.winnerScoreDifference}}
+            p(v-else)
+                b="In progress..."
         .progress__map__container__mapInfo
             h3="Map details"
             .progress__map__container__mapInfo__columnToRow
