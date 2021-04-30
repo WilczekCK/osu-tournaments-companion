@@ -4,6 +4,7 @@ import {
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import './assets/sass/theme.sass';
+import dayjs from 'dayjs';
 
 import router from './router';
 import App from './App.vue';
@@ -17,7 +18,6 @@ Vue.use(MdButton);
 Vue.use(MdCard);
 Vue.use(MdSteppers);
 Vue.use(MdProgress);
-
 new Vue({
   router,
   render: (h) => h(App),

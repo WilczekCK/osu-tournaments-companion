@@ -9,7 +9,7 @@
             .md-subtitle
                 span(v-if="tournamentInfo.timeEnded")
                     ="Ended at: "
-                    span {{tournamentInfo.timeEnded}}
+                    span {{dayjs(tournamentInfo.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
                 span(v-else)
                     ='In progress...'
         md-card-expand
@@ -37,6 +37,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import _ from 'underscore';
+import dayjs from 'dayjs';
 import SingleMatchTeams from './SingleMatchTeams.vue';
 import SingleMatchProgress from './Progress/Index.vue';
 import SingleMatchGames from './SingleMatchGames.vue';
@@ -52,6 +53,8 @@ import SingleMatchGames from './SingleMatchGames.vue';
 export default class SingleMatch extends Vue {
   @Prop() private tournamentInfo!: any;
   // that's too big object, I cannot tell the type :/
+
+  dayjs = dayjs;
 
   getLinkToOsuPage = () :string => `https://osu.ppy.sh/community/matches/${this.tournamentInfo.id}`;
 
