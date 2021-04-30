@@ -106,7 +106,7 @@ export default class SingleMatch extends Vue {
         z-index: 1
         flex-grow: 3
         padding-top: 16px !important
-        max-width: 65%
+        max-width: 60%
         .md-title
             font-size: 1.5em
             a
@@ -115,6 +115,8 @@ export default class SingleMatch extends Vue {
     &-expand
         display: flex
         align-items: center
+        justify-content: flex-end
+        flex-basis: 30%
         .md-score
             text-align: right
             font-weight: 800
