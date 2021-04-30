@@ -11,7 +11,7 @@
                     ="Ended at: "
                     span {{tournamentInfo.timeEnded}}
                 span(v-else)
-                    ='In progres...'
+                    ='In progress...'
         md-card-expand
             .md-score
                 p {{getFinishScore()}}
