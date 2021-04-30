@@ -125,6 +125,8 @@ export default class SingleMatch extends Vue {
             overflow: hidden
             z-index: -1
             position: relative
+    .md-button
+        min-width: 0
 .md-card-media
     img
         height: 50px
