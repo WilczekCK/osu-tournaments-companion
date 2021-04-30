@@ -10,11 +10,10 @@
                     p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
-                    span!="#"
+                    img(:src="require(`@/assets/${player.getPlayMode(playerId)}.svg`)" alt="gamemode_icon")
                     span {{player.getGlobalRank(playerId)}}
                 .teams__container__member--ranking--country
                     img(:src="player.getCountryFlag(playerId)" alt="country_flag")
-                    span!="#"
                     span {{player.getCountryRank(playerId)}}
     .teams__container--blue
         .teams__container__member(v-for="playerId in teams.blue" :style="player.getCoverUrl(playerId)")
@@ -26,12 +25,11 @@
                     p {{player.getInfo(playerId)['username']}}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
-                    span!="#"
                     span {{player.getGlobalRank(playerId)}}
+                    img(:src="require(`@/assets/${player.getPlayMode(playerId)}.svg`)" alt="gamemode_icon")
                 .teams__container__member--ranking--country
                     img(:src="player.getCountryFlag(playerId)" alt="country_flag")
-                    span {{player.getGlobalRank(playerId)}}
-                    span!="#"
+                    span {{player.getCountryRank(playerId)}}
 </template>
 
 <script lang="ts">
@@ -50,8 +48,9 @@ export default class Teams extends Vue {
       getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
       getCoverUrl: (playerId: number) :string => `background-image: url('${this.player.getInfo(playerId).coverUrl}');`,
       getOsuProfileUrl: (playerId: number) :string => `https://osu.ppy.sh/u/${playerId}`,
-      getGlobalRank: (playerId: number) :string => this.player.getInfo(playerId).ranking.global,
-      getCountryRank: (playerId: number) :string => this.player.getInfo(playerId).ranking.country,
+      getGlobalRank: (playerId: number) :string => `#${this.player.getInfo(playerId).ranking.global}`,
+      getCountryRank: (playerId: number) :string => `#${this.player.getInfo(playerId).ranking.country}`,
+      getPlayMode: (playerId: number) :Record<string, string> => this.player.getInfo(playerId).playMode,
       getCountryFlag: (playerId: number) :string => `
         https://flagcdn.com/60x45/${
             (this.player.getInfo(playerId).country.code).toLowerCase()
@@ -111,32 +110,45 @@ export default class Teams extends Vue {
             flex-basis: 10%
             z-index: 1
         &--nickname
-            flex-basis: 75%
+            flex-basis: 65%
             padding-left: 5px
             z-index: 1
+            text-shadow: .5px 0px .5px black
         &--ranking
             display: flex
-            flex-basis: 15%
+            flex-basis: 25%
             flex-direction: column
             align-self: center
+            align-items: center
             transform: scale(.8)
             z-index: 1
+            text-shadow: .5px 0px .5px black
+            margin-top: 2px
             &--global
                 width: 100%
                 text-align: left
                 font-size: 1.5em
                 margin-left: .5px
+                display: flex
+                flex-direction: row
+                justify-content: center
+                padding-left: 5px
+                img
+                    height: 25px
+                    display: block
             &--country
                 display: flex
                 flex-direction: row
                 align-items: center
-                justify-content: flex-start
                 *
                     flex-basis: 50%
                 img
                     width: 100%
+                    height: 100%
+                    max-height: 35px
+                    padding: 5px
                 span
-                    text-align: center
+                    text-align: left
     &--red, &--blue
         flex-basis: 50%
         display: flex
@@ -151,6 +163,13 @@ export default class Teams extends Vue {
             height: 100%
             background: rgba(255,0,0,0.2)
             z-index: 0
+        .teams__container__member
+            &--ranking
+                &--global
+                    img
+                        padding-right: 3px
+                &--country
+                    align-self: flex-end
     &--blue
         justify-content: flex-end
         &:after
@@ -170,9 +189,16 @@ export default class Teams extends Vue {
                 padding-left: unset
                 padding-right: 5px
             &--ranking
+                margin-right: 15px
                 &--global
                     text-align: right
-                    margin-left: -2px
+                    img
+                        padding-left: 3px
                 &--country
                     flex-direction: row-reverse
+                    align-self: flex-start
+                    img
+                        max-height: 35px
+                    span
+                        text-align: right
 </style>
