@@ -29,7 +29,7 @@ app.use(async (ctx, next) => {
 // Front-end, allows CORS
 app.use(cors({
   allowMethods: 'GET',
-  origin: 'http://localhost:8081'
+  origin: 'http://localhost:8080'
 }));
 
 app.use(routes);
