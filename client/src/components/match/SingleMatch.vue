@@ -25,7 +25,10 @@
                 .match__container
                     md-tabs(md-alignment="fixed")
                         md-tab(id="tab-teams" md-label="teams")
-                            SingleMatchTeams(:teams="tournamentInfo.teams")
+                            SingleMatchTeams(:teams="tournamentInfo.teams" v-if="(tournamentInfo.teams.blue && tournamentInfo.teams.red) != 0")
+                            .matchNotStarted(v-else)
+                                h3="Wait for the first map to start"
+                                md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
                             SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
@@ -103,6 +106,7 @@ export default class SingleMatch extends Vue {
         z-index: 1
         flex-grow: 3
         padding-top: 16px !important
+        max-width: 65%
         .md-title
             font-size: 1.5em
             a
@@ -112,6 +116,7 @@ export default class SingleMatch extends Vue {
         display: flex
         align-items: center
         .md-score
+            text-align: right
             font-weight: 800
             font-size: 1em
             color: $bg-content
@@ -134,6 +139,9 @@ export default class SingleMatch extends Vue {
             max-height: 100%
         &-container
             height: 100%
+        #tab-teams
+            .matchNotStarted
+                text-align: center
 
 .md-tab
     height: 100%
