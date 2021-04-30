@@ -10,10 +10,14 @@ import {protectedRoutes} from '../../credentials.json';
 class Cron {
     private isTournamentCronInProgress : boolean = false;
     private isUserCronInProgress : boolean = false;
+    
     private secondsEachTournamentCron : number = 60;
     private hoursEachUserCron : number = 23;
+    
     private tournamentsToUpdate : Array<object>;
     private usersToUpdate : Array<any>
+
+    private tournamentsToRemove : Array<object | any>;
 
     private tournamentsCRON = {
         prepareToUpdate: async () => {
@@ -81,14 +85,20 @@ class Cron {
                             }
                         })
                     }
-    
-    
-                    this.isTournamentCronInProgress = false;
                 }
             })
             .catch((err) => {
                 return;
             })
+        },
+        removeWithoutPlays: async () => {
+            this.tournamentsToRemove = await tournaments.displayCertain({'mapsPlayed': {$eq: []}});
+            
+            for await(let {id} of this.tournamentsToRemove){
+                await tournaments.delete(id);
+            }
+
+            this.isTournamentCronInProgress = false;
         }
     }
 
@@ -134,7 +144,7 @@ class Cron {
 
     public start = async () => {
         /* User info update */
-        cron.schedule('0 0 23 * * *', async () => {
+        cron.schedule(`0 0 ${this.hoursEachUserCron} * * *`, async () => {
             if( !this.isUserCronInProgress ) {
                 await this.usersCRON.prepareToUpdate();
                 await this.usersCRON.update();
@@ -147,6 +157,7 @@ class Cron {
                 await this.tournamentsCRON.prepareToUpdate();
                 await this.tournamentsCRON.update();
                 await this.tournamentsCRON.lookForNew();
+                await this.tournamentsCRON.removeWithoutPlays();
             }
         })
     };
