@@ -92,7 +92,7 @@ class Cron {
             })
         },
         removeWithoutPlays: async () => {
-            this.tournamentsToRemove = await tournaments.displayCertain({'mapsPlayed': {$eq: []}});
+            this.tournamentsToRemove = await tournaments.displayCertain({$and: [{ 'mapsPlayed':{$eq: []} }, { 'timeEnded': {$not:{$eq: null}} }] });
             
             for await(let {id} of this.tournamentsToRemove){
                 await tournaments.delete(id);
