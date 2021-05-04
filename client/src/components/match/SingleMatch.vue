@@ -106,6 +106,7 @@ export default class SingleMatch extends Vue {
         min-width: unset
         max-width: 90%
         padding: 0
+        flex-wrap: nowrap
     &-content
         padding: 0
     &-media
@@ -122,21 +123,32 @@ export default class SingleMatch extends Vue {
         max-width: 60%
         @media (max-width: 600px)
             max-width: 100%
+            flex-grow: 0
         .md-title
             font-size: 1.5em
             a
                 color: inherit
                 text-decoration: none
+                word-wrap: break-word
     &-expand
         display: flex
-        align-items: center
         justify-content: flex-end
         flex-basis: 30%
+        @media (max-width: 600px)
+            width: 100%
+            flex-direction: row
+            justify-content: center
+            flex-basis: unset
+            padding-bottom: 15px
         .md-score
             text-align: right
             font-weight: 800
             font-size: 1em
             color: $bg-content
+            height: 0
+        .md-card-actions
+            @media (max-width: 600px)
+                max-height: 50px
         &-content
             width: 100%
             overflow: hidden

@@ -88,7 +88,7 @@ export default class Teams extends Vue {
 <style lang="sass">
 .teams__container
     display: flex
-    flex-wrap: wrap
+    flex-wrap: nowrap
     flex-direction: row
     height: 100%
     &__member
