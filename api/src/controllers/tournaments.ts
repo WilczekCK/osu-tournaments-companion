@@ -161,7 +161,7 @@ class Tournaments {
     public sortTeams = async ( beatmapsPlayed: any ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
-            red: []
+            red: [],
         }
 
         
@@ -191,10 +191,11 @@ class Tournaments {
     }
 
     public getSummaryScore = (beatmapPlayed: any) => {
-        let sortedScores: { blue: number, red: number } = {
+        let sortedScores: { [key: string]: number } = {
             blue: 0,
             red: 0,
         }
+        let isSingleQualifyPlayer;
 
         for(let score of beatmapPlayed){
             switch(true){
@@ -207,16 +208,16 @@ class Tournaments {
                     break;
 
                 /* 1 vs 1! */
-                case 'none' === score.match.team && score.match.slot === 0:
-                    sortedScores['blue'] += parseInt(score.score);
-                    break;
-                case 'none' === score.match.team && score.match.slot === 1:
+                case 'none' === score.match.team && score.match.slot === 0 || isSingleQualifyPlayer == score.user_id:
+                    isSingleQualifyPlayer = score.user_id;
                     sortedScores['red'] += parseInt(score.score);
+                    break;
+                case 'none' === score.match.team && score.match.slot === 1 && isSingleQualifyPlayer != score.user_id:
+                    sortedScores['blue'] += parseInt(score.score);
                     break;
             }
         }
-        
-        console.log(sortedScores);
+
         return sortedScores;
     }
 
