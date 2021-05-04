@@ -101,6 +101,7 @@ export default class Teams extends Vue {
         align-items: center
         padding-left: 10px
         background-position: center center
+        z-index: 99999
         a
             color: inherit !important
             text-decoration: none !important
