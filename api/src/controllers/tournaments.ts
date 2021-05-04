@@ -163,7 +163,7 @@ class Tournaments {
             blue: [],
             red: [],
         }
-
+        let isSingleQualifyPlayer;
         
         for(let beatmap of beatmapsPlayed){
             for(let score of beatmap.scores){
@@ -178,9 +178,12 @@ class Tournaments {
 
                     /* 1 vs 1! */
                     case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0:
+                    case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
                         sortedTeams['red'].push(score.user_id);
+                        isSingleQualifyPlayer = score.user_id;
                         break;
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0:
+                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id:
+                    case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
                         break;
                 }
@@ -195,7 +198,7 @@ class Tournaments {
             blue: 0,
             red: 0,
         }
-        let isSingleQualifyPlayer;
+        
 
         for(let score of beatmapPlayed){
             switch(true){
@@ -208,11 +211,10 @@ class Tournaments {
                     break;
 
                 /* 1 vs 1! */
-                case 'none' === score.match.team && score.match.slot === 0 || isSingleQualifyPlayer == score.user_id:
-                    isSingleQualifyPlayer = score.user_id;
+                case 'none' === score.match.team && score.match.slot === 0:
                     sortedScores['red'] += parseInt(score.score);
                     break;
-                case 'none' === score.match.team && score.match.slot === 1 && isSingleQualifyPlayer != score.user_id:
+                case 'none' === score.match.team && score.match.slot === 1:
                     sortedScores['blue'] += parseInt(score.score);
                     break;
             }
