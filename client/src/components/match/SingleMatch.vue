@@ -89,6 +89,7 @@ export default class SingleMatch extends Vue {
 
 <style lang="sass">
 .md-card
+    min-width: 315px
     max-width: 800px
     display: flex
     flex-wrap: wrap
@@ -98,6 +99,13 @@ export default class SingleMatch extends Vue {
     overflow: hidden
     z-index: 1
     margin-bottom: 75px
+    @media (max-width: 600px)
+        flex-direction: column
+        margin: 0 auto
+        margin-top: 75px
+        min-width: unset
+        max-width: 90%
+        padding: 0
     &-content
         padding: 0
     &-media
@@ -105,11 +113,15 @@ export default class SingleMatch extends Vue {
         background: rgba(0,0,0,.05)
         padding: 5px
         border-radius: 5px
+        @media (max-width: 600px)
+            margin-top: 10px
     &-header
         z-index: 1
         flex-grow: 3
         padding-top: 16px !important
         max-width: 60%
+        @media (max-width: 600px)
+            max-width: 100%
         .md-title
             font-size: 1.5em
             a
@@ -130,6 +142,8 @@ export default class SingleMatch extends Vue {
             overflow: hidden
             z-index: -1
             position: relative
+            @media (max-width: 600px)
+                width: 90%
     .md-button
         min-width: 0
 .md-card-media

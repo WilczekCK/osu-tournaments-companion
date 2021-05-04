@@ -105,6 +105,9 @@ export default class Teams extends Vue {
         a
             color: inherit !important
             text-decoration: none !important
+        @media (max-width: 600px)
+            flex-direction: column
+            height: unset
         &--avatar
             max-height: 100%
             width: 45px
@@ -185,6 +188,9 @@ export default class Teams extends Vue {
             flex-direction: row-reverse
             padding-left: unset
             padding-right: 10px
+            @media (max-width: 600px)
+                flex-direction: column
+                height: unset
             &--nickname
                 text-align: right
                 padding-left: unset

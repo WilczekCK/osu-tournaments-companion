@@ -2,8 +2,8 @@
   .content__container
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
-      div(v-for="tournament in allTournaments")
-        SingleMatch(:tournamentInfo="tournament")
+    .content__container--content
+      SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments")
 </template>
 
 <script lang="ts">
@@ -46,8 +46,11 @@ export default class Home extends Vue {
   width: 1080px
   min-height: 800px
   display: flex
-  justify-content: center
-
+  align-items: center
+  flex-direction: column
+  &--content
+    display: flex
+    flex-direction: column
 @media (max-width: 1080px)
   .content__container
     width: 100%
