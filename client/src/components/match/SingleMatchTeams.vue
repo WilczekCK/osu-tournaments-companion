@@ -180,7 +180,7 @@ export default class Teams extends Vue {
         .teams__container__member
             &--ranking
                 @media (max-width: 600px)
-                    align-self: flex-end
+                    align-self: center
                 &--global
                     img
                         padding-right: 3px
@@ -210,7 +210,7 @@ export default class Teams extends Vue {
             &--ranking
                 margin-right: 15px
                 @media (max-width: 600px)
-                    align-self: flex-start
+                    align-self: center
                 &--global
                     text-align: right
                     img
