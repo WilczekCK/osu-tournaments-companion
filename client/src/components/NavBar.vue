@@ -3,7 +3,8 @@
         .md-layout-item(class="md-size-15")
         .navigation__container--wrapper(class="md-layout-item md-layout md-gutter")
             router-link(to="/" class="md-layout-item md-size-77")
-                ="osupoli!tournament companion"
+                ="osu!"
+                span="tc"
             div(class="md-layout-item md-size-33 md-layout md-aligment-center-center")
                  md-menu(md-size="medium" md-align-trigger @md-closed="isHamburgerActive = false" @md-opened="isHamburgerActive = true")
                     md-button(md-menu-trigger)
@@ -43,6 +44,11 @@ export default class NavBar extends Vue {
         color: $icon-color !important
         a
             color: $link-color !important
+            font-size: 48px
+            span
+                color: $link-active
+            &:hover
+                text-decoration: none
         .md-menu
             margin: 0 auto
             &:hover
