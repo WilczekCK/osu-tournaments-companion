@@ -104,8 +104,7 @@ export default class Teams extends Vue {
         padding-left: 10px
         background-position: center center
         z-index: 0
-        @media (max-width: 600px)
-            background-size: cover
+        background-size: cover !important
         a
             color: inherit !important
             text-decoration: none !important
