@@ -3,7 +3,7 @@
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
     .content__container--content
-      Pagination
+      Pagination(@getTournamentsPage="test")
 </template>
 
 <script lang="ts">
@@ -31,6 +31,10 @@ export default class Home extends Vue {
       .then((data: any) => data.data);
 
     return results;
+  }
+
+  test = (value) => {
+    console.log(value);
   }
 
   async mounted() {
