@@ -46,7 +46,9 @@ export default class Teams extends Vue {
       allPlayers: {},
       getInfo: (playerId: number) :Record<string, Record<string, string>> => this.player.allPlayers[playerId],
       getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
-      getCoverUrl: (playerId: number) :string => `background-image: url('${this.player.getInfo(playerId).coverUrl}');`,
+      getCoverUrl: (playerId: number) :string => `
+        background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${this.player.getInfo(playerId).coverUrl}');
+      `,
       getOsuProfileUrl: (playerId: number) :string => `https://osu.ppy.sh/u/${playerId}`,
       getGlobalRank: (playerId: number) :string => `#${this.player.getInfo(playerId).ranking.global}`,
       getCountryRank: (playerId: number) :string => `#${this.player.getInfo(playerId).ranking.country}`,
@@ -54,7 +56,7 @@ export default class Teams extends Vue {
       getCountryFlag: (playerId: number) :string => `
         https://flagcdn.com/60x45/${
             (this.player.getInfo(playerId).country.code).toLowerCase()
-            }.png`,
+        }.png`,
       getDbInfo: async (playerId: number) => {
         await axios({
           method: 'get',
@@ -101,27 +103,21 @@ export default class Teams extends Vue {
         align-items: center
         padding-left: 10px
         background-position: center center
-        z-index: 99999
+        z-index: 0
         @media (max-width: 600px)
             background-size: cover
-            height: 150px
         a
             color: inherit !important
             text-decoration: none !important
-        @media (max-width: 600px)
-            flex-direction: column
-            height: unset
         &--avatar
             max-height: 100%
             width: 45px
             flex-basis: 10%
             z-index: 1
-            @media (max-width: 600px)
-                padding: 5px 0px
         &--nickname
             flex-basis: 65%
             padding-left: 5px
-            z-index: 1
+            z-index: 5
             text-shadow: .5px 0px .5px black
             @media (max-width: 600px)
                 p
@@ -134,7 +130,6 @@ export default class Teams extends Vue {
             align-self: center
             align-items: center
             transform: scale(.8)
-            z-index: 1
             text-shadow: .5px 0px .5px black
             margin-top: 2px
             &--global
@@ -150,7 +145,7 @@ export default class Teams extends Vue {
                     height: 25px
                     display: block
                 @media (max-width: 600px)
-                    padding-left: unset
+                    font-size: 1.2em
             &--country
                 display: flex
                 flex-direction: row
@@ -164,24 +159,20 @@ export default class Teams extends Vue {
                     padding: 5px
                 span
                     text-align: left
+                @media (max-width: 600px)
+                    font-size: 1em
     &--red, &--blue
         flex-basis: 50%
         display: flex
         flex-direction: column
         justify-content: flex-start
-        background-blend-mode: blend
     &--red
-        &:after
-            position: absolute
-            content: ''
-            width: 50%
-            height: 100%
-            background: rgba(255,0,0,0.2)
-            z-index: 0
         .teams__container__member
             &--ranking
+                z-index: 99999 !important
                 @media (max-width: 600px)
                     align-self: center
+                    margin-right: 5px
                 &--global
                     img
                         padding-right: 3px
@@ -189,21 +180,11 @@ export default class Teams extends Vue {
                     align-self: flex-end
     &--blue
         justify-content: flex-end
-        &:after
-            position: absolute
-            content: ''
-            width: 50%
-            height: 100%
-            background: rgba(0,0,255,0.2)
-            z-index: 0
         flex-direction: column-reverse
         .teams__container__member
             flex-direction: row-reverse
             padding-left: unset
             padding-right: 10px
-            @media (max-width: 600px)
-                flex-direction: column
-                height: unset
             &--nickname
                 text-align: right
                 padding-left: unset
@@ -212,6 +193,7 @@ export default class Teams extends Vue {
                 margin-right: 15px
                 @media (max-width: 600px)
                     align-self: center
+                    margin-left: 5px
                 &--global
                     text-align: right
                     img
@@ -223,4 +205,5 @@ export default class Teams extends Vue {
                         max-height: 35px
                     span
                         text-align: right
+                        z-index: 99999
 </style>

@@ -155,7 +155,7 @@ export default class SingleMatch extends Vue {
             z-index: -1
             position: relative
             @media (max-width: 600px)
-                width: 90%
+                width: 100%
     .md-button
         min-width: 0
 .md-card-media
