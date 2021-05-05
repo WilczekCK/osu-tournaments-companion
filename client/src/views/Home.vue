@@ -3,7 +3,8 @@
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
     .content__container--content
-      Pagination(@getTournamentsPage="test")
+      SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments")
+      Pagination(@getTournamentsPage="changeTournamentPage")
 </template>
 
 <script lang="ts">
@@ -23,24 +24,23 @@ import Pagination from '../components/match/Pagination.vue';
 export default class Home extends Vue {
   allTournaments:Array<any> = [];
 
-  fetchMatches = async () => {
+  fetchMatches = async (value) => {
     const results = await axios({
       method: 'get',
-      url: 'http://localhost:3000/tournaments/',
+      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value}`,
     })
       .then((data: any) => data.data);
 
     return results;
   }
 
-  test = (value) => {
-    console.log(value);
+  changeTournamentPage = function (value) {
+    this.allTournaments = [];
+    this.allTournaments = this.fetchMatches(value);
   }
 
   async mounted() {
-    const getTournamentsFromApi = await this.fetchMatches();
-
-    this.allTournaments = getTournamentsFromApi;
+    this.allTournaments = await this.fetchMatches(1);
     return 0;
   }
 }
