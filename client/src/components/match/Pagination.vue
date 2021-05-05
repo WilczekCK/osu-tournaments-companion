@@ -6,7 +6,7 @@
             button(@click="next")="next"
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { usePagination } from 'vue-composable';
 import VueCompositionApi from '@vue/composition-api';
 
@@ -20,9 +20,7 @@ const {
   total: 50,
 });
 
-@Component({
-})
-
+@Component
 export default class SingleMatch extends Vue {
     next = next
 
@@ -35,6 +33,11 @@ export default class SingleMatch extends Vue {
     currentPage = currentPage
 
     lastPage = lastPage
+
+    @Watch('currentPage.value', { immediate: true, deep: true })
+    loadTournaments = async () => {
+      console.log('it works');
+    }
 }
 </script>
 
