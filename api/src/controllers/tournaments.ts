@@ -37,6 +37,15 @@ class Tournaments {
         return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
     };
 
+    public displaySome = async (whereQuery: Object, startFrom: string, limitedTo:string) => {
+        
+        const result = await this.query( whereQuery ).find((err: any, tournament: any) => {
+            return tournament;
+        }).skip( parseInt(startFrom) ).limit( parseInt(limitedTo) );
+
+        return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
+    };
+
     public displayCertain = async (whereQuery: Object) => {
         
         const result = await this.query(whereQuery).find((err: any, tournament: any) => {
