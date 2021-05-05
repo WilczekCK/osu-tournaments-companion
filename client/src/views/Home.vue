@@ -3,7 +3,7 @@
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
     .content__container--content
-      SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments")
+      Pagination
 </template>
 
 <script lang="ts">
@@ -11,11 +11,13 @@ import axios from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '../components/HelloWorld.vue';
 import SingleMatch from '../components/match/SingleMatch.vue';
+import Pagination from '../components/match/Pagination.vue';
 
 @Component({
   components: {
     HelloWorld,
     SingleMatch,
+    Pagination,
   },
 })
 export default class Home extends Vue {

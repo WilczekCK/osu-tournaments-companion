@@ -18,6 +18,7 @@ Vue.use(MdButton);
 Vue.use(MdCard);
 Vue.use(MdSteppers);
 Vue.use(MdProgress);
+
 new Vue({
   router,
   render: (h) => h(App),
