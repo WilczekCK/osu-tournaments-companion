@@ -2,8 +2,8 @@
     .pagination__container
         p "page" {{ currentPage }} "of" {{ lastPage }}
         p
-            button(@click="prev")="prev"
-            button(@click="next")="next"
+            button(@click="prevPage")="prev"
+            button(@click="nextPage")="next"
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
@@ -13,7 +13,7 @@ import VueCompositionApi from '@vue/composition-api';
 Vue.use(VueCompositionApi);
 
 const {
-  currentPage, lastPage, next, prev, first, last,
+  currentPage, lastPage, next, prev,
 } = usePagination({
   currentPage: 1,
   pageSize: 10,
@@ -22,21 +22,17 @@ const {
 
 @Component
 export default class SingleMatch extends Vue {
-    next = next
+    nextPage = next
 
-    prev = prev
-
-    first = first
-
-    last = last
+    prevPage = prev
 
     currentPage = currentPage
 
     lastPage = lastPage
 
     @Watch('currentPage.value', { immediate: true, deep: true })
-    loadTournaments = async () => {
-      console.log('it works');
+    loadTournaments = async (newValue: string) => {
+      console.log(newValue);
     }
 }
 </script>
