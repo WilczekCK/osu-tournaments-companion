@@ -34,7 +34,7 @@ export default class SingleMatch extends Vue {
 
     @Watch('currentPage.value', { immediate: true, deep: true })
     loadTournaments = (newValue: string) => {
-      this.$emit('dupa', newValue);
+      this.$emit('getTournamentsPage', newValue);
     };
 }
 </script>
