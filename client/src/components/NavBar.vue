@@ -15,13 +15,13 @@
                     md-menu-content
                         md-menu-item
                             router-link(to="#")
-                                ="Link #1"
+                                ="About osu!tc"
                         md-menu-item
-                            router-link(to="#")
-                                ="Link #2"
+                            a(href="https://osupoli.pl")
+                                ="OsuPoli"
                         md-menu-item
-                            router-link(to="#")
-                                ="Link #3"
+                            a(href="#")
+                                ="Discord"
         .md-layout-item(class="md-size-15")
 </template>
 
@@ -57,6 +57,8 @@ export default class NavBar extends Vue {
             margin: 0 auto
             &:hover
                 cursor: pointer
+            span
+                color: $link-color
 .md-list
     .md-menu-item
         padding: 5px 10px
