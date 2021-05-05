@@ -104,7 +104,7 @@ export default class SingleMatch extends Vue {
         margin: 0 auto
         margin-top: 75px
         min-width: unset
-        max-width: 90%
+        max-width: 100%
         padding: 0
         flex-wrap: nowrap
     &-content

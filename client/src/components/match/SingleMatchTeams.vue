@@ -108,11 +108,15 @@ export default class Teams extends Vue {
         a
             color: inherit !important
             text-decoration: none !important
+        @media (max-width: 600px)
+            justify-content: space-around
         &--avatar
             max-height: 100%
             width: 45px
             flex-basis: 10%
             z-index: 1
+            @media (max-width: 600px)
+                display: none
         &--nickname
             flex-basis: 65%
             padding-left: 5px
@@ -122,6 +126,7 @@ export default class Teams extends Vue {
                 p
                     padding: unset
                     margin: unset
+                flex-basis: unset
         &--ranking
             display: flex
             flex-basis: 25%
@@ -165,6 +170,9 @@ export default class Teams extends Vue {
         display: flex
         flex-direction: column
         justify-content: flex-start
+        @media (max-width: 600px)
+            flex-basis: unset
+            width: 50%
     &--red
         .teams__container__member
             &--ranking
