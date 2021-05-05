@@ -108,15 +108,13 @@ export default class Teams extends Vue {
         a
             color: inherit !important
             text-decoration: none !important
-        @media (max-width: 600px)
+        @media (max-width: 600px) and (min-width: 400px)
             justify-content: space-around
         &--avatar
             max-height: 100%
             width: 45px
             flex-basis: 10%
             z-index: 1
-            @media (max-width: 600px)
-                display: none
         &--nickname
             flex-basis: 65%
             padding-left: 5px
@@ -136,6 +134,8 @@ export default class Teams extends Vue {
             transform: scale(.8)
             text-shadow: .5px 0px .5px black
             margin-top: 2px
+            @media (max-width: 400px)
+                display: none
             &--global
                 width: 100%
                 text-align: left
