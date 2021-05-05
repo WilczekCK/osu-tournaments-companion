@@ -39,12 +39,16 @@ export default class NavBar extends Vue {
 .navigation__container
     width: 100%
     background: $bg-header
-    height: 80px
+    height: 70px
     &--wrapper
         color: $icon-color !important
+        height: 100%
+        display: flex
+        align-content: center
         a
             color: $link-color !important
             font-size: 48px
+            margin-top: 5px
             span
                 color: $link-active
             &:hover
