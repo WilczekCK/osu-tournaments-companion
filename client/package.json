@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/underscore": "^1.11.2",
+    "@vue/composition-api": "^1.0.0-rc.8",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "dayjs": "^1.10.4",
