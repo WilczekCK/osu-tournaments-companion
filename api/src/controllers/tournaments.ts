@@ -55,6 +55,15 @@ class Tournaments {
         return result;
     };
 
+    public countTournaments = async (whereQuery: Object) => {
+        
+        const result = await this.query(whereQuery).find((err: any, tournament: any) => {
+            return tournament;
+        }).count();
+
+        return result;
+    };
+
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         //prepare informations about the tournament
         let [{judge}, {gameModes}, {playedBeatmaps}] = await this.parseEventsObject( events );

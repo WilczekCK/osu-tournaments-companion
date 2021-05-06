@@ -17,6 +17,10 @@ tournamentRouter.get('/', async (ctx) => {
         : limit === 0 ? await tournaments.displayAll() : await tournaments.displaySome({}, startFrom, limit);
 })
 
+tournamentRouter.get('/countTournaments', async (ctx) => {
+    ctx.body = await tournaments.countTournaments({});
+})
+
 // Just for displaying single tournament
 tournamentRouter.get('/:id', async (ctx) => {
     let {osuApi: extApi} = ctx.query;
