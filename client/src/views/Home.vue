@@ -3,7 +3,9 @@
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
     .content__container--content
-      SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments")
+      div(v-if="allTournaments.length")
+        SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments")
+      md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
       Pagination(@getTournamentsPage="changeTournamentPage")
 </template>
 
@@ -25,7 +27,6 @@ export default class Home extends Vue {
   allTournaments:Array<any> = [];
 
   fetchMatches = async (value) => {
-    console.log(`http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}`);
     const results = await axios({
       method: 'get',
       url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}`,
@@ -57,8 +58,11 @@ export default class Home extends Vue {
   &--content
     display: flex
     flex-direction: column
-    max-width: 100%
+    width: 100%
+    align-items: center
 @media (max-width: 1080px)
   .content__container
     width: 100%
+.md-progress-spinner
+  transform: none !important
 </style>
