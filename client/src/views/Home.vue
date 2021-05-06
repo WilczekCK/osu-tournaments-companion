@@ -5,6 +5,7 @@
     .content__container--content
       div(v-if="allTournaments.length")
         SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments")
+      h3(v-else-if="allTournaments.length === undefined")="No more tournaments :("
       md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
       Pagination(@getTournamentsPage="changeTournamentPage")
 </template>
@@ -37,12 +38,8 @@ export default class Home extends Vue {
   }
 
   async changeTournamentPage(value) {
-    const getValues = await this.fetchMatches(value);
-    this.allTournaments = [];
-
-    setTimeout(() => {
-      this.allTournaments = getValues;
-    }, 500);
+    console.log('doit');
+    this.allTournaments = await this.fetchMatches(value);
   }
 }
 </script>

@@ -1,35 +1,38 @@
 <template lang="pug">
   .teams__container(v-if="teamsLoaded == true")
     .teams__container--red
-        .teams__container__member(v-for="playerId in teams.red" :style="player.getCoverUrl(playerId)")
+        .teams__container__member(style="color:black" v-for="player in player.allPlayers.red"
+        :style="`background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${player.coverUrl}');`")
             .teams__container__member--avatar
-                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
-                    img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
+                a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
+                    img(:src="`https://a.ppy.sh/${player.id}`" alt="user_avatar")
             .teams__container__member--nickname
-                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
-                    p {{player.getInfo(playerId)['username']}}
+                a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
+                    p {{ player.username }}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
-                    img(:src="require(`@/assets/${player.getPlayMode(playerId)}.svg`)" alt="gamemode_icon")
-                    span {{player.getGlobalRank(playerId)}}
+                    img(:src="require(`@/assets/${player.playMode}.svg`)" alt="gamemode_icon")
+                    span {{player.ranking.global}}
                 .teams__container__member--ranking--country
-                    img(:src="player.getCountryFlag(playerId)" alt="country_flag")
-                    span {{player.getCountryRank(playerId)}}
+                    img(:src="`https://www.countryflags.io/${player.country.code}/flat/64.png`" alt="country_flag")
+                    span {{player.ranking.country}}
     .teams__container--blue
-        .teams__container__member(v-for="playerId in teams.blue" :style="player.getCoverUrl(playerId)")
+        .teams__container__member(style="color:black" v-for="player in player.allPlayers.blue"
+        :style="`background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${player.coverUrl}');`")
             .teams__container__member--avatar
-                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
-                    img(:src="player.getAvatarUrl(playerId)" alt="user_avatar")
+                a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
+                    img(:src="`https://a.ppy.sh/${player.id}`" alt="user_avatar")
             .teams__container__member--nickname
-                a(:href="player.getOsuProfileUrl(playerId)" target="_blank")
-                    p {{player.getInfo(playerId)['username']}}
+                a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
+                    p {{ player.username }}
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
-                    span {{player.getGlobalRank(playerId)}}
-                    img(:src="require(`@/assets/${player.getPlayMode(playerId)}.svg`)" alt="gamemode_icon")
+                    img(:src="require(`@/assets/${player.playMode}.svg`)" alt="gamemode_icon")
+                    span {{player.ranking.global}}
                 .teams__container__member--ranking--country
-                    img(:src="player.getCountryFlag(playerId)" alt="country_flag")
-                    span {{player.getCountryRank(playerId)}}
+                    img(:src="`https://www.countryflags.io/${player.country.code}/flat/64.png`" alt="country_flag")
+                    span {{player.ranking.country}}
+
 </template>
 
 <script lang="ts">
@@ -43,20 +46,10 @@ export default class Teams extends Vue {
     teamsLoaded = false;
 
     player = {
-      allPlayers: {},
-      getInfo: (playerId: number) :Record<string, Record<string, string>> => this.player.allPlayers[playerId],
-      getAvatarUrl: (playerId: number) :string => `https://a.ppy.sh/${playerId}`,
-      getCoverUrl: (playerId: number) :string => `
-        background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${this.player.getInfo(playerId).coverUrl}');
-      `,
-      getOsuProfileUrl: (playerId: number) :string => `https://osu.ppy.sh/u/${playerId}`,
-      getGlobalRank: (playerId: number) :string => `#${this.player.getInfo(playerId).ranking.global}`,
-      getCountryRank: (playerId: number) :string => `#${this.player.getInfo(playerId).ranking.country}`,
-      getPlayMode: (playerId: number) :Record<string, string> => this.player.getInfo(playerId).playMode,
-      getCountryFlag: (playerId: number) :string => `
-        https://flagcdn.com/60x45/${
-            (this.player.getInfo(playerId).country.code).toLowerCase()
-        }.png`,
+      allPlayers: {
+        blue: [],
+        red: [],
+      },
       getDbInfo: async (playerId: number) => {
         await axios({
           method: 'get',
@@ -64,14 +57,17 @@ export default class Teams extends Vue {
         })
           .then(({ data }: any) => {
             // push into object of objects, object key is playerId
-            [this.player.allPlayers[playerId]] = data.result;
+            if (this.teams.red.includes(playerId)) {
+              this.player.allPlayers.red.push(data.result[0]);
+            } else {
+              this.player.allPlayers.blue.push(data.result[0]);
+            }
           });
       },
     }
 
     async created() {
       const playersToLoad = [...this.teams.blue, ...this.teams.red];
-
       // async like, just to collect info
       playersToLoad.forEach(async (playerId) => {
         await this.player.getDbInfo(playerId);
@@ -82,6 +78,7 @@ export default class Teams extends Vue {
         }
       });
 
+      console.log(this.player.allPlayers);
       return 0;
     }
 }

@@ -11,23 +11,21 @@ import {
 } from 'vue-property-decorator';
 import axios from 'axios';
 import { usePagination } from 'vue-composable';
-import VueCompositionApi from '@vue/composition-api';
+import VueCompositionAPI from '@vue/composition-api';
 
-Vue.use(VueCompositionApi);
+Vue.use(VueCompositionAPI);
 
 @Component
 export default class SingleMatch extends Vue {
-    nextPage = '';
+    nextPage = {};
 
-    prevPage = '';
+    prevPage = {};
 
-    currentPage = '';
+    currentPage = {};
 
-    lastPage = '';
+    lastPage ={};
 
-    nicePage = '';
-
-    totalSize = '';
+    totalSize = 0;
 
     countMatches = async () => {
       const results = await axios({
@@ -39,7 +37,7 @@ export default class SingleMatch extends Vue {
       return results;
     }
 
-    async created() {
+    async mounted() {
       this.totalSize = await this.countMatches();
 
       const {

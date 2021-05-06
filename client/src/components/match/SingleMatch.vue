@@ -1,20 +1,20 @@
 <template lang="pug">
     md-card
         md-card-media
-            img(:src="require(`@/assets/${getGamemode()}.svg`)")
+            //img(:src="require(`@/assets/${getGamemode()}.svg`)")
         md-card-header
             .md-title
-                a(:href="getLinkToOsuPage()" target="_blank")
-                    span {{tournamentInfo.title}}
+                //a(:href="getLinkToOsuPage()" target="_blank")
+                  //  span {{tournamentInfo.title}}
             .md-subtitle
                 span(v-if="tournamentInfo.timeEnded")
                     ="Ended at: "
-                    span {{dayjs(tournamentInfo.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
+                    //span {{dayjs(tournamentInfo.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
                 span(v-else)
                     ='In progress...'
         md-card-expand
             .md-score
-                p {{getFinishScore()}}
+            //    p {{getFinishScore()}}
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini")
@@ -30,9 +30,9 @@
                                 h3="Waiting for the first map to start"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
-                            SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
+                            <!-- SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed") -->
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
-                            SingleMatchGames
+                            <!-- SingleMatchGames -->
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
