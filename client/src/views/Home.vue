@@ -25,23 +25,23 @@ export default class Home extends Vue {
   allTournaments:Array<any> = [];
 
   fetchMatches = async (value) => {
+    console.log(`http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}`);
     const results = await axios({
       method: 'get',
-      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value}`,
+      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}`,
     })
       .then((data: any) => data.data);
 
     return results;
   }
 
-  changeTournamentPage = function (value) {
+  async changeTournamentPage(value) {
+    const getValues = await this.fetchMatches(value);
     this.allTournaments = [];
-    this.allTournaments = this.fetchMatches(value);
-  }
 
-  async mounted() {
-    this.allTournaments = await this.fetchMatches(1);
-    return 0;
+    setTimeout(() => {
+      this.allTournaments = getValues;
+    }, 500);
   }
 }
 </script>

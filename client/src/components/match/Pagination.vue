@@ -32,7 +32,7 @@ export default class SingleMatch extends Vue {
 
     lastPage = lastPage
 
-    @Watch('currentPage.value', { immediate: false, deep: true })
+    @Watch('currentPage.value', { immediate: true, deep: true })
     loadTournaments = (newValue: string) => {
       this.$emit('getTournamentsPage', newValue);
     };
