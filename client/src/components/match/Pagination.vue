@@ -1,7 +1,7 @@
 <template lang="pug">
     .pagination__container
         p "page" {{ currentPage }} "of" {{ lastPage }}
-        p
+        p(:class="{ delay: delay }")
             button(@click="prevPage")="prev"
             button(@click="nextPage")="next"
 </template>
@@ -16,7 +16,7 @@ import VueCompositionAPI from '@vue/composition-api';
 Vue.use(VueCompositionAPI);
 
 @Component
-export default class SingleMatch extends Vue {
+export default class Pagination extends Vue {
     nextPage = {};
 
     prevPage = {};
@@ -27,6 +27,8 @@ export default class SingleMatch extends Vue {
 
     totalSize = 0;
 
+    delay = false;
+
     countMatches = async () => {
       const results = await axios({
         method: 'get',
@@ -35,6 +37,15 @@ export default class SingleMatch extends Vue {
         .then((data: any) => data.data);
 
       return results;
+    }
+
+    async attachDelay() {
+      let delayVariable = this.delay;
+      delayVariable = true;
+      // remove delay
+      setTimeout(() => {
+        delayVariable = false;
+      }, 1500);
     }
 
     async mounted() {
@@ -60,9 +71,12 @@ export default class SingleMatch extends Vue {
     @Watch('currentPage.value', { immediate: true, deep: true })
     loadTournaments = (newValue: string) => {
       this.$emit('getTournamentsPage', newValue);
+      this.attachDelay();
     };
 }
 </script>
 
 <style lang="sass">
+  .delay
+    background: red
 </style>
