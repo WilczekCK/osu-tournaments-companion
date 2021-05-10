@@ -41,6 +41,10 @@ export default class Pagination extends Vue {
 
     delay = false;
 
+    sideToFade = 0;
+
+    recentPageSize = 0;
+
     countMatches = async () => {
       const results = await axios({
         method: 'get',
@@ -57,6 +61,20 @@ export default class Pagination extends Vue {
       setTimeout(() => {
         this.delay = false;
       }, 500);
+    }
+
+    fadeAnimation(newValue) {
+      const speedOfAnimation = 0.3;
+      if (this.recentPageSize > (newValue || !newValue)) {
+        // to right
+        this.sideToFade = 10;
+        this.$emit('triggerFadeAnimation');
+      } else {
+        // to left
+        this.sideToFade = -10;
+        this.$emit('triggerFadeAnimation');
+      }
+      this.recentPageSize = newValue;
     }
 
     async mounted() {
@@ -82,6 +100,7 @@ export default class Pagination extends Vue {
     @Watch('currentPage.value')
     loadTournaments = (newValue = '1') => {
       this.$emit('getTournamentsPage', newValue);
+      this.fadeAnimation(newValue);
       this.attachDelay();
     };
 }
@@ -95,7 +114,6 @@ export default class Pagination extends Vue {
     display: flex
     flex-direction: row
     justify-content: center
-
     @media (max-width: 1000px)
       position: relative
     &--divider

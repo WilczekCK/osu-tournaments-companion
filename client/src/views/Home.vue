@@ -3,8 +3,9 @@
     .content__container--content
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
-      MatchList(:tournaments="allTournaments")
-      Pagination(@getTournamentsPage="changeTournamentPage")
+      transition(name="slide-fade")
+        MatchList(v-if="show" :tournaments="allTournaments")
+      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation")
 </template>
 
 <script lang="ts">
@@ -24,6 +25,8 @@ import Pagination from '../components/match/Pagination.vue';
 export default class Home extends Vue {
   allTournaments:Array<any> = [];
 
+  show = false;
+
   fetchMatches = async (value) => {
     const results = await axios({
       method: 'get',
@@ -36,6 +39,11 @@ export default class Home extends Vue {
 
   async changeTournamentPage(value) {
     this.allTournaments = await this.fetchMatches(value);
+  }
+
+  async triggerFadeAnimation() {
+    console.log('XD');
+    this.show = true;
   }
 }
 </script>
@@ -61,4 +69,12 @@ export default class Home extends Vue {
     width: 100%
 .md-progress-spinner
   transform: none !important
+
+.slide-fade-enter-active
+  transition: all .3s ease;
+.slide-fade-leave-active
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+.slide-fade-enter, .slide-fade-leave-to
+  transform: translateX(10px)
+  opacity: 0
 </style>
