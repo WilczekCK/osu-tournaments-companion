@@ -23,7 +23,7 @@ export default class Pagination extends Vue {
 
     currentPage = {};
 
-    lastPage ={};
+    lastPage = {};
 
     totalSize = 0;
 
@@ -51,7 +51,7 @@ export default class Pagination extends Vue {
       this.totalSize = await this.countMatches();
 
       const {
-        currentPage, lastPage, next, prev,
+        currentPage, lastPage, next, prev, first,
       } = usePagination({
         currentPage: 1,
         pageSize: 5,
@@ -67,8 +67,8 @@ export default class Pagination extends Vue {
       this.lastPage = lastPage;
     }
 
-    @Watch('currentPage.value', { immediate: true })
-    loadTournaments = (newValue: string) => {
+    @Watch('currentPage.value')
+    loadTournaments = (newValue = '1') => {
       this.$emit('getTournamentsPage', newValue);
       this.attachDelay();
     };

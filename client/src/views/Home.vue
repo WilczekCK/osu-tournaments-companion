@@ -38,6 +38,7 @@ export default class Home extends Vue {
   }
 
   async changeTournamentPage(value) {
+    console.log(value);
     this.allTournaments = await this.fetchMatches(value);
   }
 }
