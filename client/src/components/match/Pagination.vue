@@ -41,7 +41,7 @@ export default class Pagination extends Vue {
 
     delay = false;
 
-    sideToFade = 0;
+    sideToFade = '';
 
     recentPageSize = 0;
 
@@ -66,13 +66,11 @@ export default class Pagination extends Vue {
     fadeAnimation(newValue) {
       const speedOfAnimation = 0.3;
       if (this.recentPageSize > (newValue || !newValue)) {
-        // to right
-        this.sideToFade = 10;
-        this.$emit('triggerFadeAnimation');
+        this.sideToFade = 'left';
+        this.$emit('triggerFadeAnimation', { side: this.sideToFade, speedOfAnimation });
       } else {
-        // to left
-        this.sideToFade = -10;
-        this.$emit('triggerFadeAnimation');
+        this.sideToFade = 'right';
+        this.$emit('triggerFadeAnimation', { side: this.sideToFade, speedOfAnimation });
       }
       this.recentPageSize = newValue;
     }

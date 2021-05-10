@@ -3,7 +3,7 @@
     .content__container--content
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
-      transition(name="slide-fade")
+      transition(:name="animationName")
         MatchList(v-if="show" :tournaments="allTournaments")
       Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation")
 </template>
@@ -27,6 +27,8 @@ export default class Home extends Vue {
 
   show = false;
 
+  animationName = '';
+
   fetchMatches = async (value) => {
     const results = await axios({
       method: 'get',
@@ -41,9 +43,13 @@ export default class Home extends Vue {
     this.allTournaments = await this.fetchMatches(value);
   }
 
-  async triggerFadeAnimation() {
-    console.log('XD');
-    this.show = true;
+  async triggerFadeAnimation({ side, speedOfAnimation }) {
+    this.show = false;
+
+    setTimeout(() => {
+      this.animationName = `slide-${side}`;
+      this.show = true;
+    }, 500);
   }
 }
 </script>
@@ -70,11 +76,19 @@ export default class Home extends Vue {
 .md-progress-spinner
   transform: none !important
 
-.slide-fade-enter-active
-  transition: all .3s ease;
-.slide-fade-leave-active
+.slide-left-enter-active
+  transition: all .6s ease;
+.slide-left-leave-active
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-.slide-fade-enter, .slide-fade-leave-to
-  transform: translateX(10px)
+.slide-left-enter, .slide-fade-leave-to
+  transform: translateX(20px)
+  opacity: 0
+
+.slide-right-enter-active
+  transition: all .6s ease;
+.slide-right-leave-active
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+.slide-right-enter, .slide-fade-leave-to
+  transform: translateX(-20px)
   opacity: 0
 </style>
