@@ -2,10 +2,20 @@
     .pagination__container
         //p "page" {{ currentPage }} "of" {{ lastPage }}
         p(:class="{ delay: delay }")
-          button(@click="prevPage")="<"
+          button(class="pagination__container__button" @click="prevPage")
+            .pagination__container__button--label
+              span(class="material-icons md-layout-item")
+                ="west"
+              .
+                recent
         .pagination__container--divider
         p(:class="{ delay: delay }")
-          button(@click="nextPage")=">"
+          button(class="pagination__container__button" @click="nextPage")
+            .pagination__container__button--label
+              span(class="material-icons md-layout-item")
+                ="east"
+              .
+                older
 </template>
 <script lang="ts">
 import {
@@ -85,18 +95,25 @@ export default class Pagination extends Vue {
     flex-direction: row
     justify-content: center
     &--divider
-      width: 85%
-    button
+      width: 95%
+    &__button
       height: 100vh
       font-size: 3em
       background: rgba(0,0,0,.2)
       border: unset
       color: white
       cursor: pointer
+      transition: color .5s, padding .5s
+      &--label
+        font-size: 14px
+      &:hover
+        color: $link-active
+        padding: 15px 15px
+
   .delay
     button
       position: relative
-      color: grey
+      color: grey !important
       &:after
         z-index: 999
         position: absolute
