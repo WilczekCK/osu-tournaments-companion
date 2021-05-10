@@ -1,8 +1,8 @@
 <template lang="pug">
   .match__container(v-if="allTournaments.length")
+    SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments" :key="tournament.id")
   h3(v-else-if="allTournaments.length === undefined")="No more tournaments :("
   md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
-    SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments" :key="tournament.id")
 </template>
 
 <script lang="ts">

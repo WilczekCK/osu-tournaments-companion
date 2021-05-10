@@ -91,15 +91,17 @@ export default class Pagination extends Vue {
   .pagination__container
     position: absolute
     width: 100%
+    height: 100%;
     display: flex
     flex-direction: row
     justify-content: center
+
     @media (max-width: 1000px)
       position: relative
     &--divider
       width: 95%
     &__button
-      height: 100vh
+      height: 100%
       font-size: 3em
       background: rgba(0,0,0,.2)
       border: unset

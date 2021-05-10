@@ -1,8 +1,8 @@
 <template lang="pug">
   .content__container
-    .content__container--header
-      h2="Follow all tournaments of osu on a single page!"
     .content__container--content
+      .content__container--header
+        h2="Follow all tournaments of osu on a single page!"
       MatchList(:tournaments="allTournaments")
       Pagination(@getTournamentsPage="changeTournamentPage")
 </template>
@@ -54,6 +54,8 @@ export default class Home extends Vue {
     width: 100%
     align-items: center
     position: relative
+  &--header
+    padding: 25px 0px 50px
 @media (max-width: 1080px)
   .content__container
     width: 100%
