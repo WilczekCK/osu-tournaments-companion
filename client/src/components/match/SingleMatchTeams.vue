@@ -12,10 +12,14 @@
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     img(:src="require(`@/assets/${player.playMode}.svg`)" alt="gamemode_icon")
-                    span {{player.ranking.global}}
+                    span='#'
+                        .
+                            {{player.ranking.global}}
                 .teams__container__member--ranking--country
                     img(:src="`https://www.countryflags.io/${player.country.code}/flat/64.png`" alt="country_flag")
-                    span {{player.ranking.country}}
+                    span='#'
+                        .
+                            {{player.ranking.country}}
     .teams__container--blue
         .teams__container__member(style="color:black" v-for="player in player.allPlayers.blue"
         :style="`background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${player.coverUrl}');`")
@@ -28,10 +32,14 @@
             .teams__container__member--ranking
                 .teams__container__member--ranking--global
                     img(:src="require(`@/assets/${player.playMode}.svg`)" alt="gamemode_icon")
-                    span {{player.ranking.global}}
+                    span='#'
+                        .
+                            {{player.ranking.global}}
                 .teams__container__member--ranking--country
                     img(:src="`https://www.countryflags.io/${player.country.code}/flat/64.png`" alt="country_flag")
-                    span {{player.ranking.country}}
+                    span='#'
+                        .
+                            {{player.ranking.country}}
 
 </template>
 
@@ -56,7 +64,7 @@ export default class Teams extends Vue {
           url: `http://localhost:3000/users/${playerId}`,
         })
           .then(({ data }: any) => {
-            // push into object of objects, object key is playerId
+            // push into array, full info about players by their teams
             if (this.teams.red.includes(playerId)) {
               this.player.allPlayers.red.push(data.result[0]);
             } else {
@@ -77,8 +85,6 @@ export default class Teams extends Vue {
           this.teamsLoaded = true;
         }
       });
-
-      console.log(this.player.allPlayers);
       return 0;
     }
 }
@@ -103,7 +109,7 @@ export default class Teams extends Vue {
         z-index: 0
         background-size: cover !important
         a
-            color: inherit !important
+            color: white !important
             text-decoration: none !important
         @media (max-width: 600px) and (min-width: 400px)
             justify-content: space-around
@@ -131,6 +137,7 @@ export default class Teams extends Vue {
             transform: scale(.8)
             text-shadow: .5px 0px .5px black
             margin-top: 2px
+            color: white
             @media (max-width: 400px)
                 display: none
             &--global

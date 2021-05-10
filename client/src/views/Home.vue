@@ -4,7 +4,7 @@
       h2="Follow all tournaments of osu on a single page!"
     .content__container--content
       div(v-if="allTournaments.length")
-        SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments")
+        MatchList(:tournaments="allTournaments")
       h3(v-else-if="allTournaments.length === undefined")="No more tournaments :("
       md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
       Pagination(@getTournamentsPage="changeTournamentPage")
@@ -14,13 +14,13 @@
 import axios from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '../components/HelloWorld.vue';
-import SingleMatch from '../components/match/SingleMatch.vue';
+import MatchList from '../components/match/MatchList.vue';
 import Pagination from '../components/match/Pagination.vue';
 
 @Component({
   components: {
     HelloWorld,
-    SingleMatch,
+    MatchList,
     Pagination,
   },
 })
@@ -38,7 +38,6 @@ export default class Home extends Vue {
   }
 
   async changeTournamentPage(value) {
-    console.log('doit');
     this.allTournaments = await this.fetchMatches(value);
   }
 }
