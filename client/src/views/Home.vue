@@ -56,6 +56,7 @@ export default class Home extends Vue {
     flex-direction: column
     width: 100%
     align-items: center
+    position: relative
 @media (max-width: 1080px)
   .content__container
     width: 100%

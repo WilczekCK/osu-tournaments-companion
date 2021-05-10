@@ -1,9 +1,11 @@
 <template lang="pug">
     .pagination__container
-        p "page" {{ currentPage }} "of" {{ lastPage }}
+        //p "page" {{ currentPage }} "of" {{ lastPage }}
         p(:class="{ delay: delay }")
-            button(@click="prevPage")="prev"
-            button(@click="nextPage")="next"
+          button(@click="prevPage")="<"
+        .pagination__container--divider
+        p(:class="{ delay: delay }")
+          button(@click="nextPage")=">"
 </template>
 <script lang="ts">
 import {
@@ -76,6 +78,21 @@ export default class Pagination extends Vue {
 </script>
 
 <style lang="sass">
+  .pagination__container
+    position: absolute
+    width: 100%
+    display: flex
+    flex-direction: row
+    justify-content: center
+    &--divider
+      width: 85%
+    button
+      height: 100vh
+      font-size: 3em
+      background: rgba(0,0,0,.2)
+      border: unset
+      color: white
+      cursor: pointer
   .delay
     button
       position: relative
