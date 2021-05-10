@@ -20,14 +20,9 @@ export default class MatchList extends Vue {
   // that's too big object, I cannot tell the type :/
   allTournaments = this.tournaments;
 
-  forceRerender = () => {
-    this.$forceUpdate();
-  }
-
   @Watch('tournaments')
   loadTournaments(newValue: string) {
     this.allTournaments = newValue;
-    this.forceRerender();
   }
 }
 </script>

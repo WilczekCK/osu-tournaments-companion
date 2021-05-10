@@ -65,7 +65,7 @@ export default class Teams extends Vue {
         })
           .then(({ data }: any) => {
             // push into array, full info about players by their teams
-            if (this.teams.red.includes(playerId)) {
+            if (this.teams.red.includes(playerId) && data.result.length) {
               this.player.allPlayers.red.push(data.result[0]);
             } else {
               this.player.allPlayers.blue.push(data.result[0]);
