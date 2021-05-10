@@ -1,6 +1,8 @@
 <template lang="pug">
-    div
-      SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments" :key="tournament.id")
+  .match__container(v-if="allTournaments.length")
+  h3(v-else-if="allTournaments.length === undefined")="No more tournaments :("
+  md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
+    SingleMatch(:tournamentInfo="tournament" v-for="tournament in allTournaments" :key="tournament.id")
 </template>
 
 <script lang="ts">
@@ -28,4 +30,5 @@ export default class MatchList extends Vue {
 </script>
 
 <style lang="sass">
+.match__container
 </style>

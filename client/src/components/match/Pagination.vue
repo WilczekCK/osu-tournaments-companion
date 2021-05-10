@@ -1,7 +1,7 @@
 <template lang="pug">
     .pagination__container
         //p "page" {{ currentPage }} "of" {{ lastPage }}
-        p(:class="{ delay: delay }")
+        div(:class="{ delay: delay }")
           button(class="pagination__container__button" @click="prevPage")
             .pagination__container__button--label
               span(class="material-icons md-layout-item")
@@ -9,7 +9,7 @@
               .
                 recent
         .pagination__container--divider
-        p(:class="{ delay: delay }")
+        div(:class="{ delay: delay }")
           button(class="pagination__container__button" @click="nextPage")
             .pagination__container__button--label
               span(class="material-icons md-layout-item")
@@ -94,6 +94,8 @@ export default class Pagination extends Vue {
     display: flex
     flex-direction: row
     justify-content: center
+    @media (max-width: 1000px)
+      position: relative
     &--divider
       width: 95%
     &__button
@@ -109,7 +111,11 @@ export default class Pagination extends Vue {
       &:hover
         color: $link-active
         padding: 15px 15px
-
+      @media (max-width: 1000px)
+        height: 50px
+    @media (max-width: 1000px)
+      &--divider
+        display: none
   .delay
     button
       position: relative

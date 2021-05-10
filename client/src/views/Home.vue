@@ -3,10 +3,7 @@
     .content__container--header
       h2="Follow all tournaments of osu on a single page!"
     .content__container--content
-      div(v-if="allTournaments.length")
-        MatchList(:tournaments="allTournaments")
-      h3(v-else-if="allTournaments.length === undefined")="No more tournaments :("
-      md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
+      MatchList(:tournaments="allTournaments")
       Pagination(@getTournamentsPage="changeTournamentPage")
 </template>
 
