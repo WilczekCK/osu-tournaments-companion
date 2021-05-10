@@ -40,12 +40,11 @@ export default class Pagination extends Vue {
     }
 
     async attachDelay() {
-      let delayVariable = this.delay;
-      delayVariable = true;
+      this.delay = true;
       // remove delay
       setTimeout(() => {
-        delayVariable = false;
-      }, 1500);
+        this.delay = false;
+      }, 500);
     }
 
     async mounted() {
@@ -68,7 +67,7 @@ export default class Pagination extends Vue {
       this.lastPage = lastPage;
     }
 
-    @Watch('currentPage.value', { immediate: true, deep: true })
+    @Watch('currentPage.value', { immediate: true })
     loadTournaments = (newValue: string) => {
       this.$emit('getTournamentsPage', newValue);
       this.attachDelay();
@@ -78,5 +77,15 @@ export default class Pagination extends Vue {
 
 <style lang="sass">
   .delay
-    background: red
+    button
+      position: relative
+      color: grey
+      &:after
+        z-index: 999
+        position: absolute
+        left: 0
+        top: 0
+        content: ''
+        width: 100%
+        height: 100%
 </style>
