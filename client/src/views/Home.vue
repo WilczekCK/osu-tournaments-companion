@@ -81,7 +81,7 @@ export default class Home extends Vue {
 .slide-left-leave-active
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 .slide-left-enter, .slide-fade-leave-to
-  transform: translateX(20px)
+  transform: translateX(-20px)
   opacity: 0
 
 .slide-right-enter-active
@@ -89,6 +89,6 @@ export default class Home extends Vue {
 .slide-right-leave-active
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 .slide-right-enter, .slide-fade-leave-to
-  transform: translateX(-20px)
+  transform: translateX(20px)
   opacity: 0
 </style>
