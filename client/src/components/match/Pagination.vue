@@ -1,9 +1,10 @@
 <template lang="pug">
     .pagination__container
-        //p "page" {{ currentPage }} "of" {{ lastPage }}
+        //p "page" {{  }} "of" {{ lastPage }}
         div(:class="{ delay: delay }")
           button(class="pagination__container__button" @click="prevPage")
             .pagination__container__button--label
+              small {{currentPage.value-1}}/{{lastPage.value}}
               span(class="material-icons md-layout-item")
                 ="west"
               .
@@ -12,6 +13,7 @@
         div(:class="{ delay: delay }")
           button(class="pagination__container__button" @click="nextPage")
             .pagination__container__button--label
+              small {{currentPage.value+1}}/{{lastPage.value}}
               span(class="material-icons md-layout-item")
                 ="east"
               .
@@ -124,6 +126,9 @@ export default class Pagination extends Vue {
       color: white
       cursor: pointer
       transition: color .5s, padding .5s
+      small
+        font-size: .7em
+        display: block
       &--label
         font-size: 14px
       &:hover
