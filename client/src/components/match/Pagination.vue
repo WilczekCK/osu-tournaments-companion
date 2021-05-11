@@ -1,8 +1,8 @@
 <template lang="pug">
     .pagination__container
         //p "page" {{  }} "of" {{ lastPage }}
-        div(:class="{ delay: delay }")
-          button(class="pagination__container__button" @click="prevPage")
+        div(:class="{ delay: delay }" class="pagination__container__button")
+          button(@click="prevPage")
             .pagination__container__button--label
               small {{currentPage.value-1}}/{{lastPage.value}}
               span(class="material-icons md-layout-item")
@@ -10,8 +10,8 @@
               .
                 recent
         .pagination__container--divider
-        div(:class="{ delay: delay }")
-          button(class="pagination__container__button" @click="nextPage")
+        div(:class="{ delay: delay }" class="pagination__container__button")
+          button(@click="nextPage")
             .pagination__container__button--label
               small {{currentPage.value+1}}/{{lastPage.value}}
               span(class="material-icons md-layout-item")
@@ -119,23 +119,30 @@ export default class Pagination extends Vue {
     &--divider
       width: 95%
     &__button
-      height: 100%
-      font-size: 3em
-      background: rgba(0,0,0,.2)
-      border: unset
-      color: white
-      cursor: pointer
-      transition: color .5s, padding .5s
-      small
-        font-size: .7em
-        display: block
-      &--label
-        font-size: 14px
-      &:hover
-        color: $link-active
-        padding: 15px 15px
+      button
+        height: 100%
+        font-size: 1em
+        background: rgba(0,0,0,.2)
+        border: unset
+        color: white
+        cursor: pointer
+        transition: color .5s, min-width .5s
+        padding: 0px 10px
+        min-width: 75px
+        small
+          font-size: .7em
+          display: block
+        &:hover
+          color: $link-active
+          min-width: 85px
+        @media (max-width: 1000px)
+          height: 75px
+          width: 100%
       @media (max-width: 1000px)
-        height: 50px
+        width: 100%
+      &--label
+        display: flex;
+        flex-direction: column;
     @media (max-width: 1000px)
       &--divider
         display: none

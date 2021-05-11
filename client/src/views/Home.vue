@@ -68,6 +68,7 @@ export default class Home extends Vue {
     width: 100%
     align-items: center
     position: relative
+    min-height: 900px
   &--header
     padding: 25px 0px 50px
 @media (max-width: 1080px)
