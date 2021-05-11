@@ -1,36 +1,37 @@
 <template lang="pug">
     .progress__map__container
-        .progress__map__container__teamWon
-            p(v-if="get.winnerScoreDifference !== 0")
-                b {{get.winnerTeamName}}
-                = ' team won by '
-                b {{get.winnerScoreDifference}}
-            p(v-else)
-                b="In progress..."
-        .progress__map__container__mapInfo
-            h3="Map details"
-            .progress__map__container__mapInfo__columnToRow
-                .progress__map__container__mapInfo__image
-                    a(:href="get.beatmapUrl" target="_blank" v-if="match.info")
-                        img(:src="match.info.beatmapset.covers['list@2x']" alt="beatmap_image")
-                    .progress__map__container__mapInfo__image--missing(v-else)="?"
-                .progress__map__container__mapInfo__description
-                    .progress__map__container__mapInfo__description--creator
-                        ="Map by: "
-                        span(v-if="match.info") {{ match.info.beatmapset.creator }}
-                        span(v-else)="Unknown"
-                    .progress__map__container__mapInfo__description--artist
-                        span(v-if="match.info")
-                            a(:href="get.beatmapUrl" target="_blank") {{ match.info.beatmapset.artist }}
-                        span(v-else)="Beatmap removed!"
-                    .progress__map__container__mapInfo__description--title
-                        span(v-if="match.info")
-                            a(:href="get.beatmapUrl" target="_blank") {{ match.info.beatmapset.title }}
-                        span(v-else)="Unknown"
-                    .progress__map__container__mapInfo__description--difficulty
-                        ="Difficulty: "
-                        span(v-if="match.info") {{ match.info.version }}
-                        span(v-else)='Unknown'
+        .progress__map__container__single()
+            .progress__map__container__teamWon
+                //p(v-if="get.winnerScoreDifference !== 0")
+                    b {{get.winnerTeamName}}
+                    = ' team won by '
+                    b {{get.winnerScoreDifference}}
+                //p(v-else)
+                    b="In progress..."
+            .progress__map__container__mapInfo
+                h3="Map details"
+                .progress__map__container__mapInfo__columnToRow
+                    .progress__map__container__mapInfo__image
+                        a(:href="`https://osu.ppy.sh/b/${map.info.id}`" target="_blank" v-if="map.info")
+                            img(:src="map.info.beatmapset.covers['list@2x']" alt="beatmap_image")
+                        .progress__map__container__mapInfo__image--missing(v-else)="?"
+                    .progress__map__container__mapInfo__description
+                        .progress__map__container__mapInfo__description--creator
+                            ="Map by: "
+                            span(v-if="map.info") {{ map.info.beatmapset.creator }}
+                            span(v-else)="Unknown"
+                        .progress__map__container__mapInfo__description--artist
+                            span(v-if="map.info")
+                                a(:href="`https://osu.ppy.sh/b/${map.info.id}`" target="_blank") {{ map.info.beatmapset.artist }}
+                            span(v-else)="Beatmap removed!"
+                        .progress__map__container__mapInfo__description--title
+                            span(v-if="map.info")
+                                a(:href="`https://osu.ppy.sh/u/${map.info.id}`" target="_blank") {{ map.info.beatmapset.title }}
+                            span(v-else)="Unknown"
+                        .progress__map__container__mapInfo__description--difficulty
+                            ="Difficulty: "
+                            span(v-if="map.info") {{ map.info.version }}
+                            span(v-else)='Unknown'
 </template>
 
 <script lang="ts">
@@ -39,38 +40,19 @@ import _ from 'underscore';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() public matchInfo!: Record<string, Record<string, any>>;
+    @Prop() public maps!: Record<string, Record<string, any>>;
 
-    match = this.matchInfo;
+    @Prop() public event!: Record<string, Record<string, any>>;
 
-    get = {
-      beatmapUrl: '',
-      winnerTeamName: '',
-      winnerScoreDifference: 0,
-    };
+    mapList = this.maps;
 
-    setBeatmapUrl = () : void => { this.get.beatmapUrl = `https://osu.ppy.sh/b/${this.match.info.id}`; };
+    mapId = this.event.game.beatmap.id;
 
-    setWinnerScoreDifference = () :void => { this.get.winnerScoreDifference = _.max(this.match.summaryScore) - _.min(this.match.summaryScore); };
+    map = {};
 
-    setWinnerTeamName = () :void => {
-      const { summaryScore } = this.match;
-
-      function getBiggestScore(score) {
-        if (score === _.max(summaryScore)) return true;
-        return false;
-      }
-
-      this.get.winnerTeamName = _.findKey(summaryScore, getBiggestScore);
-    }
-
-    mounted() {
-      if (this.match.info) {
-        this.setBeatmapUrl();
-      }
-
-      this.setWinnerTeamName();
-      this.setWinnerScoreDifference();
+    created() {
+      const mapLoaded = _.find(this.mapList, (beatmap) => beatmap.info.id === this.mapId);
+      this.map = mapLoaded;
     }
 }
 </script>

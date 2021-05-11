@@ -26,13 +26,13 @@
                     md-tabs(md-alignment="fixed")
                         md-tab(id="tab-teams" md-label="teams")
                             SingleMatchTeams(:teams="tournamentInfo.teams" v-if="(tournamentInfo.teams.blue && tournamentInfo.teams.red) != 0")
-                            .matchNotStarted(v-else)
+                            // .matchNotStarted(v-else)
                                 h3="Waiting for the first map to start"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
                             SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
-                            SingleMatchGames
+                           // SingleMatchGames
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';

@@ -77,7 +77,7 @@ export default class Pagination extends Vue {
       this.recentPageSize = newValue;
     }
 
-    async mounted() {
+    async created() {
       this.totalSize = await this.countMatches();
 
       const {

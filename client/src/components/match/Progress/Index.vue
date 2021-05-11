@@ -4,7 +4,7 @@
         md-step(v-if="event.detail.type === 'match-created'" :md-description="getProperTime(event.timestamp)" md-label="Match created" md-done=true)
             ProgressMatchStarted(:judgeId="event.user_id")
         md-step(v-if="event.detail.type === 'other'"  md-label="Map played" :md-description="getProperTime(event.timestamp)" md-done=true)
-            ProgressMatchWon(:matchInfo="getMapInfo()")
+            ProgressMatchWon(:maps="maps")
         md-step(v-if="event.detail.type === 'match-disbanded'" md-label="End of the match" :md-description="getProperTime(event.timestamp)" md-done=true)
             ProgressMatchEnded(:matchInfo="mapArray")
 </template>
