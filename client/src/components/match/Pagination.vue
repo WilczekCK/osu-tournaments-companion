@@ -1,8 +1,7 @@
 <template lang="pug">
     .pagination__container
-        //p "page" {{  }} "of" {{ lastPage }}
         div(:class="{ delay: delay }" class="pagination__container__button")
-          button(@click="prevPage")
+          button(@click="changePage('prev')")
             .pagination__container__button--label
               small {{currentPage.value-1}}/{{lastPage.value}}
               span(class="material-icons md-layout-item")
@@ -11,7 +10,7 @@
                 recent
         .pagination__container--divider
         div(:class="{ delay: delay }" class="pagination__container__button")
-          button(@click="nextPage")
+          button(@click="changePage('next')")
             .pagination__container__button--label
               small {{currentPage.value+1}}/{{lastPage.value}}
               span(class="material-icons md-layout-item")
@@ -21,7 +20,7 @@
 </template>
 <script lang="ts">
 import {
-  Component, Vue, Watch,
+  Component, Vue, Watch, Prop,
 } from 'vue-property-decorator';
 import axios from 'axios';
 import { usePagination } from 'vue-composable';
@@ -31,6 +30,8 @@ Vue.use(VueCompositionAPI);
 
 @Component
 export default class Pagination extends Vue {
+    @Prop() public isMatchLoaded!: boolean;
+
     nextPage = {};
 
     prevPage = {};
@@ -57,12 +58,12 @@ export default class Pagination extends Vue {
       return results;
     }
 
-    async attachDelay() {
-      this.delay = true;
-      // remove delay
-      setTimeout(() => {
-        this.delay = false;
-      }, 500);
+    changePage(to) {
+      if (to === 'prev' && this.delay === false) {
+        this.prevPage();
+      } else if (to === 'next' && this.delay === false) {
+        this.nextPage();
+      }
     }
 
     fadeAnimation(newValue) {
@@ -101,8 +102,18 @@ export default class Pagination extends Vue {
     loadTournaments = (newValue = '1') => {
       this.$emit('getTournamentsPage', newValue);
       this.fadeAnimation(newValue);
-      this.attachDelay();
     };
+
+    @Watch('isMatchLoaded')
+    delayMaker(isLoaded) {
+      this.delay = true;
+
+      if (isLoaded) {
+        setTimeout(() => {
+          this.delay = false;
+        }, 300);
+      }
+    }
 }
 </script>
 

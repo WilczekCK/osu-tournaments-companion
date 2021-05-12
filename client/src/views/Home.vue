@@ -5,7 +5,7 @@
         h2="Follow all tournaments of osu on a single page!"
       transition(:name="animationName")
         MatchList(v-if="show" :tournaments="allTournaments")
-      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation")
+      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded")
 </template>
 
 <script lang="ts">
@@ -29,6 +29,8 @@ export default class Home extends Vue {
 
   animationName = '';
 
+  matchLoaded = false;
+
   fetchMatches = async (value) => {
     const results = await axios({
       method: 'get',
@@ -40,7 +42,11 @@ export default class Home extends Vue {
   }
 
   async changeTournamentPage(value) {
+    this.matchLoaded = false;
+
     this.allTournaments = await this.fetchMatches(value);
+
+    this.matchLoaded = true;
   }
 
   async triggerFadeAnimation({ side, speedOfAnimation }) {
