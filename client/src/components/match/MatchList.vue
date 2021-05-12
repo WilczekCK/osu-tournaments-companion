@@ -22,6 +22,16 @@ export default class MatchList extends Vue {
   // that's too big object, I cannot tell the type :/
   allTournaments = this.tournaments;
 
+  isListLoaded = false;
+
+  mounted() {
+    this.$emit('isMatchLoaded', true);
+  }
+
+  beforeDestroy() {
+    this.$emit('isMatchLoaded', false);
+  }
+
   @Watch('tournaments')
   loadTournaments(newValue: string) {
     this.allTournaments = newValue;

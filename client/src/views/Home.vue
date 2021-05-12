@@ -4,7 +4,7 @@
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
       transition(:name="animationName")
-        MatchList(v-if="show" :tournaments="allTournaments")
+        MatchList(v-if="show" :tournaments="allTournaments" @isMatchLoaded="setMatchLoadingStatus")
       Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded")
 </template>
 
@@ -42,20 +42,18 @@ export default class Home extends Vue {
   }
 
   async changeTournamentPage(value) {
-    this.matchLoaded = false;
-
     this.allTournaments = await this.fetchMatches(value);
+  }
 
-    this.matchLoaded = true;
+  setMatchLoadingStatus(status) {
+    this.matchLoaded = status;
   }
 
   async triggerFadeAnimation({ side, speedOfAnimation }) {
     this.show = false;
 
-    setTimeout(() => {
-      this.animationName = `slide-${side}`;
-      this.show = true;
-    }, 500);
+    this.animationName = `slide-${side}`;
+    this.show = true;
   }
 }
 </script>

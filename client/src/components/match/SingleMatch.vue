@@ -1,15 +1,15 @@
 <template lang="pug">
     md-card
         md-card-media
-            img(:src="require(`@/assets/${getGamemode()}.svg`)")
+            //img(:src="require(`@/assets/${getGamemode()}.svg`)")
         md-card-header
             .md-title
-                a(:href="getLinkToOsuPage()" target="_blank")
+               a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
                     span {{tournamentInfo.title}}
             .md-subtitle
                 span(v-if="tournamentInfo.timeEnded")
                     ="Ended at: "
-                    span {{dayjs(tournamentInfo.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
+                    //span {{dayjs(tournamentInfo.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
                 span(v-else)
                     ='In progress...'
         md-card-expand
@@ -25,14 +25,14 @@
                 .match__container
                     md-tabs(md-alignment="fixed")
                         md-tab(id="tab-teams" md-label="teams")
-                            SingleMatchTeams(:teams="tournamentInfo.teams" v-if="(tournamentInfo.teams.blue && tournamentInfo.teams.red) != 0")
-                            // .matchNotStarted(v-else)
+                            //SingleMatchTeams(:teams="tournamentInfo.teams" v-if="(tournamentInfo.teams.blue && tournamentInfo.teams.red) != 0")
+                            //.matchNotStarted(v-else)
                                 h3="Waiting for the first map to start"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
-                            SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
+                            //SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
-                           // SingleMatchGames
+                            //SingleMatchGames
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
@@ -55,8 +55,6 @@ export default class SingleMatch extends Vue {
   // that's too big object, I cannot tell the type :/
 
   dayjs = dayjs;
-
-  getLinkToOsuPage = () :string => `https://osu.ppy.sh/community/matches/${this.tournamentInfo.id}`;
 
   getGamemode = () :string => {
     const { gameModes } = this.tournamentInfo;
