@@ -4,7 +4,7 @@
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
       transition(:name="animationName")
-        MatchList(v-if="show" :tournaments="allTournaments" @isMatchLoaded="setMatchLoadingStatus")
+        MatchList(v-if="show" :tournaments="allTournaments")
       Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded")
 </template>
 
@@ -25,7 +25,7 @@ import Pagination from '../components/match/Pagination.vue';
 export default class Home extends Vue {
   allTournaments:Array<any> = [];
 
-  show = false;
+  show = true;
 
   animationName = '';
 
@@ -36,7 +36,11 @@ export default class Home extends Vue {
       method: 'get',
       url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}`,
     })
-      .then((data: any) => data.data);
+      .then((data: any) => data.data)
+      .then((data: any) => {
+        this.matchLoaded = true;
+        return data;
+      });
 
     return results;
   }
@@ -45,15 +49,17 @@ export default class Home extends Vue {
     this.allTournaments = await this.fetchMatches(value);
   }
 
-  setMatchLoadingStatus(status) {
-    this.matchLoaded = status;
-  }
-
   async triggerFadeAnimation({ side, speedOfAnimation }) {
     this.show = false;
 
-    this.animationName = `slide-${side}`;
-    this.show = true;
+    setTimeout(() => {
+      this.animationName = `slide-${side}`;
+      this.show = true;
+    }, 200);
+  }
+
+  async created() {
+    this.allTournaments = await this.fetchMatches(0);
   }
 }
 </script>

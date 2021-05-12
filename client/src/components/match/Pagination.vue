@@ -3,7 +3,7 @@
         div(:class="{ delay: delay }" class="pagination__container__button")
           button(@click="changePage('prev')")
             .pagination__container__button--label
-              small {{currentPage.value-1}}/{{lastPage.value}}
+              small {{pagination.currentPage-1}}
               span(class="material-icons md-layout-item")
                 ="west"
               .
@@ -12,7 +12,7 @@
         div(:class="{ delay: delay }" class="pagination__container__button")
           button(@click="changePage('next')")
             .pagination__container__button--label
-              small {{currentPage.value+1}}/{{lastPage.value}}
+              small {{pagination.currentPage+1}}
               span(class="material-icons md-layout-item")
                 ="east"
               .
@@ -22,46 +22,36 @@
 import {
   Component, Vue, Watch, Prop,
 } from 'vue-property-decorator';
-import axios from 'axios';
-import { usePagination } from 'vue-composable';
-import VueCompositionAPI from '@vue/composition-api';
-
-Vue.use(VueCompositionAPI);
 
 @Component
 export default class Pagination extends Vue {
     @Prop() public isMatchLoaded!: boolean;
 
-    nextPage = {};
+    pagination = {
+      currentPage: 0,
+      numPages: 22,
+    };
 
-    prevPage = {};
-
-    currentPage = {};
-
-    lastPage = {};
-
-    totalSize = 0;
+    recentPageSize = 0;
 
     delay = false;
 
     sideToFade = '';
 
-    recentPageSize = 0;
+    nextPage = () => {
+      this.pagination.currentPage += 1;
+    }
 
-    countMatches = async () => {
-      const results = await axios({
-        method: 'get',
-        url: 'http://localhost:3000/tournaments/countTournaments',
-      })
-        .then((data: any) => data.data);
-
-      return results;
+    prevPage = () => {
+      this.pagination.currentPage -= 1;
     }
 
     changePage(to) {
       if (to === 'prev' && this.delay === false) {
+        this.recentPageSize = this.pagination.currentPage;
         this.prevPage();
       } else if (to === 'next' && this.delay === false) {
+        this.recentPageSize = this.pagination.currentPage;
         this.nextPage();
       }
     }
@@ -78,27 +68,7 @@ export default class Pagination extends Vue {
       this.recentPageSize = newValue;
     }
 
-    async created() {
-      this.totalSize = await this.countMatches();
-
-      const {
-        currentPage, lastPage, next, prev, first,
-      } = usePagination({
-        currentPage: 1,
-        pageSize: 5,
-        total: this.totalSize,
-      });
-
-      this.nextPage = next;
-
-      this.prevPage = prev;
-
-      this.currentPage = currentPage;
-
-      this.lastPage = lastPage;
-    }
-
-    @Watch('currentPage.value')
+    @Watch('pagination.currentPage')
     loadTournaments = (newValue = '1') => {
       this.$emit('getTournamentsPage', newValue);
       this.fadeAnimation(newValue);
@@ -109,9 +79,7 @@ export default class Pagination extends Vue {
       this.delay = true;
 
       if (isLoaded) {
-        setTimeout(() => {
-          this.delay = false;
-        }, 300);
+        this.delay = false;
       }
     }
 }

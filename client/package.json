@@ -22,6 +22,7 @@
     "vue-material": "^1.0.0-beta-15",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",
+    "vuejs-uib-pagination": "^1.0.6",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
