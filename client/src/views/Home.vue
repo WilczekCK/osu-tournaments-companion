@@ -45,8 +45,7 @@ export default class Home extends Vue {
   }
 
   async changeTournamentPage(value) {
-    const dude = await this.fetchMatches(value);
-    this.allTournaments = dude;
+    this.allTournaments = await this.fetchMatches(value);
   }
 
   async triggerFadeAnimation({ side, speedOfAnimation }) {
@@ -55,7 +54,7 @@ export default class Home extends Vue {
     setTimeout(() => {
       this.animationName = `slide-${side}`;
       this.show = true;
-    }, 200);
+    }, speedOfAnimation);
   }
 
   async created() {

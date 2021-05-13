@@ -55,6 +55,7 @@ export default class Pagination extends Vue {
         this.nextPage();
       }
 
+      this.fadeAnimation(this.recentPageSize);
       this.$emit('getTournamentsPage', this.pagination.currentPage);
     }
 
