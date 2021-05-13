@@ -13,7 +13,7 @@
                 .progress__map__container__mapInfo__columnToRow
                     .progress__map__container__mapInfo__image
                         a(:href="`https://osu.ppy.sh/b/${map.info.id}`" target="_blank" v-if="map.info")
-                            img(:src="map.info.beatmapset.covers['list@2x']" alt="beatmap_image")
+                            img(:src="map.info.beatmapset.covers['list@2x'] || 'chuj'" alt="beatmap_image")
                         .progress__map__container__mapInfo__image--missing(v-else)="?"
                     .progress__map__container__mapInfo__description
                         .progress__map__container__mapInfo__description--creator
@@ -37,6 +37,7 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import _ from 'underscore';
+import axios from 'axios';
 
 @Component
 export default class Progress extends Vue {

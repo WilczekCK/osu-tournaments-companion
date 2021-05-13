@@ -54,6 +54,8 @@ export default class Pagination extends Vue {
         this.recentPageSize = this.pagination.currentPage;
         this.nextPage();
       }
+
+      this.$emit('getTournamentsPage', this.pagination.currentPage);
     }
 
     fadeAnimation(newValue) {
@@ -67,12 +69,6 @@ export default class Pagination extends Vue {
       }
       this.recentPageSize = newValue;
     }
-
-    @Watch('pagination.currentPage')
-    loadTournaments = (newValue = '1') => {
-      this.$emit('getTournamentsPage', newValue);
-      this.fadeAnimation(newValue);
-    };
 
     @Watch('isMatchLoaded')
     delayMaker(isLoaded) {

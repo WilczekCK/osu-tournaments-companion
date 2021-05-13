@@ -30,5 +30,5 @@ body
   display: flex
   flex-direction: column
   align-items: center
-  will-change: auto
+  will-change: all
 </style>

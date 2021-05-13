@@ -49,7 +49,6 @@ export default class Progress extends Vue {
 <style lang="sass">
 .progress__container
     overflow-x: auto
-    height: 100%
     counter-reset: numbering
     max-height: 350px
 /* Stepper icons change to numbers */

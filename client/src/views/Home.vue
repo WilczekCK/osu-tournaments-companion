@@ -31,22 +31,22 @@ export default class Home extends Vue {
 
   matchLoaded = false;
 
-  fetchMatches = async (value) => {
+  async fetchMatches(value) {
+    this.matchLoaded = false;
+
     const results = await axios({
       method: 'get',
       url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}`,
     })
-      .then((data: any) => data.data)
-      .then((data: any) => {
-        this.matchLoaded = true;
-        return data;
-      });
+      .then((data: any) => data.data);
 
+    this.matchLoaded = true;
     return results;
   }
 
   async changeTournamentPage(value) {
-    this.allTournaments = await this.fetchMatches(value);
+    const dude = await this.fetchMatches(value);
+    this.allTournaments = dude;
   }
 
   async triggerFadeAnimation({ side, speedOfAnimation }) {
@@ -59,6 +59,8 @@ export default class Home extends Vue {
   }
 
   async created() {
+    this.allTournaments = [];
+
     this.allTournaments = await this.fetchMatches(0);
   }
 }
