@@ -2,7 +2,9 @@
     .filtering__container
       .filtering__container__input
         h3="Find by mods or write the keywords here:"
-        input(type="input" placeholder="OWC")
+        md-field
+          label Enter keywords
+          md-input(v-model="lookForKeywords")
       .filtering__container__mods
         .filtering__container__mods--osu
           img(src="@/assets/osu.svg" alt="std")
@@ -20,7 +22,11 @@ import {
 
 @Component
 export default class Filtering extends Vue {
+  lookForKeywords: ''
 
+  created() {
+    this.lookForKeywords = '';
+  }
 }
 </script>
 
@@ -28,16 +34,27 @@ export default class Filtering extends Vue {
  .filtering__container
     width: 768px
     overflow: hidden
-    padding: 15px 0px
+    padding-top: 10px
+    padding-bottom: 50px
     text-align: center
     z-index: 1
     &__input
+      color: white
       display: flex
       flex-direction: row
       justify-content: center
+      padding-bottom: 15px
       width: 100%
-      input
-        width: 100%
+      .md-field
+        input
+          color: $link-active !important
+          -webkit-text-fill-color: $link-active !important
+          font-weight: 600
+        &::after
+          background-color: rgba(255,255,255,.42)
+      .md-field:not(.md-focused)
+        label
+          color: white !important
     &__mods
       max-height: 100%
       width: 100%
