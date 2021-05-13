@@ -3,17 +3,17 @@
       .filtering__container__input
         h3="Find by mods or"
         md-field
-          label Enter keywords to search for tournaments
+          label enter keywords to search for tournaments
           md-input(v-model="lookForKeywords")
       .filtering__container__mods
         .filtering__container__mods--osu
-          img(src="@/assets/osu.svg" alt="std")
+          img(src="@/assets/osu.svg" alt="std" @click="lookForMode = 'osu'" :class="{ modeActive: lookForMode === 'osu' }")
         .filtering__container__mods--taiko
-          img(src="@/assets/taiko.svg" alt="taiko")
+          img(src="@/assets/taiko.svg" alt="taiko" @click="lookForMode = 'taiko'" :class="{ modeActive: lookForMode === 'taiko' }")
         .filtering__container__mods--mania
-          img(src="@/assets/mania.svg" alt="mania")
+          img(src="@/assets/mania.svg" alt="mania" @click="lookForMode = 'mania'" :class="{ modeActive: lookForMode === 'mania' }")
         .filtering__container__mods--fruits
-          img(src="@/assets/fruits.svg" alt="fruits")
+          img(src="@/assets/fruits.svg" alt="fruits" @click="lookForMode = 'fruits'" :class="{ modeActive: lookForMode === 'fruits' }")
 </template>
 <script lang="ts">
 import {
@@ -22,11 +22,9 @@ import {
 
 @Component
 export default class Filtering extends Vue {
-  lookForKeywords: ''
+  lookForKeywords = ''
 
-  created() {
-    this.lookForKeywords = '';
-  }
+  lookForMode = ''
 }
 </script>
 
@@ -65,7 +63,12 @@ export default class Filtering extends Vue {
       display: flex
       flex-direction: row
       justify-content: space-between
+      cursor: pointer
       img
         height: 70px
         width: 100%
+        opacity: .6
+        transition: opacity .3s
+        &:hover, &.modeActive
+          opacity: 1
 </style>
