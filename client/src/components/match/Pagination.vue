@@ -1,18 +1,18 @@
 <template lang="pug">
     .pagination__container
-        div(:class="{ delay: delay }" class="pagination__container__button")
+        div(:class="{ delay: pagination.delayBetweenPages || pagination.currentPage === 0}" class="pagination__container__button")
           button(@click="changePage('prev')")
             .pagination__container__button--label
-              small {{pagination.currentPage-1}}
+              small {{pagination.currentPage}} / {{ pagination.sumPages }}
               span(class="material-icons md-layout-item")
                 ="west"
               .
                 recent
         .pagination__container--divider
-        div(:class="{ delay: delay }" class="pagination__container__button")
+        div(:class="{ delay: pagination.delayBetweenPages || pagination.currentPage+1 === pagination.sumPages }" class="pagination__container__button")
           button(@click="changePage('next')")
             .pagination__container__button--label
-              small {{pagination.currentPage+1}}
+              small {{pagination.currentPage+1}} / {{ pagination.sumPages }}
               span(class="material-icons md-layout-item")
                 ="east"
               .
@@ -22,6 +22,7 @@
 import {
   Component, Vue, Watch, Prop,
 } from 'vue-property-decorator';
+import axios from 'axios';
 
 @Component
 export default class Pagination extends Vue {
@@ -29,14 +30,12 @@ export default class Pagination extends Vue {
 
     pagination = {
       currentPage: 0,
-      numPages: 22,
+      sumPages: 0, // look mounted, overwritten at load :)
+      recentPageSize: 0,
+      delayBetweenPages: false,
+      sideToFade: '',
+      recordsOnPage: 5,
     };
-
-    recentPageSize = 0;
-
-    delay = false;
-
-    sideToFade = '';
 
     nextPage = () => {
       this.pagination.currentPage += 1;
@@ -46,37 +45,51 @@ export default class Pagination extends Vue {
       this.pagination.currentPage -= 1;
     }
 
+    countMatches = async () => {
+      const results = await axios({
+        method: 'get',
+        url: 'http://localhost:3000/tournaments/countTournaments',
+      })
+        .then((data: any) => data.data);
+
+      return results / this.pagination.recordsOnPage;
+    }
+
     changePage(to) {
-      if (to === 'prev' && this.delay === false) {
-        this.recentPageSize = this.pagination.currentPage;
+      if (to === 'prev' && this.pagination.delayBetweenPages === false && this.pagination.currentPage > 0) {
+        this.pagination.recentPageSize = this.pagination.currentPage;
         this.prevPage();
-      } else if (to === 'next' && this.delay === false) {
-        this.recentPageSize = this.pagination.currentPage;
+      } else if (to === 'next' && this.pagination.delayBetweenPages === false && this.pagination.currentPage + 1 !== this.pagination.sumPages) {
+        this.pagination.recentPageSize = this.pagination.currentPage;
         this.nextPage();
       }
 
-      this.fadeAnimation(this.recentPageSize);
+      this.fadeAnimation(this.pagination.recentPageSize);
       this.$emit('getTournamentsPage', this.pagination.currentPage);
     }
 
     fadeAnimation(newValue) {
       const speedOfAnimation = 0.3;
-      if (this.recentPageSize > (newValue || !newValue)) {
-        this.sideToFade = 'left';
-        this.$emit('triggerFadeAnimation', { side: this.sideToFade, speedOfAnimation });
+      if (this.pagination.recentPageSize > (newValue || !newValue)) {
+        this.pagination.sideToFade = 'left';
+        this.$emit('triggerFadeAnimation', { side: this.pagination.sideToFade, speedOfAnimation });
       } else {
-        this.sideToFade = 'right';
-        this.$emit('triggerFadeAnimation', { side: this.sideToFade, speedOfAnimation });
+        this.pagination.sideToFade = 'right';
+        this.$emit('triggerFadeAnimation', { side: this.pagination.sideToFade, speedOfAnimation });
       }
-      this.recentPageSize = newValue;
+      this.pagination.recentPageSize = newValue;
+    }
+
+    async mounted() {
+      this.pagination.sumPages = await this.countMatches();
     }
 
     @Watch('isMatchLoaded')
     delayMaker(isLoaded) {
-      this.delay = true;
+      this.pagination.delayBetweenPages = true;
 
       if (isLoaded) {
-        this.delay = false;
+        this.pagination.delayBetweenPages = false;
       }
     }
 }
