@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  MdMenu, MdCard, MdContent, MdTabs, MdButton, MdSteppers, MdProgress, MdInput, MdField,
+  MdMenu, MdCard, MdContent, MdTabs, MdButton, MdSteppers, MdProgress, MdField,
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
 import './assets/sass/theme.sass';
@@ -18,7 +18,6 @@ Vue.use(MdButton);
 Vue.use(MdCard);
 Vue.use(MdSteppers);
 Vue.use(MdProgress);
-Vue.use(MdInput);
 Vue.use(MdField);
 
 new Vue({
