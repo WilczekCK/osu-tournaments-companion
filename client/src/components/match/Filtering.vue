@@ -17,14 +17,22 @@
 </template>
 <script lang="ts">
 import {
-  Component, Vue,
+  Component, Vue, Watch,
 } from 'vue-property-decorator';
 
 @Component
 export default class Filtering extends Vue {
   lookForKeywords = ''
 
-  lookForMode = ''
+  lookForMode = '';
+
+  queryCreated = {}
+
+  @Watch('lookForMode')
+  createModeQuery() {
+    this.queryCreated = { key: 'teams.names.red', value: 'Dve' };
+    this.$emit('queryAppended', this.queryCreated);
+  }
 }
 </script>
 

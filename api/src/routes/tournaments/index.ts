@@ -10,11 +10,11 @@ const tournamentRouter = new Router({
 tournamentRouter.use(manageTournament);
     
 tournamentRouter.get('/', async (ctx) => {
-    let {osuApi: extApi, limit = 0, startFrom = 0, query = {}} = ctx.query;
+    let {osuApi: extApi, limit = 0, startFrom = 0, queryKey = '', queryValue=''} = ctx.query;
 
     ctx.body = extApi 
         ? await osuApi(`matches/`) 
-        : limit === 0 ? await tournaments.displayAll() : await tournaments.displaySome(query, startFrom, limit);
+        : limit === 0 ? await tournaments.displayAll() : await tournaments.displaySome(queryKey, queryValue, startFrom, limit);
 })
 
 tournamentRouter.get('/countTournaments', async (ctx) => {

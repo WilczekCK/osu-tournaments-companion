@@ -3,7 +3,7 @@
     .content__container--content
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
-      Filtering
+      Filtering(@queryAppended="setAdditionalQuery")
       transition(:name="animationName")
         MatchList(v-if="isListLoaded" :tournaments="allTournaments")
       Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded")
@@ -34,15 +34,17 @@ export default class Home extends Vue {
 
   matchLoaded = false;
 
+  additionalQuery? = '';
+
   async fetchMatches(value) {
     this.matchLoaded = false;
-
     const results = await axios({
       method: 'get',
-      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}`,
+      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}${this.additionalQuery}`,
     })
       .then((data: any) => data.data);
 
+    console.log(results);
     this.matchLoaded = true;
     return results;
   }
@@ -58,6 +60,12 @@ export default class Home extends Vue {
       this.animationName = `slide-${side}`;
       this.isListLoaded = true;
     }, speedOfAnimation);
+  }
+
+  async setAdditionalQuery(value) {
+    this.additionalQuery = `&queryKey=${value.key}&queryValue=${value.value}`;
+
+    this.allTournaments = await this.fetchMatches(0);
   }
 
   async created() {
