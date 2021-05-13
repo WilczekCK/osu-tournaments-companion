@@ -1,9 +1,9 @@
 <template lang="pug">
     .filtering__container
       .filtering__container__input
-        h3="Find by mods or write the keywords here:"
+        h3="Find by mods or"
         md-field
-          label Enter keywords
+          label Enter keywords to search for tournaments
           md-input(v-model="lookForKeywords")
       .filtering__container__mods
         .filtering__container__mods--osu
@@ -32,7 +32,7 @@ export default class Filtering extends Vue {
 
 <style lang="sass">
  .filtering__container
-    width: 768px
+    width: 600px
     overflow: hidden
     padding-top: 10px
     padding-bottom: 50px
@@ -43,13 +43,17 @@ export default class Filtering extends Vue {
       display: flex
       flex-direction: row
       justify-content: center
+      align-items: center
       padding-bottom: 15px
       width: 100%
+      h3
+        white-space: nowrap
+        padding-right: 15px
       .md-field
+        font-weight: 600
         input
           color: $link-active !important
           -webkit-text-fill-color: $link-active !important
-          font-weight: 600
         &::after
           background-color: rgba(255,255,255,.42)
       .md-field:not(.md-focused)
