@@ -30,5 +30,4 @@ body
   display: flex
   flex-direction: column
   align-items: center
-  will-change: all
 </style>

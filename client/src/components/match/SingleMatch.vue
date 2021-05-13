@@ -17,8 +17,8 @@
                 //p {{getFinishScore()}}
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
-                    md-button(class="md-mini")
-                        span(class="material-icons md-layout-item" @click="opened = true")
+                    md-button(class="md-mini" @mousedown="opened = true")
+                        span(class="material-icons md-layout-item" @mousedown="opened = true")
                             ="keyboard_arrow_down"
         md-card-expand-content
             md-card-content
