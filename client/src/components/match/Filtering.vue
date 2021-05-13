@@ -1,5 +1,8 @@
 <template lang="pug">
     .filtering__container
+      .filtering__container__input
+        h3="Find by mods or write the keywords here:"
+        input(type="input" placeholder="OWC")
       .filtering__container__mods
         .filtering__container__mods--osu
           img(src="@/assets/osu.svg" alt="std")
@@ -23,17 +26,25 @@ export default class Filtering extends Vue {
 
 <style lang="sass">
  .filtering__container
-    max-height: 80px
-    max-width: 768px
+    width: 768px
     overflow: hidden
     padding: 15px 0px
-    &__mods
-      max-height: 100%
-      max-width: 100%
+    text-align: center
+    z-index: 1
+    &__input
       display: flex
       flex-direction: row
       justify-content: center
+      width: 100%
+      input
+        width: 100%
+    &__mods
+      max-height: 100%
+      width: 100%
+      display: flex
+      flex-direction: row
+      justify-content: space-between
       img
-        height: 100%
+        height: 70px
         width: 100%
 </style>

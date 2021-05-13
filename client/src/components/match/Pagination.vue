@@ -107,6 +107,7 @@ export default class Pagination extends Vue {
       position: relative
     &--divider
       width: 95%
+      z-index: -1
     &__button
       button
         height: 100%
