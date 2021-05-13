@@ -3,6 +3,7 @@
     .content__container--content
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
+      Filtering
       transition(:name="animationName")
         MatchList(v-if="isListLoaded" :tournaments="allTournaments")
       Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded")
@@ -14,12 +15,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '../components/HelloWorld.vue';
 import MatchList from '../components/match/MatchList.vue';
 import Pagination from '../components/match/Pagination.vue';
+import Filtering from '../components/match/Filtering.vue';
 
 @Component({
   components: {
     HelloWorld,
     MatchList,
     Pagination,
+    Filtering,
   },
 })
 export default class Home extends Vue {
