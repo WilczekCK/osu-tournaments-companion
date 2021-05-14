@@ -1,10 +1,10 @@
 <template lang="pug">
     .match__list
-      transition(:name="matches.animationDetails.side")
+      transition(v-if="matches.areLoaded" :name="matches.animationDetails.side")
         .match__list__container(v-if="matches.isAnimationEnded")
           SingleMatch(v-for="tournament in matches.loadedTournaments" :tournamentInfo="tournament" :key="tournament.id")
-        h3(v-else-if="matches.loadedTournaments.length <= 0")="No more tournaments :("
-        md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else-if="!matches.isAnimationEnded")
+        h3(v-else-if="matches.loadedTournaments.length === 0")="No more tournaments :("
+      md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
 </template>
 
 <script lang="ts">
@@ -97,6 +97,11 @@ export default class MatchList extends Vue {
 </script>
 
 <style lang="sass">
+.match__list
+  h3, .md-progress-spinner
+    text-align: center
+    margin: 0 auto
+
 .slide-left-enter-active
   transition: all .6s ease;
 .slide-left-leave-active
