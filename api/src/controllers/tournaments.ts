@@ -68,7 +68,7 @@ class Tournaments {
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         //prepare informations about the tournament
-        let [{judge}, {gameModes}, {playedBeatmaps}] = await this.parseEventsObject( events );
+        let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events );
     
         // In plays.beatmap players have the team color!
         let sortedTeams = await this.sortTeams( playedBeatmaps );
@@ -88,7 +88,7 @@ class Tournaments {
             timeEnded: match.end_time,
             twitchURL: 'TBA',
             mapsPlayed: playedBeatmaps,
-            gameModes,
+            gameMode,
             events
         });
         
@@ -172,8 +172,9 @@ class Tournaments {
         }
 
         //when events end, push all info into array of objects!
+        console.log(this.selectMostPlayedMode(countModes));
         getInfo.push( {judge} );
-        getInfo.push( {'gameModes': countModes} );
+        getInfo.push( {'gameMode': this.selectMostPlayedMode(countModes) } );
         getInfo.push( {playedBeatmaps});
         return getInfo;
     }
@@ -278,6 +279,16 @@ class Tournaments {
         }
 
         return teamsName;
+    }
+
+    public selectMostPlayedMode = (matchPlayed: object) => {
+
+        function whichIsMostPlayed(playedCount: number) {
+          if (playedCount === _.max(matchPlayed)) return true;
+          return false;
+        }
+    
+        return _.findKey(matchPlayed, whichIsMostPlayed);
     }
 }
 

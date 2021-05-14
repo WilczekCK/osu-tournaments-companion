@@ -12,7 +12,7 @@ interface Tournament extends Document {
     mapsPlayed: Array<Object> | Object;
     twitchURL: String;
     events: Array<Object>;
-    gameModes: object,
+    gameMode: string,
 }
 
 
@@ -28,7 +28,7 @@ const tournamentSchema = new Schema({
     mapsPlayed: { type: Array || Object },
     twitchURL: { type: String },
     events: { type: Array },
-    gameModes: {type: Object}
+    gameMode: {type: String}
 })
 
 const TournamentCreator = mongoose.model<Tournament>('Tournament', tournamentSchema);

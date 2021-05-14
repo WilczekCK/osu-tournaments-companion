@@ -38,6 +38,7 @@ export default class Home extends Vue {
 
   async fetchMatches(value) {
     this.matchLoaded = false;
+
     const results = await axios({
       method: 'get',
       url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}${this.additionalQuery}`,
