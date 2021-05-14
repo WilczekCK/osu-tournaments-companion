@@ -3,12 +3,17 @@
     .content__container--content
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
-      Filtering(@queryAppended="setAdditionalQuery" @reloadPagination="shouldReload = true")
-      transition(:name="animationName")
-        MatchList
+      Filtering(
+        @queryAppended="setAdditionalQuery"
+        @reloadPagination="shouldReload = true"
+      )
+      MatchList(
+        :actualPage="props.pagination.actualPage"
+        :animationDetails="props.pagination.animationDetails"
+      )
       Pagination(
         @getTournamentsPage="props.pagination.setNewPage"
-        @triggerFadeAnimation="triggerFadeAnimation"
+        @triggerFadeAnimation="props.pagination.setAnimationDetails"
         :isMatchLoaded="matchLoaded"
         :reloadPaginationQuery="this.additionalQuery"
       )
@@ -34,7 +39,6 @@ export default class Home extends Vue {
   props = {
     matches: {
       isMatchLoaded: false,
-      animationName: '',
     },
     filtering: {
       reloadPage: false,
@@ -42,8 +46,10 @@ export default class Home extends Vue {
     },
     pagination: {
       doFadeAnimation: false,
+      animationDetails: {},
       actualPage: 0,
       setNewPage: (pageNumber: number):void => { this.props.pagination.actualPage = pageNumber; },
+      setAnimationDetails: (animationName: Record<string, number>):void => { this.props.pagination.animationDetails = animationName; },
     },
   };
 }
@@ -71,20 +77,4 @@ export default class Home extends Vue {
     width: 100%
 .md-progress-spinner
   transform: none !important
-
-.slide-left-enter-active
-  transition: all .6s ease;
-.slide-left-leave-active
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-.slide-left-enter, .slide-fade-leave-to
-  transform: translateX(-20px)
-  opacity: 0
-
-.slide-right-enter-active
-  transition: all .6s ease;
-.slide-right-leave-active
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-.slide-right-enter, .slide-fade-leave-to
-  transform: translateX(20px)
-  opacity: 0
 </style>

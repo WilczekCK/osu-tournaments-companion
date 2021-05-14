@@ -1,8 +1,10 @@
 <template lang="pug">
-  .match__container(v-if="matches.loadedTournaments.length > 0")
-    SingleMatch(v-for="tournament in matches.loadedTournaments" :tournamentInfo="tournament" :key="tournament.id")
-  h3(v-else-if="matches.loadedTournaments.length === undefined")="No more tournaments :("
-  md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
+    .match__list
+      transition(:name="matches.animationDetails.side")
+        .match__list__container(v-if="matches.isAnimationEnded")
+          SingleMatch(v-for="tournament in matches.loadedTournaments" :tournamentInfo="tournament" :key="tournament.id")
+        h3(v-else-if="matches.loadedTournaments.length <= 0")="No more tournaments :("
+        md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else-if="matches.loadedTournaments === undefined && !matches.isAnimationEnded ")
 </template>
 
 <script lang="ts">
@@ -18,12 +20,19 @@ import SingleMatch from './SingleMatch.vue';
   },
 })
 export default class MatchList extends Vue {
+  @Prop() private actualPage!: number;
+
+  @Prop() private animationDetails!: Record<string, number>;
+
   matches = {
     loadedTournaments: [],
     additionalQuery: '',
     areLoaded: false,
     isAnimationEnded: false,
-    animationName: '',
+    animationDetails: {
+      side: 'slide-right',
+      speedOfAnimation: 0.3,
+    },
     changePage: async (pageNumber) => {
       // replace with new tournaments in array
       this.matches.loadedTournaments = await this.matches.fetch(pageNumber);
@@ -43,24 +52,43 @@ export default class MatchList extends Vue {
         .then((data: any) => data.data);
 
       this.matches.areLoaded = true;
+      this.matches.nextPageAnimation();
       return results;
     },
-    nextPageAnimation: async ({ side, speedOfAnimation }) => {
+    nextPageAnimation: async () => {
       this.matches.isAnimationEnded = false;
 
       setTimeout(() => {
-        this.matches.animationName = `slide-${side}`;
         this.matches.isAnimationEnded = true;
-      }, speedOfAnimation);
+      }, this.matches.animationDetails.speedOfAnimation);
     },
   }
 
   async created() {
     this.matches.loadedTournaments = await this.matches.fetch(0);
   }
+
+  @Watch('actualPage')
+  async pageChanged(pageNumber) {
+    await this.matches.changePage(pageNumber);
+  }
 }
 </script>
 
 <style lang="sass">
-.match__container
+.slide-left-enter-active
+  transition: all .6s ease;
+.slide-left-leave-active
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+.slide-left-enter, .slide-fade-leave-to
+  transform: translateX(-20px)
+  opacity: 0
+
+.slide-right-enter-active
+  transition: all .6s ease;
+.slide-right-leave-active
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+.slide-right-enter, .slide-fade-leave-to
+  transform: translateX(20px)
+  opacity: 0
 </style>
