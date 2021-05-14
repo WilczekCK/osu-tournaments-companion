@@ -4,12 +4,12 @@
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
       Filtering(
-        @queryAppended="setAdditionalQuery"
-        @reloadPagination="shouldReload = true"
+        @queryAppended="props.filtering.setFilterQuery"
       )
       MatchList(
         :actualPage="props.pagination.actualPage"
         :animationDetails="props.pagination.animationDetails"
+        :queryFilter="props.filtering.filterQuery"
       )
       Pagination(
         @getTournamentsPage="props.pagination.setNewPage"
@@ -41,11 +41,10 @@ export default class Home extends Vue {
       isMatchLoaded: false,
     },
     filtering: {
-      reloadPage: false,
-      queryMatches: '',
+      filterQuery: '',
+      setFilterQuery: (filterQuery: string):void => { this.props.filtering.filterQuery = filterQuery; },
     },
     pagination: {
-      doFadeAnimation: false,
       animationDetails: {},
       actualPage: 0,
       setNewPage: (pageNumber: number):void => { this.props.pagination.actualPage = pageNumber; },

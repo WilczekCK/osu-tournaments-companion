@@ -24,6 +24,8 @@ export default class MatchList extends Vue {
 
   @Prop() private animationDetails!: Record<string, number>;
 
+  @Prop() private queryFilter!: string;
+
   matches = {
     loadedTournaments: [],
     additionalQuery: '',
@@ -71,6 +73,14 @@ export default class MatchList extends Vue {
   @Watch('actualPage')
   async pageChanged(pageNumber) {
     await this.matches.changePage(pageNumber);
+  }
+
+  @Watch('queryFilter')
+  async displayFilteredMatches() {
+    this.matches.setAdditionalQuery(this.queryFilter);
+
+    // we need to set it as page 0, because of new, queried results
+    await this.matches.changePage(0);
   }
 }
 </script>
