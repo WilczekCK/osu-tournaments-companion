@@ -1,7 +1,7 @@
 <template lang="pug">
     md-card
         md-card-media
-            img(:src="require(`@/assets/${getGamemode()}.svg`)")
+            img(:src="require(`@/assets/${tournamentInfo.gameMode}.svg`)")
         md-card-header
             .md-title
                a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
@@ -58,17 +58,6 @@ export default class SingleMatch extends Vue {
   dayjs = dayjs;
 
   opened = false;
-
-  getGamemode = () :string => {
-    const { gameModes } = this.tournamentInfo;
-
-    function whichIsMostPlayed(playedCount) {
-      if (playedCount === _.max(gameModes)) return true;
-      return false;
-    }
-
-    return _.findKey(gameModes, whichIsMostPlayed);
-  };
 
   matchScore = { red: 0, blue: 0 };
 
