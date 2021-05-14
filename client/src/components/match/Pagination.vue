@@ -28,6 +28,8 @@ import axios from 'axios';
 export default class Pagination extends Vue {
     @Prop() public isMatchLoaded!: boolean;
 
+    @Prop() public reloadPagination!: boolean;
+
     pagination = {
       currentPage: 0,
       sumPages: 0, // look mounted, overwritten at load :)
@@ -36,6 +38,8 @@ export default class Pagination extends Vue {
       sideToFade: '',
       recordsOnPage: 5,
     };
+
+    shouldReload = this.reloadPagination;
 
     nextPage = () => {
       this.pagination.currentPage += 1;
@@ -91,6 +95,11 @@ export default class Pagination extends Vue {
       if (isLoaded) {
         this.pagination.delayBetweenPages = false;
       }
+    }
+
+    @Watch('reloadPagination')
+    async recalcPages() {
+      this.pagination.sumPages = await this.countMatches();
     }
 }
 </script>

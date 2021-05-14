@@ -34,6 +34,7 @@ export default class Filtering extends Vue {
 
     this.queryCreated = { key: 'title', value: this.lookForKeywords };
     this.$emit('queryAppended', this.queryCreated);
+    this.$emit('reloadPagination', true);
   }
 
   @Watch('lookForMode')
@@ -42,6 +43,7 @@ export default class Filtering extends Vue {
 
     this.queryCreated = { key: 'gameMode', value: this.lookForMode };
     this.$emit('queryAppended', this.queryCreated);
+    this.$emit('reloadPagination', true);
   }
 }
 </script>

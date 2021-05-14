@@ -3,10 +3,10 @@
     .content__container--content
       .content__container--header
         h2="Follow all tournaments of osu on a single page!"
-      Filtering(@queryAppended="setAdditionalQuery")
+      Filtering(@queryAppended="setAdditionalQuery" @reloadPagination="shouldReload = true")
       transition(:name="animationName")
         MatchList(v-if="isListLoaded" :tournaments="allTournaments")
-      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded")
+      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded" :reloadPagination="this.additionalQuery")
 </template>
 
 <script lang="ts">
@@ -35,6 +35,8 @@ export default class Home extends Vue {
   matchLoaded = false;
 
   additionalQuery? = '';
+
+  shouldReload = false;
 
   async fetchMatches(value) {
     this.matchLoaded = false;
