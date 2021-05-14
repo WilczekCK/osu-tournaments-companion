@@ -6,7 +6,12 @@
       Filtering(@queryAppended="setAdditionalQuery" @reloadPagination="shouldReload = true")
       transition(:name="animationName")
         MatchList
-      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded" :reloadPaginationQuery="this.additionalQuery")
+      Pagination(
+        @getTournamentsPage="props.pagination.setNewPage"
+        @triggerFadeAnimation="triggerFadeAnimation"
+        :isMatchLoaded="matchLoaded"
+        :reloadPaginationQuery="this.additionalQuery"
+      )
 </template>
 
 <script lang="ts">
@@ -26,20 +31,21 @@ import Filtering from '../components/match/Filtering.vue';
   },
 })
 export default class Home extends Vue {
-  props:{
-    MatchesComponent: {
+  props = {
+    matches: {
       isMatchLoaded: false,
       animationName: '',
     },
-    filteringComponent: {
+    filtering: {
       reloadPage: false,
       queryMatches: '',
     },
-    paginationComponent: {
+    pagination: {
       doFadeAnimation: false,
       actualPage: 0,
-    }
-  }
+      setNewPage: (pageNumber: number):void => { this.props.pagination.actualPage = pageNumber; },
+    },
+  };
 }
 </script>
 
