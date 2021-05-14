@@ -6,7 +6,7 @@
       Filtering(@queryAppended="setAdditionalQuery" @reloadPagination="shouldReload = true")
       transition(:name="animationName")
         MatchList(v-if="isListLoaded" :tournaments="allTournaments")
-      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded" :reloadPagination="this.additionalQuery")
+      Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded" :reloadPaginationQuery="this.additionalQuery")
 </template>
 
 <script lang="ts">
@@ -43,7 +43,7 @@ export default class Home extends Vue {
 
     const results = await axios({
       method: 'get',
-      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}${this.additionalQuery}`,
+      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}&${this.additionalQuery}`,
     })
       .then((data: any) => data.data);
 
@@ -65,7 +65,7 @@ export default class Home extends Vue {
   }
 
   async setAdditionalQuery(value) {
-    this.additionalQuery = `&queryKey=${value.key}&queryValue=${value.value}`;
+    this.additionalQuery = `queryKey=${value.key}&queryValue=${value.value}`;
 
     this.allTournaments = await this.fetchMatches(0);
   }

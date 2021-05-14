@@ -28,7 +28,7 @@ import axios from 'axios';
 export default class Pagination extends Vue {
     @Prop() public isMatchLoaded!: boolean;
 
-    @Prop() public reloadPagination!: boolean;
+    @Prop() public reloadPaginationQuery!: string;
 
     pagination = {
       currentPage: 0,
@@ -39,8 +39,6 @@ export default class Pagination extends Vue {
       recordsOnPage: 5,
     };
 
-    shouldReload = this.reloadPagination;
-
     nextPage = () => {
       this.pagination.currentPage += 1;
     }
@@ -49,10 +47,10 @@ export default class Pagination extends Vue {
       this.pagination.currentPage -= 1;
     }
 
-    countMatches = async () => {
+    countMatches = async (additionalQuery = '') => {
       const results = await axios({
         method: 'get',
-        url: 'http://localhost:3000/tournaments/countTournaments',
+        url: `http://localhost:3000/tournaments/countTournaments${additionalQuery}`,
       })
         .then((data: any) => data.data);
 
@@ -97,9 +95,10 @@ export default class Pagination extends Vue {
       }
     }
 
-    @Watch('reloadPagination')
+    @Watch('reloadPaginationQuery')
     async recalcPages() {
-      this.pagination.sumPages = await this.countMatches();
+      console.log(this.reloadPaginationQuery);
+      this.pagination.sumPages = await this.countMatches(`?${this.reloadPaginationQuery}`);
     }
 }
 </script>

@@ -19,10 +19,8 @@ tournamentRouter.get('/', async (ctx) => {
 
 tournamentRouter.get('/countTournaments', async (ctx) => {
     let {queryKey = '', queryValue=''} = ctx.query;
-    
-    ctx.body = queryKey && queryValue 
-        ? await tournaments.countTournaments({})
-        : await tournaments.countTournaments({queryKey, queryValue});
+
+    ctx.body = await tournaments.countTournaments(queryKey, queryValue);
 })
 
 // Just for displaying single tournament
