@@ -30,13 +30,17 @@ export default class Filtering extends Vue {
 
   @Watch('lookForKeywords')
   createKeywordQuery() {
+    this.lookForMode = '';
+
     this.queryCreated = { key: 'title', value: this.lookForKeywords };
     this.$emit('queryAppended', this.queryCreated);
   }
 
   @Watch('lookForMode')
   createModeQuery() {
-    this.queryCreated = { key: 'gameModes', value: this.lookForMode };
+    this.lookForKeywords = '';
+
+    this.queryCreated = { key: 'gameMode', value: this.lookForMode };
     this.$emit('queryAppended', this.queryCreated);
   }
 }

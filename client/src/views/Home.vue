@@ -45,7 +45,6 @@ export default class Home extends Vue {
     })
       .then((data: any) => data.data);
 
-    console.log(results);
     this.matchLoaded = true;
     return results;
   }
