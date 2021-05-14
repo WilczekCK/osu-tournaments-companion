@@ -54,6 +54,9 @@ export default class Filtering extends Vue {
     padding-bottom: 50px
     text-align: center
     z-index: 1
+    @media (max-width: 600px)
+      width: 90%
+      padding-bottom: 10px
     &__input
       color: white
       display: flex
@@ -62,9 +65,14 @@ export default class Filtering extends Vue {
       align-items: center
       padding-bottom: 15px
       width: 100%
+      @media (max-width: 600px)
+        flex-direction: column
       h3
         white-space: nowrap
         padding-right: 15px
+        @media (max-width: 600px)
+          padding: 0px
+          margin: 0px
       .md-field
         font-weight: 600
         input
@@ -75,6 +83,8 @@ export default class Filtering extends Vue {
       .md-field:not(.md-focused)
         label
           color: white !important
+          @media (max-width: 600px)
+            font-size: 1em
     &__mods
       max-height: 100%
       width: 100%
