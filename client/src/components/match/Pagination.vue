@@ -37,7 +37,7 @@ export default class Pagination extends Vue {
       delayBetweenPages: false,
       sideToFade: '',
       recordsOnPage: 5,
-      maxPage: 0,
+      maxPage: 1,
       setMaxPage: () => {
         this.pagination.maxPage = Math.ceil(this.pagination.sumPages / this.pagination.recordsOnPage);
       },
@@ -65,7 +65,7 @@ export default class Pagination extends Vue {
       if (to === 'prev' && this.pagination.delayBetweenPages === false && this.pagination.currentPage > 0) {
         this.pagination.recentPageSize = this.pagination.currentPage;
         this.prevPage();
-      } else if (to === 'next' && this.pagination.delayBetweenPages === false && this.pagination.currentPage + 1 !== this.pagination.maxPage) {
+      } else if (to === 'next' && this.pagination.delayBetweenPages === false && this.pagination.currentPage + 1 < this.pagination.maxPage) {
         this.pagination.recentPageSize = this.pagination.currentPage;
         this.nextPage();
       }
@@ -102,7 +102,7 @@ export default class Pagination extends Vue {
     @Watch('reloadPaginationQuery')
     async recalcPages() {
       this.pagination.currentPage = 0;
-      this.pagination.sumPages = await this.countMatches(`?${this.reloadPaginationQuery}`);
+      this.pagination.sumPages = await this.countMatches(`?${this.reloadPaginationQuery}`) || 1;
       this.pagination.setMaxPage();
     }
 }
