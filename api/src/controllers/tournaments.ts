@@ -39,7 +39,7 @@ class Tournaments {
 
     public displaySome = async (queryKey:string, queryValue:string, startFrom: string, limitedTo:string) => {
         
-        var query:object = queryKey && queryValue ? { [`${queryKey}`]: { $regex: new RegExp(queryValue, 'i')} } : {};
+        const query:object = queryKey && queryValue ? { [`${queryKey}`]: { $regex: new RegExp(queryValue, 'i')} } : {};
 
         const result = await this.query( query ).find((err: any, tournament: any) => {
             return tournament;
@@ -57,9 +57,11 @@ class Tournaments {
         return result;
     };
 
-    public countTournaments = async (whereQuery: Object) => {
+    public countTournaments = async (queryKey:string, queryValue:string) => {
+
+        const query:object = queryKey && queryValue ? { [`${queryKey}`]: { $regex: new RegExp(queryValue, 'i')} } : {};
         
-        const result = await this.query(whereQuery).find((err: any, tournament: any) => {
+        const result = await this.query(query).find((err: any, tournament: any) => {
             return tournament;
         }).count();
 
