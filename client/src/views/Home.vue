@@ -7,6 +7,7 @@
         @queryAppended="props.filtering.setFilterQuery"
       )
       MatchList(
+        @matchesLoaded="props.matches.setLoadingState"
         :actualPage="props.pagination.actualPage"
         :animationDetails="props.pagination.animationDetails"
         :queryFilter="props.filtering.filterQuery"
@@ -14,8 +15,8 @@
       Pagination(
         @getTournamentsPage="props.pagination.setNewPage"
         @triggerFadeAnimation="props.pagination.setAnimationDetails"
-        :isMatchLoaded="matchLoaded"
-        :reloadPaginationQuery="this.additionalQuery"
+        :isMatchLoaded="props.matches.areLoaded"
+        :reloadPaginationQuery="props.filtering.filterQuery"
       )
 </template>
 
@@ -38,11 +39,12 @@ import Filtering from '../components/match/Filtering.vue';
 export default class Home extends Vue {
   props = {
     matches: {
-      isMatchLoaded: false,
+      areLoaded: false,
+      setLoadingState: (status: boolean):void => { this.props.matches.areLoaded = status; },
     },
     filtering: {
       filterQuery: '',
-      setFilterQuery: (filterQuery: string):void => { this.props.filtering.filterQuery = filterQuery; },
+      setFilterQuery: (filterQuery: string):void => { this.props.filtering.filterQuery = `queryKey=${filterQuery.key}&queryValue=${filterQuery.value}`; },
     },
     pagination: {
       animationDetails: {},

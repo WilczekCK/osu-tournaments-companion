@@ -4,7 +4,7 @@
         .match__list__container(v-if="matches.isAnimationEnded")
           SingleMatch(v-for="tournament in matches.loadedTournaments" :tournamentInfo="tournament" :key="tournament.id")
         h3(v-else-if="matches.loadedTournaments.length <= 0")="No more tournaments :("
-        md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else-if="matches.loadedTournaments === undefined && !matches.isAnimationEnded ")
+        md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else-if="!matches.isAnimationEnded")
 </template>
 
 <script lang="ts">
@@ -37,12 +37,18 @@ export default class MatchList extends Vue {
     },
     changePage: async (pageNumber) => {
       // replace with new tournaments in array
-      this.matches.loadedTournaments = await this.matches.fetch(pageNumber);
+      const fetchMatches = await this.matches.fetch(pageNumber);
+
+      if (fetchMatches.status === 404) {
+        this.matches.loadedTournaments = [];
+      } else {
+        this.matches.loadedTournaments = fetchMatches;
+      }
     },
     setAdditionalQuery: async (query) => {
       // set and load new matches
-      this.matches.additionalQuery = `queryKey=${query.key}&queryValue=${query.value}`;
-      this.matches.loadedTournaments = await this.matches.fetch(0);
+      this.matches.additionalQuery = query;
+      await this.matches.changePage(0);
     },
     fetch: async (startPage) => {
       this.matches.areLoaded = false;
@@ -81,6 +87,11 @@ export default class MatchList extends Vue {
 
     // we need to set it as page 0, because of new, queried results
     await this.matches.changePage(0);
+  }
+
+  @Watch('matches.areLoaded')
+  emitLoadingStatus(status) {
+    this.$emit('matchesLoaded', status);
   }
 }
 </script>
