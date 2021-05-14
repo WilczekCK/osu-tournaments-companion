@@ -5,7 +5,7 @@
         h2="Follow all tournaments of osu on a single page!"
       Filtering(@queryAppended="setAdditionalQuery" @reloadPagination="shouldReload = true")
       transition(:name="animationName")
-        MatchList(v-if="isListLoaded" :tournaments="allTournaments")
+        MatchList
       Pagination(@getTournamentsPage="changeTournamentPage" @triggerFadeAnimation="triggerFadeAnimation" :isMatchLoaded="matchLoaded" :reloadPaginationQuery="this.additionalQuery")
 </template>
 
@@ -38,23 +38,6 @@ export default class Home extends Vue {
 
   shouldReload = false;
 
-  async fetchMatches(value) {
-    this.matchLoaded = false;
-
-    const results = await axios({
-      method: 'get',
-      url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${value * 5}&${this.additionalQuery}`,
-    })
-      .then((data: any) => data.data);
-
-    this.matchLoaded = true;
-    return results;
-  }
-
-  async changeTournamentPage(value) {
-    this.allTournaments = await this.fetchMatches(value);
-  }
-
   async triggerFadeAnimation({ side, speedOfAnimation }) {
     this.isListLoaded = false;
 
@@ -62,16 +45,6 @@ export default class Home extends Vue {
       this.animationName = `slide-${side}`;
       this.isListLoaded = true;
     }, speedOfAnimation);
-  }
-
-  async setAdditionalQuery(value) {
-    this.additionalQuery = `queryKey=${value.key}&queryValue=${value.value}`;
-
-    this.allTournaments = await this.fetchMatches(0);
-  }
-
-  async created() {
-    this.allTournaments = await this.fetchMatches(0);
   }
 }
 </script>
