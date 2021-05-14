@@ -3,16 +3,16 @@
         div(:class="{ delay: pagination.delayBetweenPages || pagination.currentPage === 0}" class="pagination__container__button")
           button(@click="changePage('prev')")
             .pagination__container__button--label
-              small {{pagination.currentPage}} / {{ pagination.sumPages }}
+              small {{this.pagination.currentPage + 1}} / {{pagination.maxPage}}
               span(class="material-icons md-layout-item")
                 ="west"
               .
                 recent
         .pagination__container--divider
-        div(:class="{ delay: pagination.delayBetweenPages || pagination.currentPage+1 === pagination.sumPages }" class="pagination__container__button")
+        div(:class="{ delay: pagination.delayBetweenPages || pagination.currentPage+1 === pagination.maxPage }" class="pagination__container__button")
           button(@click="changePage('next')")
             .pagination__container__button--label
-              small {{pagination.currentPage+1}} / {{ pagination.sumPages }}
+              small {{this.pagination.currentPage + 1}} / {{pagination.maxPage}}
               span(class="material-icons md-layout-item")
                 ="east"
               .
@@ -37,6 +37,10 @@ export default class Pagination extends Vue {
       delayBetweenPages: false,
       sideToFade: '',
       recordsOnPage: 5,
+      maxPage: 0,
+      setMaxPage: () => {
+        this.pagination.maxPage = Math.ceil(this.pagination.sumPages / this.pagination.recordsOnPage);
+      },
     };
 
     nextPage = () => {
@@ -54,14 +58,14 @@ export default class Pagination extends Vue {
       })
         .then((data: any) => data.data);
 
-      return results / this.pagination.recordsOnPage;
+      return results;
     }
 
     changePage(to) {
       if (to === 'prev' && this.pagination.delayBetweenPages === false && this.pagination.currentPage > 0) {
         this.pagination.recentPageSize = this.pagination.currentPage;
         this.prevPage();
-      } else if (to === 'next' && this.pagination.delayBetweenPages === false && this.pagination.currentPage + 1 !== this.pagination.sumPages) {
+      } else if (to === 'next' && this.pagination.delayBetweenPages === false && this.pagination.currentPage + 1 !== this.pagination.maxPage) {
         this.pagination.recentPageSize = this.pagination.currentPage;
         this.nextPage();
       }
@@ -84,12 +88,12 @@ export default class Pagination extends Vue {
 
     async mounted() {
       this.pagination.sumPages = await this.countMatches();
+      this.pagination.setMaxPage();
     }
 
     @Watch('isMatchLoaded')
     delayMaker(isLoaded) {
       this.pagination.delayBetweenPages = true;
-
       if (isLoaded) {
         this.pagination.delayBetweenPages = false;
       }
@@ -97,8 +101,9 @@ export default class Pagination extends Vue {
 
     @Watch('reloadPaginationQuery')
     async recalcPages() {
-      console.log(this.reloadPaginationQuery);
+      this.pagination.currentPage = 0;
       this.pagination.sumPages = await this.countMatches(`?${this.reloadPaginationQuery}`);
+      this.pagination.setMaxPage();
     }
 }
 </script>
