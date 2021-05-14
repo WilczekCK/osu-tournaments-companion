@@ -172,7 +172,6 @@ class Tournaments {
         }
 
         //when events end, push all info into array of objects!
-        console.log(this.selectMostPlayedMode(countModes));
         getInfo.push( {judge} );
         getInfo.push( {'gameMode': this.selectMostPlayedMode(countModes) } );
         getInfo.push( {playedBeatmaps});
