@@ -22,6 +22,8 @@ export default class MatchList extends Vue {
     loadedTournaments: [],
     additionalQuery: '',
     areLoaded: false,
+    isAnimationEnded: false,
+    animationName: '',
     changePage: async (pageNumber) => {
       // replace with new tournaments in array
       this.matches.loadedTournaments = await this.matches.fetch(pageNumber);
@@ -42,6 +44,14 @@ export default class MatchList extends Vue {
 
       this.matches.areLoaded = true;
       return results;
+    },
+    nextPageAnimation: async ({ side, speedOfAnimation }) => {
+      this.matches.isAnimationEnded = false;
+
+      setTimeout(() => {
+        this.matches.animationName = `slide-${side}`;
+        this.matches.isAnimationEnded = true;
+      }, speedOfAnimation);
     },
   }
 

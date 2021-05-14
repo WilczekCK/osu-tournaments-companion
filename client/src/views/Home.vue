@@ -26,25 +26,19 @@ import Filtering from '../components/match/Filtering.vue';
   },
 })
 export default class Home extends Vue {
-  allTournaments:Array<any> = [];
-
-  isListLoaded = true;
-
-  animationName = '';
-
-  matchLoaded = false;
-
-  additionalQuery? = '';
-
-  shouldReload = false;
-
-  async triggerFadeAnimation({ side, speedOfAnimation }) {
-    this.isListLoaded = false;
-
-    setTimeout(() => {
-      this.animationName = `slide-${side}`;
-      this.isListLoaded = true;
-    }, speedOfAnimation);
+  props:{
+    MatchesComponent: {
+      isMatchLoaded: false,
+      animationName: '',
+    },
+    filteringComponent: {
+      reloadPage: false,
+      queryMatches: '',
+    },
+    paginationComponent: {
+      doFadeAnimation: false,
+      actualPage: 0,
+    }
   }
 }
 </script>
