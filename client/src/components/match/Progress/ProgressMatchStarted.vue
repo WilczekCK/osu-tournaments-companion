@@ -25,7 +25,14 @@ export default class ProgressStarted extends Vue {
         method: 'get',
         url: `http://localhost:3000/users/${this.judgeId}`,
       })
-        .then((data: any) => data.data.result[0]);
+        .then((data: any) => {
+          if(data.data.result){
+            return data.data.result[0];
+          } else {
+            return {username: undefined};
+          }
+          
+        });
 
       return results;
     }

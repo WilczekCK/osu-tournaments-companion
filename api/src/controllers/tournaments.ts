@@ -75,6 +75,9 @@ class Tournaments {
         // In plays.beatmap players have the team color!
         let sortedTeams = await this.sortTeams( playedBeatmaps );
 
+        // Judge first!
+        await users.insert(judge);
+
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,
