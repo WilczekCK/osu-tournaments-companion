@@ -1,6 +1,6 @@
 <template lang="pug">
     .progress__map__container
-        .progress__map__container__single()
+        .progress__map__container__single(v-if="map || map.info")
             .progress__map__container__teamWon
                 p(v-if="winnerScoreDifference !== 0")
                     b {{winnerTeamName}}
@@ -12,26 +12,33 @@
                 h3="Map details"
                 .progress__map__container__mapInfo__columnToRow
                     .progress__map__container__mapInfo__image
-                        a(:href="`https://osu.ppy.sh/b/${map.info.id}`" target="_blank" v-if="map.info")
+                        a(:href="`https://osu.ppy.sh/b/${map.info.beatmapset.id}`" target="_blank")
                             img(:src="map.info.beatmapset.covers['list@2x']" alt="beatmap_image")
-                        .progress__map__container__mapInfo__image--missing(v-else)="?"
                     .progress__map__container__mapInfo__description
                         .progress__map__container__mapInfo__description--creator
                             ="Map by: "
-                            span(v-if="map.info") {{ map.info.beatmapset.creator }}
-                            span(v-else)="Unknown"
+                            span {{ map.info.beatmapset.creator }}
                         .progress__map__container__mapInfo__description--artist
-                            span(v-if="map.info")
-                                a(:href="`https://osu.ppy.sh/b/${map.info.id}`" target="_blank") {{ map.info.beatmapset.artist }}
-                            span(v-else)="Beatmap removed!"
+                            a(:href="`https://osu.ppy.sh/b/${map.info.beatmapset.id}`" target="_blank") {{ map.info.beatmapset.artist }}
                         .progress__map__container__mapInfo__description--title
-                            span(v-if="map.info")
-                                a(:href="`https://osu.ppy.sh/u/${map.info.id}`" target="_blank") {{ map.info.beatmapset.title }}
-                            span(v-else)="Unknown"
+                            a(:href="`https://osu.ppy.sh/u/${map.info.beatmapset.id}`" target="_blank") {{ map.info.beatmapset.title }}
                         .progress__map__container__mapInfo__description--difficulty
                             ="Difficulty: "
-                            span(v-if="map.info") {{ map.info.version }}
-                            span(v-else)='Unknown'
+                            span {{ map.info.version }}
+        .progress__map__container__single(v-else)
+            .progress__map__container__mapInfo__image
+                .progress__map__container__mapInfo__image--missing
+            .progress__map__container__mapInfo__description
+                .progress__map__container__mapInfo__description--creator
+                    ="Map by: "
+                    span="Unknown"
+                .progress__map__container__mapInfo__description--artist
+                    span="Beatmap removed!"
+                .progress__map__container__mapInfo__description--title
+                    span="Unknown"
+                .progress__map__container__mapInfo__description--difficulty
+                    ="Difficulty: "
+                    span='Unknown'
 </template>
 
 <script lang="ts">
@@ -55,22 +62,27 @@ export default class Progress extends Vue {
 
     winnerScoreDifference = 0;
 
-
     setWinnerTeamName(summaryScore) :void {
       function getBiggestScore(score) {
         if (score === _.max(summaryScore)) return true;
         return false;
       }
-      
+
       this.winnerTeamName = _.findKey(summaryScore, getBiggestScore);
     }
 
-    created() {
-      const mapLoaded = _.find(this.mapList, (beatmap) => beatmap.info.id === this.mapId);
+    async created() {
+      let mapLoaded:any = {};
 
+      this.mapList.forEach((map) => {
+        if (map.info && map.info.id === this.mapId) {
+          mapLoaded = map;
+        }
+      });
+
+      this.map = mapLoaded;
       this.winnerScoreDifference = _.max(mapLoaded.summaryScore) - _.min(mapLoaded.summaryScore);
       this.setWinnerTeamName(mapLoaded.summaryScore);
-      this.map = mapLoaded;
     }
 }
 </script>
