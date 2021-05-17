@@ -3,7 +3,7 @@
         div(:class="{ delay: pagination.delayBetweenPages || pagination.currentPage === 0}" class="pagination__container__button")
           button(@click="changePage('prev')")
             .pagination__container__button--label
-              small {{this.pagination.currentPage + 1}} / {{pagination.maxPage}}
+              small {{this.pagination.currentPage}} / {{pagination.maxPage}}
               span(class="material-icons md-layout-item")
                 ="west"
               .
