@@ -42,15 +42,22 @@ export default class Progress extends Vue {
     counter-reset: numbering
     max-height: 350px
 /* Stepper icons change to numbers */
+.md-button-content
+    background: transparent !important
 .md-stepper-number
+    background: transparent !important
     &:before
         position: relative
         counter-increment: numbering
-        content: " " counter(numbering) " "
+        content: " " counter(numbering) "."
         width: 100%
-        left: 35%
-        color: white
-        background-color: transparent !important
+        color: $link-active
+        background: transparent !important
+        font-weight: 800
+        font-size: 1.5em
+        padding: 5px 5px
+        right: 10px
+        border-bottom: 2px solid $link-active
 .md-icon
     svg
         display: none
