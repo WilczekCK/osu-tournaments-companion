@@ -3,8 +3,10 @@
         h4="Owner of the room:"
         .progress__match__started--judge
             .progress__match__started--judge--avatar
+              a(:href="`https://osu.ppy.sh/u/${judgeId}`" target="_blank")
                 img(:src="avatarLink" alt="user_avatar")
             .progress__match__started--judge--nickname
+              a(:href="`https://osu.ppy.sh/u/${judgeId}`" target="_blank")
                 span {{userInfo.username}}
 </template>
 
@@ -26,12 +28,11 @@ export default class ProgressStarted extends Vue {
         url: `http://localhost:3000/users/${this.judgeId}`,
       })
         .then((data: any) => {
-          if(data.data.result){
+          if (data.data.result) {
             return data.data.result[0];
-          } else {
-            return {username: undefined};
           }
-          
+
+          return { username: undefined };
         });
 
       return results;
@@ -61,4 +62,6 @@ export default class ProgressStarted extends Vue {
             &--nickname
                 padding-left: 5px
                 font-size: 24px
+                a
+                  color: inherit !important
 </style>
