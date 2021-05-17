@@ -2,18 +2,18 @@
     .progress__map__container
         .progress__map__container__single()
             .progress__map__container__teamWon
-                //p(v-if="get.winnerScoreDifference !== 0")
-                    b {{get.winnerTeamName}}
+                p(v-if="winnerScoreDifference !== 0")
+                    b {{winnerTeamName}}
                     = ' team won by '
-                    b {{get.winnerScoreDifference}}
-                //p(v-else)
+                    b {{winnerScoreDifference}}
+                p(v-else)
                     b="In progress..."
             .progress__map__container__mapInfo
                 h3="Map details"
                 .progress__map__container__mapInfo__columnToRow
                     .progress__map__container__mapInfo__image
                         a(:href="`https://osu.ppy.sh/b/${map.info.id}`" target="_blank" v-if="map.info")
-                            img(:src="map.info.beatmapset.covers['list@2x'] || 'chuj'" alt="beatmap_image")
+                            img(:src="map.info.beatmapset.covers['list@2x']" alt="beatmap_image")
                         .progress__map__container__mapInfo__image--missing(v-else)="?"
                     .progress__map__container__mapInfo__description
                         .progress__map__container__mapInfo__description--creator
@@ -51,8 +51,25 @@ export default class Progress extends Vue {
 
     map = {};
 
+    winnerTeamName = '';
+
+    winnerScoreDifference = 0;
+
+
+    setWinnerTeamName(summaryScore) :void {
+      function getBiggestScore(score) {
+        if (score === _.max(summaryScore)) return true;
+        return false;
+      }
+      
+      this.winnerTeamName = _.findKey(summaryScore, getBiggestScore);
+    }
+
     created() {
       const mapLoaded = _.find(this.mapList, (beatmap) => beatmap.info.id === this.mapId);
+
+      this.winnerScoreDifference = _.max(mapLoaded.summaryScore) - _.min(mapLoaded.summaryScore);
+      this.setWinnerTeamName(mapLoaded.summaryScore);
       this.map = mapLoaded;
     }
 }
