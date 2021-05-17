@@ -84,7 +84,7 @@ export default class SingleMatch extends Vue {
 
 <style lang="sass">
 .md-card
-    width: 800px
+    max-width: 800px
     min-width: 315px
     display: flex
     flex-wrap: wrap
@@ -99,7 +99,8 @@ export default class SingleMatch extends Vue {
         margin: 0 auto
         margin-top: 75px
         min-width: unset
-        max-width: 100%
+        max-width: unset
+        width: 99%
         padding: 0
         flex-wrap: nowrap
     &-content
