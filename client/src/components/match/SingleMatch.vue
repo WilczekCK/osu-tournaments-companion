@@ -13,8 +13,11 @@
                 span(v-else)
                     ='In progress...'
         md-card-expand
-            .md-score
-                //p {{getFinishScore()}}
+            .md-score {{tournamentInfo.teams.names.red}} {{this.matchScore.red}}
+                .
+                    :
+                .
+                    {{this.matchScore.blue}} {{this.tournamentInfo.teams.names.blue}}
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini" @mousedown="opened = true")
@@ -61,7 +64,7 @@ export default class SingleMatch extends Vue {
 
   matchScore = { red: 0, blue: 0 };
 
-  getFinishScore = () :string => {
+  getFinishScore = () :void => {
     const { mapsPlayed } = this.tournamentInfo;
 
     mapsPlayed.forEach((map) => {
@@ -71,8 +74,10 @@ export default class SingleMatch extends Vue {
         this.matchScore.red += 1;
       }
     });
+  }
 
-    return `${this.tournamentInfo.teams.names.red} ${this.matchScore.red} : ${this.matchScore.blue} ${this.tournamentInfo.teams.names.blue}`;
+  mounted() {
+    this.getFinishScore();
   }
 }
 </script>
