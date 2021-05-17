@@ -104,7 +104,8 @@ export default class SingleMatch extends Vue {
         padding: 0
         flex-wrap: nowrap
     &-content
-        padding: 0
+        padding: 0 !important
+        margin: 0 !important
     &-media
         flex-grow: 0
         background: rgba(0,0,0,.05)

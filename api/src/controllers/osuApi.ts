@@ -39,7 +39,7 @@ async function accessApi(scope: string){
         return data;
     })
     .catch(function (error: never) {
-        throw new Error(`Could not connect to Osu!Api, ${error}`)
+        return {error:`Could not connect to Osu!Api, ${error}`}
     })    
 }
 

@@ -37,6 +37,8 @@ class Users {
 
 
     public insert = async (userId: any) => {
+        if(userId === 0 || !userId) return {status : 422, response: "Missing ID"};
+
         const userInfo = await this.getUserApiInfo(userId);
 
         const newUser = new usersSchema({
