@@ -23,7 +23,7 @@ class Tournaments {
     
         const result = await tournamentsSchema.find((err: any, tournament: any) => {
             return tournament;
-        });
+        }).sort({timeCreated: -1});
 
         return result.length ? result : {status: 404, message: 'We do not have any tournament in DB yet :('};
     };
@@ -43,7 +43,7 @@ class Tournaments {
 
         const result = await this.query( query ).find((err: any, tournament: any) => {
             return tournament;
-        }).skip( parseInt(startFrom) ).limit( parseInt(limitedTo) );
+        }).sort({timeCreated: -1}).skip( parseInt(startFrom) ).limit( parseInt(limitedTo) );
 
         return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
     };
@@ -52,7 +52,7 @@ class Tournaments {
         
         const result = await this.query(whereQuery).find((err: any, tournament: any) => {
             return tournament;
-        });
+        }).sort({timeCreated: -1});
 
         return result;
     };
