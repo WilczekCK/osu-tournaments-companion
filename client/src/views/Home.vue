@@ -71,11 +71,10 @@ export default class Home extends Vue {
     align-items: center
     position: relative
     min-height: 900px
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
   &--header
     padding: 25px 0px 50px
 @media (max-width: 1080px)
   .content__container
     width: 100%
-.md-progress-spinner
-  transform: none !important
 </style>

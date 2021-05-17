@@ -55,8 +55,8 @@ export default class MatchList extends Vue {
       })
         .then((data: any) => data.data);
 
-      this.matches.areLoaded = true;
       this.matches.nextPageAnimation();
+      this.matches.areLoaded = true;
       return results;
     },
     nextPageAnimation: async () => {
@@ -97,6 +97,9 @@ export default class MatchList extends Vue {
   h3, .md-progress-spinner
     text-align: center
     margin: 0 auto
+    width: 100%
+    display: flex
+    justify-content: center
 
 .slide-left-enter-active
   transition: all .6s ease;
