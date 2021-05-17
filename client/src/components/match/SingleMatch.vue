@@ -128,6 +128,7 @@ export default class SingleMatch extends Vue {
     &-expand
         display: flex
         justify-content: flex-end
+        align-items: center
         flex-basis: 30%
         @media (max-width: 600px)
             width: 100%
@@ -140,7 +141,7 @@ export default class SingleMatch extends Vue {
             font-weight: 800
             font-size: 1em
             color: $bg-content
-            height: 0
+            width: 100%
         .md-card-actions
             @media (max-width: 600px)
                 max-height: 50px
