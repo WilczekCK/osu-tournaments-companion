@@ -1,6 +1,6 @@
 <template lang="pug">
     .match__list
-      transition(v-if="matches.areLoaded" :name="matches.animationDetails.side")
+      transition(v-if="matches.areLoaded" :name="animationDetails.side")
         .match__list__container(v-if="matches.isAnimationEnded")
           SingleMatch(v-for="tournament in matches.loadedTournaments" :tournamentInfo="tournament" :key="tournament.id")
         h3(v-else-if="matches.loadedTournaments.length === 0")="No more tournaments :("
@@ -31,10 +31,6 @@ export default class MatchList extends Vue {
     additionalQuery: '',
     areLoaded: false,
     isAnimationEnded: false,
-    animationDetails: {
-      side: 'slide-right',
-      speedOfAnimation: 0.3,
-    },
     changePage: async (pageNumber) => {
       // replace with new tournaments in array
       const fetchMatches = await this.matches.fetch(pageNumber);
@@ -68,7 +64,7 @@ export default class MatchList extends Vue {
 
       setTimeout(() => {
         this.matches.isAnimationEnded = true;
-      }, this.matches.animationDetails.speedOfAnimation);
+      }, this.animationDetails.speedOfAnimation);
     },
   }
 

@@ -50,7 +50,7 @@ export default class Home extends Vue {
       animationDetails: {},
       actualPage: 0,
       setNewPage: (pageNumber: number):void => { this.props.pagination.actualPage = pageNumber; },
-      setAnimationDetails: (animationName: Record<string, number>):void => { this.props.pagination.animationDetails = animationName; },
+      setAnimationDetails: (animationDetails: Record<string, number>):void => { this.props.pagination.animationDetails = animationDetails; },
     },
   };
 }

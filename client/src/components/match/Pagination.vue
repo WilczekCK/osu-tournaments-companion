@@ -75,7 +75,7 @@ export default class Pagination extends Vue {
     }
 
     fadeAnimation(newValue) {
-      const speedOfAnimation = 0.3;
+      const speedOfAnimation = 600;
       if (this.pagination.recentPageSize > (newValue || !newValue)) {
         this.pagination.sideToFade = 'slide-left';
         this.$emit('triggerFadeAnimation', { side: this.pagination.sideToFade, speedOfAnimation });
