@@ -19,7 +19,7 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() private matchInfo!: Record<string, unknown>;
+    @Prop() private matchInfo!: any;
 
     beatmaps = this.matchInfo;
 
@@ -28,7 +28,7 @@ export default class Progress extends Vue {
     sumPoints = { red: 0, blue: 0 };
 
     getSumScore = () :void => {
-      this.beatmaps.forEach(({ summaryScore }) => {
+      this.beatmaps.forEach(({ summaryScore } : {summaryScore: any}) => {
         this.sumScore.blue += summaryScore.blue;
         this.sumScore.red += summaryScore.red;
 

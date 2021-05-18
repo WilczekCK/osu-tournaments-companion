@@ -31,7 +31,7 @@ export default class MatchList extends Vue {
     additionalQuery: '',
     areLoaded: false,
     isAnimationEnded: false,
-    changePage: async (pageNumber) => {
+    changePage: async (pageNumber: number) => {
       // replace with new tournaments in array
       const fetchMatches = await this.matches.fetch(pageNumber);
 
@@ -41,12 +41,12 @@ export default class MatchList extends Vue {
         this.matches.loadedTournaments = fetchMatches;
       }
     },
-    setAdditionalQuery: async (query) => {
+    setAdditionalQuery: async (query: string) => {
       // set and load new matches
       this.matches.additionalQuery = query;
       await this.matches.changePage(0);
     },
-    fetch: async (startPage) => {
+    fetch: async (startPage: number) => {
       this.matches.areLoaded = false;
 
       const results = await axios({
@@ -73,7 +73,7 @@ export default class MatchList extends Vue {
   }
 
   @Watch('actualPage')
-  async pageChanged(pageNumber) {
+  async pageChanged(pageNumber:number) {
     await this.matches.changePage(pageNumber);
   }
 
@@ -86,7 +86,7 @@ export default class MatchList extends Vue {
   }
 
   @Watch('matches.areLoaded')
-  emitLoadingStatus(status) {
+  emitLoadingStatus(status:boolean) {
     this.$emit('matchesLoaded', status);
   }
 }

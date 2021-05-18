@@ -67,7 +67,7 @@ export default class SingleMatch extends Vue {
   getFinishScore = () :void => {
     const { mapsPlayed } = this.tournamentInfo;
 
-    mapsPlayed.forEach((map) => {
+    mapsPlayed.forEach((map:any) => {
       if (map.summaryScore.blue > map.summaryScore.red) {
         this.matchScore.blue += 1;
       } else if (map.summaryScore.blue < map.summaryScore.red) {

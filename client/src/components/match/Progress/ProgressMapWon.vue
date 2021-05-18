@@ -53,12 +53,12 @@ export default class Progress extends Vue {
 
     map:any = {};
 
-    winnerTeamName = '';
+    winnerTeamName:string|undefined = '';
 
     winnerScoreDifference = 0;
 
-    setWinnerTeamName(summaryScore) :void {
-      function getBiggestScore(score) {
+    setWinnerTeamName(summaryScore:Record<number, number>) :void {
+      function getBiggestScore(score: number) {
         if (score === _.max(summaryScore)) return true;
         return false;
       }

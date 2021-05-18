@@ -42,8 +42,8 @@ export default class Home extends Vue {
       setLoadingState: (status: boolean):void => { this.props.matches.areLoaded = status; },
     },
     filtering: {
-      filterQuery: '',
-      setFilterQuery: (filterQuery: string):void => { this.props.filtering.filterQuery = `queryKey=${filterQuery.key}&queryValue=${filterQuery.value}`; },
+      filterQuery: {},
+      setFilterQuery: (filterQuery: any):void => { this.props.filtering.filterQuery = `queryKey=${filterQuery.key}&queryValue=${filterQuery.value}`; },
     },
     pagination: {
       animationDetails: {},

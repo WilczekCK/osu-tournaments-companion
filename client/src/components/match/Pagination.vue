@@ -61,7 +61,7 @@ export default class Pagination extends Vue {
       return results;
     }
 
-    changePage(to) {
+    changePage(to: string) {
       if (to === 'prev' && this.pagination.delayBetweenPages === false && this.pagination.currentPage > 0) {
         this.pagination.recentPageSize = this.pagination.currentPage;
         this.prevPage();
@@ -74,7 +74,7 @@ export default class Pagination extends Vue {
       this.$emit('getTournamentsPage', this.pagination.currentPage);
     }
 
-    fadeAnimation(newValue) {
+    fadeAnimation(newValue: number) {
       const speedOfAnimation = 600;
       if (this.pagination.recentPageSize > (newValue || !newValue)) {
         this.pagination.sideToFade = 'slide-left';
@@ -92,7 +92,7 @@ export default class Pagination extends Vue {
     }
 
     @Watch('isMatchLoaded')
-    delayMaker(isLoaded) {
+    delayMaker(isLoaded: boolean) {
       this.pagination.delayBetweenPages = true;
       if (isLoaded) {
         this.pagination.delayBetweenPages = false;

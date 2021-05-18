@@ -1,7 +1,7 @@
 <template lang="pug">
   .teams__container(v-if="teamsLoaded == true")
     .teams__container--red
-        .teams__container__member(style="color:black" v-for="player in player.allPlayers.red"
+        .teams__container__member(style="color:black" v-for="player in allPlayers.red"
         :style="`background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${player.coverUrl}');`")
             .teams__container__member--avatar
                 a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
@@ -21,7 +21,7 @@
                         .
                             {{player.ranking.country}}
     .teams__container--blue
-        .teams__container__member(style="color:black" v-for="player in player.allPlayers.blue"
+        .teams__container__member(style="color:black" v-for="player in allPlayers.blue"
         :style="`background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${player.coverUrl}');`")
             .teams__container__member--avatar
                 a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
@@ -53,11 +53,15 @@ export default class Teams extends Vue {
 
     teamsLoaded = false;
 
+    allPlayers : {
+      blue: Array<number | never>,
+      red: Array<number | never>,
+    } = {
+      blue: [],
+      red: [],
+    }
+
     player = {
-      allPlayers: {
-        blue: [],
-        red: [],
-      },
       getDbInfo: async (playerId: number) => {
         await axios({
           method: 'get',
@@ -68,9 +72,9 @@ export default class Teams extends Vue {
             if (!data.result) {
               //
             } else if (this.teams.red.includes(playerId)) {
-              this.player.allPlayers.red.push(data.result[0]);
+              this.allPlayers.red.push(data.result[0]);
             } else {
-              this.player.allPlayers.blue.push(data.result[0]);
+              this.allPlayers.blue.push(data.result[0]);
             }
           });
       },
