@@ -1,14 +1,8 @@
 
-import mongo from "./mongo";
 import tournamentsSchema from '../database/tournaments.schema';
 import * as tournamentsTypes from '../validators/tournamentTypes';
-import tournaments from "../routes/tournaments";
 import users from "./users";
-import osuApi from "./osuApi";
-import axios from 'axios';
-import {protectedRoutes} from '../../credentials.json';
-import _, { object } from "underscore";
-import { match } from "assert";
+import _ from "underscore";
 
 
 class Tournaments {

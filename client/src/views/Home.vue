@@ -21,7 +21,6 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '../components/HelloWorld.vue';
 import MatchList from '../components/match/MatchList.vue';

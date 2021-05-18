@@ -1,8 +1,8 @@
 
-import mongo from "./mongo";
 import osuApi from './osuApi';
 import usersSchema from '../database/users.schema';
 import * as userTypes from '../validators/userTypes'
+
 class Users {
     //@ts-ignore
     private query = (where: string | number | object) => usersSchema.where(where);

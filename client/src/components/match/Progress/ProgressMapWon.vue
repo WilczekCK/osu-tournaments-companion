@@ -44,7 +44,6 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import _ from 'underscore';
-import axios from 'axios';
 
 @Component
 export default class Progress extends Vue {
