@@ -1,6 +1,6 @@
 <template lang="pug">
     .navigation__container(class="md-layout md-alignment-center-center")
-        .md-layout-item(class="md-size-15")
+        .md-layout-item(class="md-size-10")
         .navigation__container--wrapper(class="md-layout-item md-layout md-gutter")
             router-link(to="/" class="md-layout-item md-size-77")
                 ="osu!"
@@ -22,7 +22,6 @@
                         md-menu-item
                             a(href="#")
                                 ="Discord"
-        .md-layout-item(class="md-size-15")
 </template>
 
 <script lang="ts">

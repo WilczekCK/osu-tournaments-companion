@@ -57,8 +57,7 @@ export default class Home extends Vue {
 
 <style lang="sass">
 .content__container
-  background: $bg-content
-  width: 1080px
+  width: 100%
   min-height: 800px
   display: flex
   align-items: center
@@ -73,7 +72,4 @@ export default class Home extends Vue {
     transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
   &--header
     padding: 25px 0px 50px
-@media (max-width: 1080px)
-  .content__container
-    width: 100%
 </style>

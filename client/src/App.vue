@@ -40,6 +40,11 @@ body
   display: flex
   flex-direction: column
   align-items: center
+  background: $bg-content
+  width: 1080px
+  min-height: 800px
+  @media (max-width: 1080px)
+    width: 100%
 
 .slide-left-enter-active
   transition: all .6s ease;
