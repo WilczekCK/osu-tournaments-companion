@@ -1,14 +1,32 @@
 <template lang="pug">
   .content__container
     .content__container--content
-      p {{$route.params.id}}
+      p {{tournament.title}}
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import axios from 'axios';
 
 @Component
-export default class Home extends Vue {
+export default class SingleTournament extends Vue {
+  tournamentId = this.$route.params.id;
+
+  tournament = {};
+
+  async setTournamentInformations() {
+    const results = await axios({
+      method: 'get',
+      url: `http://localhost:3000/tournaments/${this.tournamentId}`,
+    })
+      .then((data: any) => data.data);
+
+    return results[0];
+  }
+
+  async mounted() {
+    this.tournament = await this.setTournamentInformations();
+  }
 }
 </script>
 
