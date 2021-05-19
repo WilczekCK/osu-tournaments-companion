@@ -4,15 +4,12 @@
             img(:src="require(`@/assets/${tournamentInfo.gameMode}.svg`)")
         md-card-header
             .md-title
-               .link__row
+                .link__row
                     router-link(:to="`/tournaments/${tournamentInfo.id}`")
-                        span(class="material-icons md-layout-item" @mousedown="opened = true")
-                            ="link"
+                        span(class="material-icons md-layout-item" @mousedown="opened = true") link
                     a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
-                        span(class="osu-icon")
-                            ="osu!"
-               a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
-                    span {{tournamentInfo.title}}
+                        span(class="osu-icon") osu!
+                h3 {{tournamentInfo.title}}
             .md-subtitle
                 span(v-if="tournamentInfo.timeEnded")
                     ="Ended at: "
@@ -125,6 +122,7 @@ export default class SingleMatch extends Vue {
         flex-grow: 3
         padding-top: 16px !important
         max-width: 60%
+        padding-bottom: 30px
         @media (max-width: 600px)
             max-width: 100%
             flex-grow: 0
@@ -146,6 +144,14 @@ export default class SingleMatch extends Vue {
                 color: inherit
                 text-decoration: none
                 word-wrap: break-word
+            h3
+                font-size: .9em
+                text-align: left
+                margin: 0
+                padding: 0
+                padding-bottom: 5px
+                justify-content: flex-start
+                font-weight: 500
     &-expand
         display: flex
         justify-content: flex-end
