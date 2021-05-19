@@ -6,7 +6,7 @@
             .md-title
                 .link__row
                     router-link(:to="`/tournaments/${tournamentInfo.id}`")
-                        span(class="material-icons md-layout-item" @mousedown="opened = true") link
+                        span(class="osu-icon wider") otc!
                     a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
                         span(class="osu-icon") osu!
                 h3 {{tournamentInfo.title}}
@@ -208,13 +208,18 @@ export default class SingleMatch extends Vue {
     padding: 0
 
 .osu-icon
+    &.wider
+        padding: 4px 2px
     width: 15px
     height: 15px
-    border: 1.5px solid black
+    border: 1.5px solid rgba(0,0,0,.1)
     border-radius: 50%
     padding: 4px 1.25px
     font-size: .4em
     transition: all .3s ease-in
+    background-color: rgba(0,0,0,.2)
+    color: white
     &:hover
         border-color: $link-active
+        background: $link-active
 </style>
