@@ -5,12 +5,12 @@
         md-card-header
             .md-title
                .link__row
-                    router-link(:to="`/tournaments/${tournamentInfo.id}`" class="md-layout-item md-size-77")
+                    router-link(:to="`/tournaments/${tournamentInfo.id}`")
                         span(class="material-icons md-layout-item" @mousedown="opened = true")
                             ="link"
                     a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
                         span(class="osu-icon")
-                            ="osu"
+                            ="osu!"
                a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
                     span {{tournamentInfo.title}}
             .md-subtitle
@@ -135,6 +135,13 @@ export default class SingleMatch extends Vue {
             flex-wrap: wrap
             .link__row
                 width: 100%
+                display: flex
+                flex-direction: row
+                align-items: flex-end
+                a
+                    margin-right: 5px
+                span
+                    vertical-align: middle
             a
                 color: inherit
                 text-decoration: none
@@ -195,10 +202,13 @@ export default class SingleMatch extends Vue {
     padding: 0
 
 .osu-icon
-    width: 25px
-    height: 25px
+    width: 15px
+    height: 15px
     border: 1.5px solid black
     border-radius: 50%
-    padding: 2.5px 1.25px
-    font-size: .5em
+    padding: 4px 1.25px
+    font-size: .4em
+    transition: all .3s ease-in
+    &:hover
+        border-color: $link-active
 </style>
