@@ -4,6 +4,13 @@
             img(:src="require(`@/assets/${tournamentInfo.gameMode}.svg`)")
         md-card-header
             .md-title
+               .link__row
+                    router-link(:to="`/tournaments/${tournamentInfo.id}`" class="md-layout-item md-size-77")
+                        span(class="material-icons md-layout-item" @mousedown="opened = true")
+                            ="link"
+                    a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
+                        span(class="osu-icon")
+                            ="osu"
                a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
                     span {{tournamentInfo.title}}
             .md-subtitle
@@ -123,6 +130,11 @@ export default class SingleMatch extends Vue {
             flex-grow: 0
         .md-title
             font-size: 1.5em
+            display: flex
+            flex-direction: row
+            flex-wrap: wrap
+            .link__row
+                width: 100%
             a
                 color: inherit
                 text-decoration: none
@@ -181,4 +193,12 @@ export default class SingleMatch extends Vue {
 .md-tab
     height: 100%
     padding: 0
+
+.osu-icon
+    width: 25px
+    height: 25px
+    border: 1.5px solid black
+    border-radius: 50%
+    padding: 2.5px 1.25px
+    font-size: .5em
 </style>
