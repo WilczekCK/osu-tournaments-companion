@@ -23,7 +23,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import SingleMatchTeamsExtended from '../components/match/SingleMatchTeams.vue';
+import SingleMatchTeamsExtended from '../components/match/SingleMatchTeamsExtended.vue';
 
 @Component({
   components: {
