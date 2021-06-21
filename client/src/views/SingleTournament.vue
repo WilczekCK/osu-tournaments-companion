@@ -11,7 +11,7 @@
               ='In progress...'
       .content__container--content--teams
         .match__container
-          SingleMatchTeamsExtended(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
+          SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
           .matchNotStarted(v-else)
             h3="Waiting for the first map to start"
       .content__container--content--maps
@@ -23,11 +23,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import SingleMatchTeamsExtended from '../components/match/SingleMatchTeamsExtended.vue';
+import SingleMatchTeams from '../components/match/SingleMatchTeams.vue';
 
 @Component({
   components: {
-    SingleMatchTeamsExtended,
+    SingleMatchTeams,
   },
 })
 
@@ -81,4 +81,7 @@ export default class SingleTournament extends Vue {
     &--teams
       margin: 30px 0px
       width: 100%
+
+  .teams__container__member
+    height: 70px
 </style>
