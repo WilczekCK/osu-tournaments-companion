@@ -1,16 +1,40 @@
 <template lang="pug">
   .content__container
     .content__container--content
-      p {{tournament.title}}
+      .content__container--content--heading
+        h3 {{tournament.title}}
+        .content__container--content--heading--sub
+          span(v-if="tournament.timeEnded")
+              ="Ended at: "
+              span {{dayjs(tournament.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
+          span(v-else)
+              ='In progress...'
+      .content__container--content--teams
+        .match__container
+          SingleMatchTeamsExtended(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
+          .matchNotStarted(v-else)
+            h3="Waiting for the first map to start"
+      .content__container--content--maps
+      .content__container--content--results
+    .content__container--footer
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import SingleMatchTeamsExtended from '../components/match/SingleMatchTeams.vue';
 
-@Component
+@Component({
+  components: {
+    SingleMatchTeamsExtended,
+  },
+})
+
 export default class SingleTournament extends Vue {
   tournamentId = this.$route.params.id;
+
+  dayjs = dayjs;
 
   tournament = {};
 
@@ -30,7 +54,7 @@ export default class SingleTournament extends Vue {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scope>
 .content__container
   width: 100%
   min-height: 800px
@@ -45,6 +69,16 @@ export default class SingleTournament extends Vue {
     position: relative
     min-height: 900px
     transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
-  &--header
-    padding: 25px 0px 50px
+    &--heading
+      padding-top: 15px
+      font-size: 1.5em
+      color: $link-color
+      &--sub
+        font-size: .8em
+        opacity: .7
+        margin-top: -10px
+        text-align: center
+    &--teams
+      margin: 30px 0px
+      width: 100%
 </style>
