@@ -9,12 +9,13 @@
               span {{dayjs(tournament.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
           span(v-else)
               ='In progress...'
+      .content__container--content--maps
+        SingleMatchMaps(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed")
       .content__container--content--teams
         .match__container
           SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
           .matchNotStarted(v-else)
             h3="Waiting for the first map to start"
-      .content__container--content--maps
       .content__container--content--results
     .content__container--footer
 </template>
@@ -24,10 +25,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import SingleMatchTeams from '../components/match/SingleMatchTeams.vue';
+import SingleMatchMaps from '../components/match/Progress/Index.vue';
 
 @Component({
   components: {
     SingleMatchTeams,
+    SingleMatchMaps,
   },
 })
 
@@ -79,6 +82,9 @@ export default class SingleTournament extends Vue {
         margin-top: -10px
         text-align: center
     &--teams
+      margin: 30px 0px
+      width: 100%
+    &--maps
       margin: 30px 0px
       width: 100%
 
