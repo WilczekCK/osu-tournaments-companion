@@ -34,7 +34,7 @@
                         md-tab(id="tab-teams" md-label="teams")
                             SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
                             .matchNotStarted(v-else)
-                                h3="Waiting for the first map to start"
+                                h3="Waiting for the first map to end"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
                             SingleMatchProgress(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed")
