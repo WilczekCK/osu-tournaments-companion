@@ -114,7 +114,6 @@ export default class SingleMatch extends Vue {
 
     return results[0];
   }
-
   mounted() {
     this.getFinishScore();
   }
