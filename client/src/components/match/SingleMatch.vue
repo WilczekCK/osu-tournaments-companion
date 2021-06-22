@@ -1,27 +1,27 @@
 <template lang="pug">
     md-card
         md-card-media
-            img(:src="require(`@/assets/${tournamentInfo.gameMode}.svg`)")
+            img(:src="require(`@/assets/${tournament.gameMode}.svg`)")
         md-card-header
             .md-title
                 .link__row
-                    router-link(:to="`/tournaments/${tournamentInfo.id}`")
+                    router-link(:to="`/tournaments/${tournament.id}`")
                         span(class="osu-icon wider") otc!
-                    a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
+                    a(:href="`https://osu.ppy.sh/community/matches/${tournament.id}`" target="_blank")
                         span(class="osu-icon") osu!
-                h3 {{tournamentInfo.title}}
+                h3 {{tournament.title}}
             .md-subtitle
-                span(v-if="tournamentInfo.timeEnded")
+                span(v-if="tournament.timeEnded")
                     ="Ended at: "
-                    span {{dayjs(tournamentInfo.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
+                    span {{dayjs(tournament.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
                 span(v-else)
                     ='In progress...'
         md-card-expand
-            .md-score {{tournamentInfo.teams.names.red}} {{this.matchScore.red}}
+            .md-score {{tournament.teams.names.red}} {{this.matchScore.red}}
                 .
                     :
                 .
-                    {{this.matchScore.blue}} {{this.tournamentInfo.teams.names.blue}}
+                    {{this.matchScore.blue}} {{this.tournament.teams.names.blue}}
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini" @mousedown="opened = true")
@@ -30,21 +30,25 @@
         md-card-expand-content
             md-card-content
                 .match__container
-                    md-tabs(md-alignment="fixed" v-if="opened")
+                    md-tabs(md-alignment="fixed" v-if="opened" :key="renderKey" :md-active-tab="activeTab")
                         md-tab(id="tab-teams" md-label="teams")
-                            SingleMatchTeams(:teams="tournamentInfo.teams" v-if="(tournamentInfo.teams.blue && tournamentInfo.teams.red) != 0")
+                            SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
                             .matchNotStarted(v-else)
                                 h3="Waiting for the first map to start"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
-                            SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
+                            SingleMatchProgress(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed")
+                            md-button(class="md-mini refresh" :disabled="delayStack != 0" @mousedown="refreshTournament")
+                                b="Refresh"
+                                span(class="material-icons md-layout-item" @mousedown="refreshTournament")
+                                    ="sync"
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
                             SingleMatchGames
                     md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import _ from 'underscore';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import SingleMatchTeams from './SingleMatchTeams.vue';
 import SingleMatchProgress from './Progress/Index.vue';
@@ -62,11 +66,19 @@ export default class SingleMatch extends Vue {
   @Prop() private tournamentInfo!: any;
   // that's too big object, I cannot tell the type :/
 
+  tournament = this.tournamentInfo;
+
   dayjs = dayjs;
 
   opened = false;
 
+  delayStack = 0;
+
+  renderKey = 0;
+
   matchScore = { red: 0, blue: 0 };
+
+  activeTab = 'tab-teams';
 
   getFinishScore = () :void => {
     const { mapsPlayed } = this.tournamentInfo;
@@ -80,6 +92,28 @@ export default class SingleMatch extends Vue {
     });
   }
 
+  async refreshTournament() {
+    this.delayStack += 1;
+
+    this.tournament = await this.setTournamentInformations();
+    this.renderKey += 1;
+    this.activeTab = 'tab-progress';
+
+    // prevent spamming
+    setTimeout(() => {
+      this.delayStack -= 1;
+    }, 2500);
+  }
+
+  async setTournamentInformations() {
+    const results = await axios({
+      method: 'get',
+      url: `http://localhost:3000/tournaments/${this.tournamentInfo.id}`,
+    })
+      .then((data: any) => data.data);
+
+    return results[0];
+  }
   mounted() {
     this.getFinishScore();
   }
@@ -181,6 +215,12 @@ export default class SingleMatch extends Vue {
                 width: 100%
     .md-button
         min-width: 0
+    .refresh
+        float: right
+        margin-right: 15px
+        b
+            vertical-align: super;
+            padding-right: 5px;
 .md-card-media
     img
         height: 50px
