@@ -1,27 +1,27 @@
 <template lang="pug">
     md-card
         md-card-media
-            img(:src="require(`@/assets/${tournamentInfo.gameMode}.svg`)")
+            img(:src="require(`@/assets/${tournament.gameMode}.svg`)")
         md-card-header
             .md-title
                 .link__row
-                    router-link(:to="`/tournaments/${tournamentInfo.id}`")
+                    router-link(:to="`/tournaments/${tournament.id}`")
                         span(class="osu-icon wider") otc!
-                    a(:href="`https://osu.ppy.sh/community/matches/${tournamentInfo.id}`" target="_blank")
+                    a(:href="`https://osu.ppy.sh/community/matches/${tournament.id}`" target="_blank")
                         span(class="osu-icon") osu!
-                h3 {{tournamentInfo.title}}
+                h3 {{tournament.title}}
             .md-subtitle
-                span(v-if="tournamentInfo.timeEnded")
+                span(v-if="tournament.timeEnded")
                     ="Ended at: "
-                    span {{dayjs(tournamentInfo.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
+                    span {{dayjs(tournament.timeEnded).format('DD/MM/YYYY HH:mm Z')}}
                 span(v-else)
                     ='In progress...'
         md-card-expand
-            .md-score {{tournamentInfo.teams.names.red}} {{this.matchScore.red}}
+            .md-score {{tournament.teams.names.red}} {{this.matchScore.red}}
                 .
                     :
                 .
-                    {{this.matchScore.blue}} {{this.tournamentInfo.teams.names.blue}}
+                    {{this.matchScore.blue}} {{this.tournament.teams.names.blue}}
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini" @mousedown="opened = true")
@@ -32,12 +32,12 @@
                 .match__container
                     md-tabs(md-alignment="fixed" v-if="opened" :key="renderKey" :md-active-tab="activeTab")
                         md-tab(id="tab-teams" md-label="teams")
-                            SingleMatchTeams(:teams="tournamentInfo.teams" v-if="(tournamentInfo.teams.blue && tournamentInfo.teams.red) != 0")
+                            SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
                             .matchNotStarted(v-else)
                                 h3="Waiting for the first map to start"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
-                            SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
+                            SingleMatchProgress(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed")
                             md-button(class="md-mini refresh" :disabled="delayStack != 0" @mousedown="refreshTournament")
                                 b="Refresh"
                                 span(class="material-icons md-layout-item" @mousedown="refreshTournament")
@@ -66,6 +66,8 @@ export default class SingleMatch extends Vue {
   @Prop() private tournamentInfo!: any;
   // that's too big object, I cannot tell the type :/
 
+  tournament = this.tournamentInfo;
+
   dayjs = dayjs;
 
   opened = false;
@@ -93,7 +95,7 @@ export default class SingleMatch extends Vue {
   async refreshTournament() {
     this.delayStack += 1;
 
-    this.tournamentInfo = await this.setTournamentInformations();
+    this.tournament = await this.setTournamentInformations();
     this.renderKey += 1;
     this.activeTab = 'tab-progress';
 
