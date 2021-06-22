@@ -59,7 +59,7 @@ export default class SingleTournament extends Vue {
 }
 </script>
 
-<style lang="sass" scope>
+<style lang="sass" scoped>
 .content__container
   width: 100%
   min-height: 800px
@@ -90,7 +90,7 @@ export default class SingleTournament extends Vue {
       margin: 30px 0px
       width: 100%
 
-  .teams__container
+  ::v-deep .teams__container
     &--red
       .teams__container__member
         &--ranking
@@ -101,7 +101,7 @@ export default class SingleTournament extends Vue {
           margin-right: unset
           span
             text-align: left
-  .teams__container__member
+  ::v-deep .teams__container__member
     height: 70px
     .teams__container__member--ranking
       flex-direction: row
@@ -120,15 +120,15 @@ export default class SingleTournament extends Vue {
         img
           width: 50px
 
-  .md-stepper
+  ::v-deep .md-stepper
     background: $bg-content
     color: white
     &-description, &-label
       color: white
-  .md-steppers.md-theme-default
+  ::v-deep .md-steppers.md-theme-default
     background-color: $bg-content
 
-  .progress__map__container
+  ::v-deep .progress__map__container
     &__mapInfo
       margin-top: -15px
       &__image
@@ -137,12 +137,12 @@ export default class SingleTournament extends Vue {
           max-width: 150px
           height: 100%
 
-  .matchNotStarted
+  ::v-deep .matchNotStarted
     h3, p
       text-align: center
       color: white
 
-  .md-progress-spinner
+  ::v-deep .md-progress-spinner
     margin: 0 auto
     width: 20%
     display: flex
