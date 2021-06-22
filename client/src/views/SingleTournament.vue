@@ -16,6 +16,8 @@
           SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
           .matchNotStarted(v-else)
             h3="Waiting for the first map to start"
+            p="Fetching informations"
+            md-progress-spinner(md-mode="indeterminate" name="tournaments_spin")
       .content__container--content--results
     .content__container--footer
 </template>
@@ -121,8 +123,6 @@ export default class SingleTournament extends Vue {
   .md-stepper
     background: $bg-content
     color: white
-    b
-      font-weight: 400
     &-description, &-label
       color: white
   .md-steppers.md-theme-default
@@ -136,4 +136,14 @@ export default class SingleTournament extends Vue {
         img
           max-width: 150px
           height: 100%
+
+  .matchNotStarted
+    h3, p
+      text-align: center
+      color: white
+
+  .md-progress-spinner
+    margin: 0 auto
+    width: 20%
+    display: flex
 </style>
