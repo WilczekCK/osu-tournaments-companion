@@ -38,7 +38,7 @@
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
                             SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
-                            md-button(class="md-mini refresh" :disabled="isDisabled" @mousedown="refreshTournament")
+                            md-button(class="md-mini refresh" :disabled="delayStack != 0" @mousedown="refreshTournament")
                                 span(class="material-icons md-layout-item" @mousedown="refreshTournament")
                                     ="sync"
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
@@ -69,7 +69,7 @@ export default class SingleMatch extends Vue {
 
   opened = false;
 
-  isDisabled = false;
+  delayStack = 0;
 
   renderKey = 0;
 
@@ -90,11 +90,16 @@ export default class SingleMatch extends Vue {
   }
 
   async refreshTournament() {
-    this.isDisabled = true;
+    this.delayStack += 1;
+
     this.tournamentInfo = await this.setTournamentInformations();
     this.renderKey += 1;
     this.activeTab = 'tab-progress';
-    this.isDisabled = false;
+
+    // prevent spamming
+    setTimeout(() => {
+      this.delayStack -= 1;
+    }, 2500);
   }
 
   async setTournamentInformations() {
