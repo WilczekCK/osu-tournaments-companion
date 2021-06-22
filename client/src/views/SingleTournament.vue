@@ -10,9 +10,11 @@
           span(v-else)
               ='In progress...'
       .content__container--content--maps
+        h3="Progress: "
         SingleMatchMaps(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed")
       .content__container--content--teams
         .match__container
+          h3="Players: "
           SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
           .matchNotStarted(v-else)
             h3="Waiting for the first map to start"
@@ -74,6 +76,9 @@ export default class SingleTournament extends Vue {
     position: relative
     min-height: 900px
     transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
+    h3
+      text-align: center
+      color: white
     &--heading
       padding-top: 15px
       font-size: 1.5em
