@@ -112,6 +112,8 @@ export default class SingleTournament extends Vue {
       flex-direction: row
       flex-basis: unset
       font-size: 1.2em
+      @media (max-width: 768px)
+        flex-direction: column
       &--global
         font-size: inherit
         span
