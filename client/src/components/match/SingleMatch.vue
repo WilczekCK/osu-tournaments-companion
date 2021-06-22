@@ -39,6 +39,7 @@
                         md-tab(id="tab-progress" md-label="progress")
                             SingleMatchProgress(:progress="tournamentInfo.events" :mapsPlayed="tournamentInfo.mapsPlayed")
                             md-button(class="md-mini refresh" :disabled="delayStack != 0" @mousedown="refreshTournament")
+                                b="Refresh"
                                 span(class="material-icons md-layout-item" @mousedown="refreshTournament")
                                     ="sync"
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
@@ -216,6 +217,9 @@ export default class SingleMatch extends Vue {
     .refresh
         float: right
         margin-right: 15px
+        b
+            vertical-align: super;
+            padding-right: 5px;
 .md-card-media
     img
         height: 50px
