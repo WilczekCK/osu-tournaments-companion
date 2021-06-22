@@ -118,4 +118,22 @@ export default class SingleTournament extends Vue {
         img
           width: 50px
 
+  .md-stepper
+    background: $bg-content
+    color: white
+    b
+      font-weight: 400
+    &-description, &-label
+      color: white
+  .md-steppers.md-theme-default
+    background-color: $bg-content
+
+  .progress__map__container
+    &__mapInfo
+      margin-top: -15px
+      &__image
+        flex-basis: 22%
+        img
+          max-width: 150px
+          height: 100%
 </style>
