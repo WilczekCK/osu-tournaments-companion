@@ -82,6 +82,34 @@ export default class SingleTournament extends Vue {
       margin: 30px 0px
       width: 100%
 
+  .teams__container
+    &--red
+      .teams__container__member
+        &--ranking
+          padding-right: 10px
+    &--blue
+      .teams__container__member
+        &--ranking
+          margin-right: unset
+          span
+            text-align: left
   .teams__container__member
     height: 70px
+    .teams__container__member--ranking
+      flex-direction: row
+      flex-basis: unset
+      font-size: 1.2em
+      &--global
+        font-size: inherit
+        span
+          align-self: center
+          padding-left: 4px
+          min-width: 70px
+      &--country
+        font-size: inherit
+        align-self: center
+        flex-direction: row
+        img
+          width: 50px
+
 </style>
