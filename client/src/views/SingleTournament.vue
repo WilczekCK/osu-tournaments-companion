@@ -30,6 +30,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Route } from 'vue-router';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import SingleMatchTeams from '../components/match/SingleMatchTeams.vue';
@@ -43,6 +44,8 @@ import SingleMatchMaps from '../components/match/Progress/Index.vue';
 })
 
 export default class SingleTournament extends Vue {
+  $route: Route;
+
   tournamentId = this.$route.params.id;
 
   dayjs = dayjs;
