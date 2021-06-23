@@ -5,7 +5,7 @@
                 p(v-if="winnerScoreDifference !== 0")
                     b {{winnerTeamName}}
                     = ' team won by '
-                    b {{winnerScoreDifference}}
+                    b {{Number(winnerScoreDifference).toLocaleString()}}
                 p(v-else)
                     b="In progress..."
             .progress__map__container__mapInfo

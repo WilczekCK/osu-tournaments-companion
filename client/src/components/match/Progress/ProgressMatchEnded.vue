@@ -7,10 +7,10 @@
         .progress__match__ended--results
             h3="Summary scores:"
             = 'Blue: '
-            b {{sumScore.blue}}
+            b {{Number(sumScore.blue).toLocaleString()}}
             br
             = "Red: "
-            b {{sumScore.red}}
+            b {{Number(sumScore.red).toLocaleString()}}
 
 </template>
 
