@@ -9,7 +9,7 @@
                 p(v-else)
                     b="In progress..."
             .progress__map__container__mapInfo
-                h3="Map details"
+                h4="Map details"
                 .progress__map__container__mapInfo__columnToRow
                     .progress__map__container__mapInfo__image
                         a(:href="`https://osu.ppy.sh/b/${map.beatmapset.id}`" target="_blank")
@@ -93,10 +93,11 @@ export default class Progress extends Vue {
                     text-transform: uppercase
         &__mapInfo
             margin-top: -25px
-            h3
+            h4
                 border-bottom: 2px solid $link-active
                 font-weight: 400
                 padding-bottom: 5px
+                padding-top: 10px
             a
                 color: inherit !important
                 text-decoration: none !important
@@ -123,6 +124,7 @@ export default class Progress extends Vue {
                 flex-direction: row
                 flex-wrap: wrap
                 align-self: center
+                margin-left: 10px
                 &--creator
                     font-size: .8em
                 &--artist
