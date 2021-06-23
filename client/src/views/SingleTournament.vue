@@ -1,6 +1,6 @@
 <template lang="pug">
   .content__container
-    .content__container--content(v-if="tournament")
+    .content__container--content(v-if="!isTournamentEmpty() && isLoaded")
       .content__container--content--heading
         h3 {{tournament.title}}
         .content__container--content--heading--sub
@@ -22,10 +22,12 @@
             md-progress-spinner(md-mode="indeterminate" name="tournaments_spin")
         .content__container--content--results
         .content__container--footer
-    .content__container--missingTournament(v-else)
+    .content__container--missingTournament(v-else-if="isLoaded && isTournamentEmpty()")
       h3="There is no tournament like that"
       md-button(class="md-raised md-primary" @click="$router.go(-1)")
         ="Go back"
+    h3(v-else-if="!isLoaded")
+      md-progress-spinner(md-mode="indeterminate" name="tournaments_spin")
 </template>
 
 <script lang="ts">
@@ -33,6 +35,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Route } from 'vue-router';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import _ from 'underscore';
 import SingleMatchTeams from '../components/match/SingleMatchTeams.vue';
 import SingleMatchMaps from '../components/match/Progress/Index.vue';
 
@@ -48,9 +51,19 @@ export default class SingleTournament extends Vue {
 
   tournamentId = this.$route.params.id;
 
+  isLoaded = false;
+
   dayjs = dayjs;
 
   tournament = {};
+
+  isTournamentEmpty() {
+    if (_.isEmpty(this.tournament)) {
+      return true;
+    }
+
+    return false;
+  }
 
   async setTournamentInformations() {
     const results = await axios({
@@ -62,8 +75,9 @@ export default class SingleTournament extends Vue {
     return results[0];
   }
 
-  async mounted() {
+  async created() {
     this.tournament = await this.setTournamentInformations();
+    this.isLoaded = true;
   }
 }
 </script>
@@ -93,6 +107,7 @@ export default class SingleTournament extends Vue {
     align-items: center
     position: relative
     min-height: 900px
+    transition-delay: 1s
     transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
     h3
       text-align: center
