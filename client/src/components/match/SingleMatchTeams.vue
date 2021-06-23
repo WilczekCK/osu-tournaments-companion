@@ -141,7 +141,7 @@ export default class Teams extends Vue {
             align-items: center
             transform: scale(.8)
             text-shadow: .5px 0px .5px black
-            margin-top: 2px
+            margin-top: 5px
             color: white
             @media (max-width: 400px)
                 display: none
@@ -166,8 +166,8 @@ export default class Teams extends Vue {
                 align-items: center
                 justify-content: flex-end
                 min-width: 150px
+                margin-top: -5px
                 img
-                    height: 50px
                     max-height: 35px
                     padding: 5px
                 span

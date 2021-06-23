@@ -1,6 +1,6 @@
 <template lang="pug">
   .content__container
-    .content__container--content
+    .content__container--content(v-if="tournament")
       .content__container--content--heading
         h3 {{tournament.title}}
         .content__container--content--heading--sub
@@ -20,8 +20,12 @@
             h3="Waiting for the first map to start"
             p="Fetching informations"
             md-progress-spinner(md-mode="indeterminate" name="tournaments_spin")
-      .content__container--content--results
-    .content__container--footer
+        .content__container--content--results
+        .content__container--footer
+    .content__container--missingTournament(v-else)
+      h3="There is no tournament like that"
+      md-button(class="md-raised md-primary" @click="$router.go(-1)")
+        ="Go back"
 </template>
 
 <script lang="ts">
@@ -68,6 +72,17 @@ export default class SingleTournament extends Vue {
   display: flex
   align-items: center
   flex-direction: column
+  &--missingTournament
+    display: flex
+    flex-direction: column
+    justify-content: center
+    h3
+      color: white
+      font-size: 2em
+      padding: 15px 0px
+    button
+      margin: 0 auto
+      color: white !important
   &--content
     display: flex
     flex-direction: column
@@ -129,8 +144,6 @@ export default class SingleTournament extends Vue {
         flex-direction: row
         min-width: 75px
         margin: 0px 5px
-        img
-          width: 50px
 
   ::v-deep .md-stepper
     background: $bg-content
