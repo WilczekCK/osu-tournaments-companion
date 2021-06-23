@@ -18,7 +18,7 @@
           SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
           .matchNotStarted(v-else)
             h3="Waiting for the first map to start"
-            p="Fetching informations"
+            p="Refresh that page after a minute"
             md-progress-spinner(md-mode="indeterminate" name="tournaments_spin")
         .content__container--content--results
         .content__container--footer
