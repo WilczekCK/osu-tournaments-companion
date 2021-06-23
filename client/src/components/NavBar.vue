@@ -13,27 +13,27 @@
                         span(class="material-icons md-layout-item" v-else)
                             ="menu_open"
                     md-menu-content
-                        md-menu-item
-                            router-link(to="#")
-                                ="About osu!tc"
-                        md-menu-item
+                        md-menu-item(name="sus" key="sus2")
                             a(href="https://osupoli.pl")
                                 ="OsuPoli"
-                        md-menu-item
-                            a(href="#")
+                        md-menu-item(name="sus2" key="sus3")
+                            a(href="https://discord.gg/hErbYQ6Fs9")
                                 ="Discord"
+                        md-menu-item(name="sus3" key="sus4")
+                            a(href="https://github.com/wilczekck")
+                                ="Github"
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component
 export default class NavBar extends Vue {
+    name: 'test'
+
     isHamburgerActive = false
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="sass">
 .navigation__container
     width: 100%

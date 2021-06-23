@@ -1,6 +1,6 @@
 <template lang='pug'>
   #app
-    navbar
+    navbar(name="menu")
     transition( mode="out-in" :name="transitionName")
       router-view
 </template>
