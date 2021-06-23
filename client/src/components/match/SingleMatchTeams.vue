@@ -121,11 +121,10 @@ export default class Teams extends Vue {
             justify-content: space-around
         &--avatar
             max-height: 100%
-            width: 45px
-            flex-basis: 10%
+            flex-basis: 12.5%
             z-index: 1
         &--nickname
-            flex-basis: 65%
+            flex-basis: 62.5%
             padding-left: 5px
             z-index: 5
             text-shadow: .5px 0px .5px black
@@ -148,12 +147,13 @@ export default class Teams extends Vue {
                 display: none
             &--global
                 width: 100%
+                min-width: 150px
                 text-align: left
                 font-size: 1.5em
                 margin-left: .5px
                 display: flex
                 flex-direction: row
-                justify-content: center
+                justify-content: flex-end
                 padding-left: 5px
                 img
                     height: 25px
@@ -164,11 +164,10 @@ export default class Teams extends Vue {
                 display: flex
                 flex-direction: row
                 align-items: center
-                *
-                    flex-basis: 50%
+                justify-content: flex-end
+                min-width: 150px
                 img
-                    width: 100%
-                    height: 100%
+                    height: 50px
                     max-height: 35px
                     padding: 5px
                 span
@@ -207,14 +206,16 @@ export default class Teams extends Vue {
                 padding-left: unset
                 padding-right: 5px
             &--ranking
-                margin-right: 15px
                 @media (max-width: 600px)
                     align-self: center
                     margin-left: 5px
                 &--global
                     text-align: right
+                    padding: unset
+                    margin: unset
+                    flex-direction: row-reverse
                     img
-                        padding-left: 3px
+                        padding-left: 5px
                 &--country
                     flex-direction: row-reverse
                     align-self: flex-start
