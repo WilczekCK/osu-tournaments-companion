@@ -47,7 +47,7 @@ import SingleMatchMaps from '../components/match/Progress/Index.vue';
 })
 
 export default class SingleTournament extends Vue {
-  $route: Route;
+  $route!: Route;
 
   tournamentId = this.$route.params.id;
 
@@ -57,7 +57,7 @@ export default class SingleTournament extends Vue {
 
   tournament = {};
 
-  isTournamentEmpty() {
+  isTournamentEmpty() :boolean {
     if (_.isEmpty(this.tournament)) {
       return true;
     }
@@ -65,17 +65,17 @@ export default class SingleTournament extends Vue {
     return false;
   }
 
-  async setTournamentInformations() {
+  async setTournamentInformations() :Promise< Record<string, number> > {
     const results = await axios({
       method: 'get',
       url: `http://localhost:3000/tournaments/${this.tournamentId}`,
     })
-      .then((data: any) => data.data);
+      .then((data) => data.data);
 
     return results[0];
   }
 
-  async created() {
+  async created() :Promise<void> {
     this.tournament = await this.setTournamentInformations();
     this.isLoaded = true;
   }

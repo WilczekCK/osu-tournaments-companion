@@ -13,12 +13,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
 
 export default class NavBar extends Vue {
-    name: 'test'
-
-    isHamburgerActive = false
 }
 </script>
 
