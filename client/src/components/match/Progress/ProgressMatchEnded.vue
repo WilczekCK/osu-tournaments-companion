@@ -19,7 +19,7 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 
 @Component
 export default class Progress extends Vue {
-    @Prop() private matchInfo!: any;
+    @Prop() private matchInfo!: Array<Record<string, Record<string, number> >>;
 
     beatmaps = this.matchInfo;
 
@@ -28,12 +28,12 @@ export default class Progress extends Vue {
     sumPoints = { red: 0, blue: 0 };
 
     getSumScore = () :void => {
-      this.beatmaps.forEach(({ summaryScore } : {summaryScore: any}) => {
-        this.sumScore.blue += summaryScore.blue;
-        this.sumScore.red += summaryScore.red;
+      this.beatmaps.forEach((result) => {
+        this.sumScore.blue += result.summaryScore.blue;
+        this.sumScore.red += result.summaryScore.red;
 
-        if (summaryScore.blue > summaryScore.red) this.sumPoints.blue += 1;
-        if (summaryScore.blue < summaryScore.red) this.sumPoints.red += 1;
+        if (result.summaryScore.blue > result.summaryScore.red) this.sumPoints.blue += 1;
+        if (result.summaryScore.blue < result.summaryScore.red) this.sumPoints.red += 1;
       });
     }
 
@@ -45,7 +45,7 @@ export default class Progress extends Vue {
       return 'Red';
     }
 
-    mounted() {
+    mounted() :void {
       this.getSumScore();
     }
 }

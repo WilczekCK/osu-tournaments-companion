@@ -31,7 +31,7 @@ export default class MatchList extends Vue {
     additionalQuery: '',
     areLoaded: false,
     isAnimationEnded: false,
-    changePage: async (pageNumber: number) => {
+    changePage: async (pageNumber: number) :Promise<void> => {
       // replace with new tournaments in array
       const fetchMatches = await this.matches.fetch(pageNumber);
 
@@ -41,25 +41,25 @@ export default class MatchList extends Vue {
         this.matches.loadedTournaments = fetchMatches;
       }
     },
-    setAdditionalQuery: async (query: string) => {
+    setAdditionalQuery: async (query: string) :Promise<void> => {
       // set and load new matches
       this.matches.additionalQuery = query;
       await this.matches.changePage(0);
     },
-    fetch: async (startPage: number) => {
+    fetch: async (startPage: number) :Promise<any> => {
       this.matches.areLoaded = false;
 
       const results = await axios({
         method: 'get',
         url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${startPage * 5}&${this.matches.additionalQuery}`,
       })
-        .then((data: any) => data.data);
+        .then((data) => data.data);
 
       this.matches.nextPageAnimation();
       this.matches.areLoaded = true;
       return results;
     },
-    nextPageAnimation: async () => {
+    nextPageAnimation: async () :Promise<void> => {
       this.matches.isAnimationEnded = false;
 
       setTimeout(() => {
@@ -68,17 +68,17 @@ export default class MatchList extends Vue {
     },
   }
 
-  async created() {
+  async created() :Promise<void> {
     this.matches.loadedTournaments = await this.matches.fetch(0);
   }
 
   @Watch('actualPage')
-  async pageChanged(pageNumber:number) {
+  async pageChanged(pageNumber:number) :Promise<void> {
     await this.matches.changePage(pageNumber);
   }
 
   @Watch('queryFilter')
-  async displayFilteredMatches() {
+  async displayFilteredMatches() :Promise<void> {
     this.matches.setAdditionalQuery(this.queryFilter);
 
     // we need to set it as page 0, because of new, queried results
@@ -86,7 +86,7 @@ export default class MatchList extends Vue {
   }
 
   @Watch('matches.areLoaded')
-  emitLoadingStatus(status:boolean) {
+  emitLoadingStatus(status:boolean) :void {
     this.$emit('matchesLoaded', status);
   }
 }
