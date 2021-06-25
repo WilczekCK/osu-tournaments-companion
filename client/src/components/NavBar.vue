@@ -6,9 +6,9 @@
                 ="osu!"
                 span="tc"
             div(class="md-layout-item md-size-10 menu")
-                a(href="#")
+                a(href="https://discord.gg/hErbYQ6Fs9" target="_blank")
                     img(:src="require(`@/assets/discord.svg`)")
-                a(href="#")
+                a(href="https://github.com/wilczekck" target="_blank")
                     img(:src="require(`@/assets/github.svg`)")
 </template>
 
@@ -33,7 +33,7 @@ export default class NavBar extends Vue {
         display: flex
         align-content: center
         .logo
-            margin-left: 10px
+            margin-left: 15px
         .menu
             a
                 padding: 0px 5px
@@ -49,6 +49,6 @@ export default class NavBar extends Vue {
             &:hover
                 text-decoration: none
         img
-            width: 40px
-            height: 40px
+            width: 30px
+            height: 30px
 </style>
