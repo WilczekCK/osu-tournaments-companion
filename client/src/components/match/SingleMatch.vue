@@ -107,7 +107,7 @@ export default class SingleMatch extends Vue {
   async setTournamentInformations() {
     const results = await axios({
       method: 'get',
-      url: `http://localhost:3000/tournaments/${this.tournamentInfo.id}`,
+      url: `${Vue.prototype.$backendUrl}/tournaments/${this.tournamentInfo.id}`,
     })
       .then((data: any) => data.data);
 

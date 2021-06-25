@@ -54,7 +54,7 @@ export default class Pagination extends Vue {
     countMatches = async (additionalQuery = '') => {
       const results = await axios({
         method: 'get',
-        url: `http://localhost:3000/tournaments/countTournaments${additionalQuery}`,
+        url: `${Vue.prototype.$backendUrl}/tournaments/countTournaments${additionalQuery}`,
       })
         .then((data: any) => data.data);
 

@@ -25,7 +25,7 @@ export default class ProgressStarted extends Vue {
     fetchUser = async () => {
       const results = await axios({
         method: 'get',
-        url: `http://localhost:3000/users/${this.judgeId}`,
+        url: `${Vue.prototype.$backendUrl}/users/${this.judgeId}`,
       })
         .then((data: any) => {
           if (data.data.result) {

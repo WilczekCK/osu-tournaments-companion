@@ -10,6 +10,8 @@ import App from './App.vue';
 
 Vue.config.productionTip = false;
 
+Vue.prototype.$backendUrl = 'http://localhost:3000';
+
 Vue.use(MdMenu);
 Vue.use(MdContent);
 Vue.use(MdTabs);

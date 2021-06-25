@@ -48,10 +48,9 @@ export default class MatchList extends Vue {
     },
     fetch: async (startPage: number) :Promise<any> => {
       this.matches.areLoaded = false;
-
       const results = await axios({
         method: 'get',
-        url: `http://localhost:3000/tournaments/?limit=${5}&startFrom=${startPage * 5}&${this.matches.additionalQuery}`,
+        url: `${Vue.prototype.$backendUrl}/tournaments/?limit=${5}&startFrom=${startPage * 5}&${this.matches.additionalQuery}`,
       })
         .then((data) => data.data);
 

@@ -65,7 +65,7 @@ export default class Teams extends Vue {
       getDbInfo: async (playerId: number) => {
         await axios({
           method: 'get',
-          url: `http://localhost:3000/users/${playerId}`,
+          url: `${Vue.prototype.$backendUrl}/users/${playerId}`,
         })
           .then(({ data }: any) => {
             // push into array, full info about players by their teams
