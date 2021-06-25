@@ -19,7 +19,7 @@ export default class Home extends Vue {
   transitionName = '';
 
   @Watch('$route')
-  doSmth(to: any, from: any) :void {
+  doSmth(to:any, from:any) :void {
     const toDepth = to.path.split('/').length;
     const fromDepth = from.path.split('/').length;
     this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
