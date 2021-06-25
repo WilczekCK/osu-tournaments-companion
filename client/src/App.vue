@@ -1,6 +1,6 @@
 <template lang='pug'>
   #app
-    navbar
+    navbar(name="menu")
     transition( mode="out-in" :name="transitionName")
       router-view
 </template>
@@ -19,7 +19,7 @@ export default class Home extends Vue {
   transitionName = '';
 
   @Watch('$route')
-  doSmth(to, from) {
+  moveAnimation(to:any, from:any) :void {
     const toDepth = to.path.split('/').length;
     const fromDepth = from.path.split('/').length;
     this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';

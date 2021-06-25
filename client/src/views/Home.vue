@@ -43,7 +43,7 @@ export default class Home extends Vue {
     },
     filtering: {
       filterQuery: {},
-      setFilterQuery: (filterQuery: any):void => { this.props.filtering.filterQuery = `queryKey=${filterQuery.key}&queryValue=${filterQuery.value}`; },
+      setFilterQuery: (filterQuery: Record<string, number>):void => { this.props.filtering.filterQuery = `queryKey=${filterQuery.key}&queryValue=${filterQuery.value}`; },
     },
     pagination: {
       animationDetails: {},

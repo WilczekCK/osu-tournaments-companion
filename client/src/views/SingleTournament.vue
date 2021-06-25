@@ -1,6 +1,6 @@
 <template lang="pug">
   .content__container
-    .content__container--content
+    .content__container--content(v-if="!isTournamentEmpty() && isLoaded")
       .content__container--content--heading
         h3 {{tournament.title}}
         .content__container--content--heading--sub
@@ -18,16 +18,24 @@
           SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
           .matchNotStarted(v-else)
             h3="Waiting for the first map to start"
-            p="Fetching informations"
+            p="Refresh that page after a minute"
             md-progress-spinner(md-mode="indeterminate" name="tournaments_spin")
-      .content__container--content--results
-    .content__container--footer
+        .content__container--content--results
+        .content__container--footer
+    .content__container--missingTournament(v-else-if="isLoaded && isTournamentEmpty()")
+      h3="There is no tournament like that"
+      md-button(class="md-raised md-primary" @click="$router.go(-1)")
+        ="Go back"
+    h3(v-else-if="!isLoaded")
+      md-progress-spinner(md-mode="indeterminate" name="tournaments_spin")
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Route } from 'vue-router';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import _ from 'underscore';
 import SingleMatchTeams from '../components/match/SingleMatchTeams.vue';
 import SingleMatchMaps from '../components/match/Progress/Index.vue';
 
@@ -39,24 +47,37 @@ import SingleMatchMaps from '../components/match/Progress/Index.vue';
 })
 
 export default class SingleTournament extends Vue {
+  $route!: Route;
+
   tournamentId = this.$route.params.id;
+
+  isLoaded = false;
 
   dayjs = dayjs;
 
   tournament = {};
 
-  async setTournamentInformations() {
+  isTournamentEmpty() :boolean {
+    if (_.isEmpty(this.tournament)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  async setTournamentInformations() :Promise< Record<string, number> > {
     const results = await axios({
       method: 'get',
       url: `http://localhost:3000/tournaments/${this.tournamentId}`,
     })
-      .then((data: any) => data.data);
+      .then((data) => data.data);
 
     return results[0];
   }
 
-  async mounted() {
+  async created() :Promise<void> {
     this.tournament = await this.setTournamentInformations();
+    this.isLoaded = true;
   }
 }
 </script>
@@ -68,6 +89,17 @@ export default class SingleTournament extends Vue {
   display: flex
   align-items: center
   flex-direction: column
+  &--missingTournament
+    display: flex
+    flex-direction: column
+    justify-content: center
+    h3
+      color: white
+      font-size: 2em
+      padding: 15px 0px
+    button
+      margin: 0 auto
+      color: white !important
   &--content
     display: flex
     flex-direction: column
@@ -75,6 +107,7 @@ export default class SingleTournament extends Vue {
     align-items: center
     position: relative
     min-height: 900px
+    transition-delay: 1s
     transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
     h3
       text-align: center
@@ -100,12 +133,14 @@ export default class SingleTournament extends Vue {
       .teams__container__member
         &--ranking
           padding-right: 10px
+          text-align: left
     &--blue
       .teams__container__member
         &--ranking
+          text-align: right
           margin-right: unset
-          span
-            text-align: left
+          &--country
+            flex-direction: row-reverse !important
   ::v-deep .teams__container__member
     height: 70px
     .teams__container__member--ranking
@@ -116,6 +151,7 @@ export default class SingleTournament extends Vue {
         flex-direction: column
       &--global
         font-size: inherit
+        min-width: 100px
         span
           align-self: center
           padding-left: 4px
@@ -124,8 +160,8 @@ export default class SingleTournament extends Vue {
         font-size: inherit
         align-self: center
         flex-direction: row
-        img
-          width: 50px
+        min-width: 75px
+        margin: 0px 5px
 
   ::v-deep .md-stepper
     background: $bg-content
