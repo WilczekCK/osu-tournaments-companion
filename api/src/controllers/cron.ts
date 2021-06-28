@@ -11,7 +11,7 @@ class Cron {
     private isTournamentCronInProgress : boolean = false;
     private isUserCronInProgress : boolean = false;
     
-    private secondsEachTournamentCron : number = 60;
+    private secondsEachTournamentCron : number = 120;
     private hoursEachUserCron : number = 23;
     
     private tournamentsToUpdate : Array<object>;
@@ -157,14 +157,18 @@ class Cron {
             }
         })
 
-        /* Tournaments fetch and update */
+        /* Tournaments update */
         cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
             if( !this.isTournamentCronInProgress && !this.isUserCronInProgress ){
                 await this.tournamentsCRON.prepareToUpdate();
                 await this.tournamentsCRON.update();
-                await this.tournamentsCRON.lookForNew();
                 await this.tournamentsCRON.removeWithoutPlays();
             }
+        })
+
+        /* Look for new tournaments */
+        cron.schedule(`*/2 * * * *`, async () => {
+            await this.tournamentsCRON.lookForNew();
         })
     };
 }
