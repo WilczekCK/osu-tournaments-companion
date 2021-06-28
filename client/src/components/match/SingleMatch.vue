@@ -43,7 +43,6 @@
                                 span(class="material-icons md-layout-item" @mousedown="refreshTournament")
                                     ="sync"
                         md-tab(id="tab-playCharts" md-label="games ( tba )" md-disabled)
-                            SingleMatchGames
                     md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
 </template>
 <script lang="ts">
@@ -108,7 +107,7 @@ export default class SingleMatch extends Vue {
   async setTournamentInformations() {
     const results = await axios({
       method: 'get',
-      url: `http://localhost:3000/tournaments/${this.tournamentInfo.id}`,
+      url: `${Vue.prototype.$backendUrl}/tournaments/${this.tournamentInfo.id}`,
     })
       .then((data: any) => data.data);
 

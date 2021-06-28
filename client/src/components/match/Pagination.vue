@@ -38,30 +38,30 @@ export default class Pagination extends Vue {
       sideToFade: '',
       recordsOnPage: 5,
       maxPage: 1,
-      setMaxPage: () => {
+      setMaxPage: () :void => {
         this.pagination.maxPage = Math.ceil(this.pagination.sumPages / this.pagination.recordsOnPage);
       },
     };
 
-    nextPage = () => {
+    nextPage = () :void => {
       this.pagination.currentPage += 1;
     }
 
-    prevPage = () => {
+    prevPage = () :void => {
       this.pagination.currentPage -= 1;
     }
 
-    countMatches = async (additionalQuery = '') => {
+    countMatches = async (additionalQuery = '') :Promise<number> => {
       const results = await axios({
         method: 'get',
-        url: `http://localhost:3000/tournaments/countTournaments${additionalQuery}`,
+        url: `${Vue.prototype.$backendUrl}/tournaments/countTournaments${additionalQuery}`,
       })
-        .then((data: any) => data.data);
+        .then((data) => data.data);
 
       return results;
     }
 
-    changePage(to: string) {
+    changePage(to: string) :void {
       if (to === 'prev' && this.pagination.delayBetweenPages === false && this.pagination.currentPage > 0) {
         this.pagination.recentPageSize = this.pagination.currentPage;
         this.prevPage();
@@ -74,7 +74,7 @@ export default class Pagination extends Vue {
       this.$emit('getTournamentsPage', this.pagination.currentPage);
     }
 
-    fadeAnimation(newValue: number) {
+    fadeAnimation(newValue: number) :void {
       const speedOfAnimation = 600;
       if (this.pagination.recentPageSize > (newValue || !newValue)) {
         this.pagination.sideToFade = 'slide-left';
@@ -86,13 +86,13 @@ export default class Pagination extends Vue {
       this.pagination.recentPageSize = newValue;
     }
 
-    async mounted() {
+    async mounted() :Promise<void> {
       this.pagination.sumPages = await this.countMatches();
       this.pagination.setMaxPage();
     }
 
     @Watch('isMatchLoaded')
-    delayMaker(isLoaded: boolean) {
+    delayMaker(isLoaded: boolean) :void {
       this.pagination.delayBetweenPages = true;
       if (isLoaded) {
         this.pagination.delayBetweenPages = false;
@@ -100,7 +100,7 @@ export default class Pagination extends Vue {
     }
 
     @Watch('reloadPaginationQuery')
-    async recalcPages() {
+    async recalcPages() :Promise<void> {
       this.pagination.currentPage = 0;
       this.pagination.sumPages = await this.countMatches(`?${this.reloadPaginationQuery}`) || 1;
       this.pagination.setMaxPage();

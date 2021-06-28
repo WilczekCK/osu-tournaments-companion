@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Route } from 'vue-router';
 import navbar from './components/NavBar.vue';
 
 @Component({
@@ -19,7 +20,7 @@ export default class Home extends Vue {
   transitionName = '';
 
   @Watch('$route')
-  moveAnimation(to:any, from:any) :void {
+  moveAnimation(to: Route, from: Route) :void {
     const toDepth = to.path.split('/').length;
     const fromDepth = from.path.split('/').length;
     this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
