@@ -22,6 +22,7 @@ class Cron {
     private cursorMatchId : number = 0;
 
     private tournamentsCRON = {
+        provideCursor: () => this.cursorMatchId != 0 ? `&cursorMatchId=${this.cursorMatchId}` : '',
         prepareToUpdate: async () => {
             this.tournamentsToUpdate = await tournaments.displayCertain({'timeEnded': null});
             this.isTournamentCronInProgress = true;
@@ -74,8 +75,11 @@ class Cron {
             return;
         },
         lookForNew: async () => {
-            await axios.get(`/tournaments/?osuApi=true`)
+            await axios.get(`/tournaments/?osuApi=true${this.tournamentsCRON.provideCursor()}`)
             .then( async ( {data} ) => {
+                //to know, where it should start next time!
+                this.cursorMatchId = data.cursor.match_id;
+
                 for await(let match of data.matches){
                     if(tournaments.isTournament(match.name)){
                         await axios({
