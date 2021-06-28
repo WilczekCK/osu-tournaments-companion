@@ -62,12 +62,12 @@ export default class Teams extends Vue {
     }
 
     player = {
-      getDbInfo: async (playerId: number) => {
+      getDbInfo: async (playerId: number) : Promise<void> => {
         await axios({
           method: 'get',
           url: `${Vue.prototype.$backendUrl}/users/${playerId}`,
         })
-          .then(({ data }: any) => {
+          .then(({ data }) => {
             // push into array, full info about players by their teams
             if (!data.result) {
               //
@@ -80,7 +80,7 @@ export default class Teams extends Vue {
       },
     }
 
-    async created() {
+    async created() :Promise<void> {
       const playersToLoad = [...this.teams.blue, ...this.teams.red];
       // async like, just to collect info
       playersToLoad.forEach(async (playerId) => {
@@ -91,7 +91,6 @@ export default class Teams extends Vue {
           this.teamsLoaded = true;
         }
       });
-      return 0;
     }
 }
 </script>
