@@ -33,7 +33,7 @@ async function accessApi(scope: string){
     return await axios({
         method: 'get',
         url: osuCreds.apiEndpoint+scope,
-        headers: { Authorization: `Bearer ${await getToken()}` }
+        headers: { Authorization: `Bearer ${await getToken()}` },
     })
     .then(function ( {data} ) {
         return data;

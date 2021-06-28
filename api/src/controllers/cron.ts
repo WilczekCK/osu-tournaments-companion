@@ -19,6 +19,8 @@ class Cron {
 
     private tournamentsToRemove : Array<object | any>;
 
+    private cursorMatchId : number = 0;
+
     private tournamentsCRON = {
         prepareToUpdate: async () => {
             this.tournamentsToUpdate = await tournaments.displayCertain({'timeEnded': null});
