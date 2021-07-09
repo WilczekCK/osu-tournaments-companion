@@ -168,7 +168,9 @@ class Cron {
 
         /* Look for new tournaments */
         cron.schedule(`*/2 * * * *`, async () => {
-            await this.tournamentsCRON.lookForNew();
+            if(!this.isUserCronInProgress){
+                await this.tournamentsCRON.lookForNew();
+            }
         })
     };
 }
