@@ -63,7 +63,7 @@ class Tournaments {
         return result;
     };
 
-    public isWhitelisted = async(tournamentNameFlatten: string) => {
+    public isWhitelisted = (tournamentNameFlatten: string) => {
         const blackList:Array<string> = [
             'o!mm', 'o!mm Ranked', 'o!mm Private', 'o!mm Team Private', 'o!mm Team Ranked' //o!mm related, waiting for API access from developer
         ];
@@ -87,6 +87,11 @@ class Tournaments {
 
         //scrap the name of tournament for identification of tournament
         const {teamsName, tournamentNameFlatten} = this.getTeamsName(match.name);
+
+        //WHITELIST!
+        if ( !this.isWhitelisted(tournamentNameFlatten) ) {
+            return {status: 400, repsonse: "This tournament type is disallowed!"};
+        }
 
         const newTournament = new tournamentsSchema({
             id: match.id,
