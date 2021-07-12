@@ -61,7 +61,7 @@ class Cron {
                         let {end_time: timeEnded}  = match;
                         let [{judge}, {gameMode}, {playedBeatmaps: mapsPlayed}] = await tournaments.parseEventsObject( events );
     
-                        let teams = {...await tournaments.sortTeams( mapsPlayed ), names: tournaments.getTeamsName(match.name)};
+                        let teams = {...await tournaments.sortTeams( mapsPlayed, judge ), names: tournaments.getTeamsName(match.name)};
                         
                         await this.tournamentsCRON.compare(
                             {timeEnded, users, judge, mapsPlayed, gameMode, events, teams},

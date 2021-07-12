@@ -80,7 +80,7 @@ class Tournaments {
         let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events );
     
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( playedBeatmaps );
+        let sortedTeams = await this.sortTeams( playedBeatmaps, judge );
 
         // Judge first!
         await users.insert(judge);
@@ -198,7 +198,7 @@ class Tournaments {
         return getInfo;
     }
 
-    public sortTeams = async ( beatmapsPlayed: any ) => {    
+    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
             red: [],
@@ -217,7 +217,7 @@ class Tournaments {
                         break;
 
                     /* 1 vs 1 below */
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0:
+                    case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0 && score.user_id !== judge:
                     /* Single Qualifications below*/
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
                         sortedTeams['red'].push(score.user_id);
@@ -225,7 +225,7 @@ class Tournaments {
                         break;
                     
                     /* 1 vs 1 below */
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id:
+                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id && score.user_id !== judge:
                     /* Single Qualifications below */
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
