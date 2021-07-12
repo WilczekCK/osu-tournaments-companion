@@ -3,6 +3,7 @@ import tournamentsSchema from '../database/tournaments.schema';
 import * as tournamentsTypes from '../validators/tournamentTypes';
 import users from "./users";
 import _ from "underscore";
+import { StdioNull } from 'child_process';
 
 
 class Tournaments {
@@ -62,6 +63,18 @@ class Tournaments {
         return result;
     };
 
+    public isWhitelisted = async(tournamentNameFlatten: string) => {
+        const blackList:Array<string> = [
+            'o!mm', 'o!mm Ranked', 'o!mm Private', 'o!mm Team Private', 'o!mm Team Ranked' //o!mm related, waiting for API access from developer
+        ];
+
+        if ( _.contains(blackList, tournamentNameFlatten) ){
+            return false;
+        }
+
+        return true;
+    }
+
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         //prepare informations about the tournament
         let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events );
@@ -74,8 +87,6 @@ class Tournaments {
 
         //scrap the name of tournament for identification of tournament
         const {teamsName, tournamentNameFlatten} = this.getTeamsName(match.name);
-
-        console.log(tournamentNameFlatten);
 
         const newTournament = new tournamentsSchema({
             id: match.id,
