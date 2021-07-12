@@ -252,10 +252,14 @@ class Tournaments {
             blue: '',
             red: ''
         }
+        let tournamentNameFlatten:string = '';
 
         for(let letter of tournamentName){
 
             switch(true) {
+                case ( !flags.isColonNoticed ):
+                    tournamentNameFlatten += letter;
+                    break;
                 case (':' === letter):
                     flags.isColonNoticed = true;
                     break;
@@ -276,7 +280,7 @@ class Tournaments {
 
         }
 
-        return teamsName;
+        return {teamsName, tournamentNameFlatten};
     }
 
     public selectMostPlayedMode = (matchPlayed: object) => {
