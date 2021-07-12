@@ -131,6 +131,14 @@ class Tournaments {
     public update = async (tournamentInfo: tournamentsTypes.updateSchema ) => {
         const {whereQuery, modifyQuery} = tournamentInfo;
 
+        //prevent duplicates, object quality!
+        if(modifyQuery.prefix === 'teams'){
+            modifyQuery.content['blue'] = _.uniq(modifyQuery.content['blue']);
+            modifyQuery.content['red'] = _.uniq(modifyQuery.content['red']);
+
+            modifyQuery.content['red'] = _.difference(modifyQuery.content['blue'], modifyQuery.content['red']);
+        }
+
         const resp = modifyQuery.content && modifyQuery.prefix 
         ? await tournamentsSchema.updateOne(
             {[whereQuery.prefix]: whereQuery.content}, 

@@ -35,7 +35,7 @@ class Cron {
                 const result = _.values(difference);
                 let name = result[0];
                 let value = result[1];
-    
+                
                 await axios({
                     url: `/tournaments/m/${id}`,
                     method: 'PATCH',

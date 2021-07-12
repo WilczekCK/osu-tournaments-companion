@@ -46,6 +46,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import axios from 'axios';
+import _ from 'underscore';
 
 @Component
 export default class Teams extends Vue {
@@ -81,7 +82,8 @@ export default class Teams extends Vue {
     }
 
     async created() :Promise<void> {
-      const playersToLoad = [...this.teams.blue, ...this.teams.red];
+      let playersToLoad = [...this.teams.blue, ...this.teams.red];
+      playersToLoad = _.uniq(playersToLoad);
       // async like, just to collect info
       playersToLoad.forEach(async (playerId) => {
         await this.player.getDbInfo(playerId);
