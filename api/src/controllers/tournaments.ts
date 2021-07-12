@@ -75,6 +75,22 @@ class Tournaments {
         return true;
     }
 
+    public areQualifiers = (nameA: string, nameB: string, tournamentNameFlatten: string) => {
+        const qualifiers:Array<string> = [
+            'Qualifiers', 'Tryouts'
+        ];
+
+        const isTestPassed = _.filter(qualifiers, function(item) {
+            if( item === nameA || item === nameB || !_.isEmpty(tournamentNameFlatten.match(/qualifiers/gi)) || !_.isEmpty(tournamentNameFlatten.match(/tryouts/gi)) ) {
+                return true
+            }else{
+                return false;
+            };
+        })
+
+        return !_.isEmpty(isTestPassed);
+    }
+
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         //prepare informations about the tournament
         let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events );
@@ -109,7 +125,8 @@ class Tournaments {
             twitchURL: 'TBA',
             mapsPlayed: playedBeatmaps,
             gameMode,
-            events
+            events,
+            areQualifiers: this.areQualifiers(teamsName.blue, teamsName.red, tournamentNameFlatten)
         });
         
         try{

@@ -13,6 +13,7 @@ interface Tournament extends Document {
     twitchURL: String;
     events: Array<Object>;
     gameMode: string,
+    areQualifiers: Boolean
 }
 
 
@@ -28,7 +29,8 @@ const tournamentSchema = new Schema({
     mapsPlayed: { type: Array || Object },
     twitchURL: { type: String },
     events: { type: Array },
-    gameMode: {type: String}
+    gameMode: {type: String},
+    areQualifiers: {type: Boolean}
 })
 
 const TournamentCreator = mongoose.model<Tournament>('Tournament', tournamentSchema);
