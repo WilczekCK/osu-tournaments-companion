@@ -72,14 +72,19 @@ class Tournaments {
         // Judge first!
         await users.insert(judge);
 
+        //scrap the name of tournament for identification of tournament
+        const {teamsName, tournamentNameFlatten} = this.getTeamsName(match.name);
+
+        console.log(tournamentNameFlatten);
+
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,
-            titleFlattened: match.name, //to flatten soon
+            titleFlattened: tournamentNameFlatten, //to flatten soon
             teams: {
                 blue: sortedTeams.blue,
                 red: sortedTeams.red,
-                names: this.getTeamsName(match.name)
+                names: teamsName,
             }, 
             users: players,
             judge: judge,
@@ -257,9 +262,6 @@ class Tournaments {
         for(let letter of tournamentName){
 
             switch(true) {
-                case ( !flags.isColonNoticed ):
-                    tournamentNameFlatten += letter;
-                    break;
                 case (':' === letter):
                     flags.isColonNoticed = true;
                     break;
@@ -272,6 +274,9 @@ class Tournaments {
                     break;
                 case ('(' === letter && flags.firstTeamGot):
                     flags.isBracketOpen = true;
+                case ( !flags.isColonNoticed ):
+                    tournamentNameFlatten += letter;
+                    break;
                 default:
                     if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.red += letter;
                     if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.blue += letter;
