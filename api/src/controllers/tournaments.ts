@@ -242,7 +242,7 @@ class Tournaments {
                         break;
 
                     /* 1 vs 1 below */
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0 && score.user_id !== judge:
+                    case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0:
                     /* Single Qualifications below*/
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
                         sortedTeams['red'].push(score.user_id);
@@ -250,7 +250,7 @@ class Tournaments {
                         break;
                     
                     /* 1 vs 1 below */
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id && score.user_id !== judge:
+                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id:
                     /* Single Qualifications below */
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
