@@ -102,7 +102,7 @@ class Tournaments {
         let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events, areQualifiers );
     
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( playedBeatmaps, judge );
+        let sortedTeams = await this.sortTeams( playedBeatmaps, judge, areQualifiers );
 
         // Judge first!
         await users.insert(judge);
@@ -226,7 +226,7 @@ class Tournaments {
         return getInfo;
     }
 
-    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object ) => {    
+    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object, areQualifiers?: boolean ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
             red: [],
@@ -236,6 +236,11 @@ class Tournaments {
         for(let beatmap of beatmapsPlayed){
             for(let score of beatmap.scores){
                 switch(true){
+                    /* Qualifiers */
+                    case areQualifiers === true:
+                        sortedTeams['red'].push(score.user_id);
+                        break;
+
                     /* Team vs Team */
                     case 'team-vs' === beatmap.teamType && 'blue' === score.match.team  && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);

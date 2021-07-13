@@ -60,8 +60,11 @@ class Cron {
                         let {match, events, users} = data;
                         let {end_time: timeEnded}  = match;
                         let [{judge}, {gameMode}, {playedBeatmaps: mapsPlayed}] = await tournaments.parseEventsObject( events );
-    
-                        let teams = {...await tournaments.sortTeams( mapsPlayed, judge ), names: tournaments.getTeamsName(match.name)};
+                        
+                        const {teamsName, tournamentNameFlatten} = tournaments.getTeamsName(match.name);
+                        let areQualifiers = tournaments.areQualifiers(teamsName.blue, teamsName.red, tournamentNameFlatten);
+
+                        let teams = {...await tournaments.sortTeams( mapsPlayed, judge ), names: {teamsName, tournamentNameFlatten}, areQualifiers };
                         
                         await this.tournamentsCRON.compare(
                             {timeEnded, users, judge, mapsPlayed, gameMode, events, teams},

@@ -17,7 +17,7 @@
                 span(v-else)
                     ='In progress...'
         md-card-expand
-            .md-score {{tournament.teams.names.red}} {{this.matchScore.red}}
+            .md-score(v-if="!tournament.areQualifiers") {{tournament.teams.names.red}} {{this.matchScore.red}}
                 .
                     :
                 .
