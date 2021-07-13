@@ -49,7 +49,7 @@ import axios from 'axios';
 import _ from 'underscore';
 
 @Component
-export default class Teams extends Vue {
+export default class Qualifiers extends Vue {
     @Prop() private teams!: Record<string, Array<number>>;
 
     teamsLoaded = false;

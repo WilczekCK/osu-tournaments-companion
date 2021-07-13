@@ -32,7 +32,8 @@
                 .match__container
                     md-tabs(md-alignment="fixed" v-if="opened" :key="renderKey" :md-active-tab="activeTab")
                         md-tab(id="tab-teams" md-label="teams")
-                            SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
+                            SingleMatchQualifiers(:teams="tournament.teams" v-if="tournament.areQualifiers")
+                            SingleMatchTeams(:teams="tournament.teams" v-else-if="(tournament.teams.blue && tournament.teams.red) != 0")
                             .matchNotStarted(v-else)
                                 h3="Waiting for the first map to end"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
@@ -52,12 +53,14 @@ import dayjs from 'dayjs';
 import SingleMatchTeams from './SingleMatchTeams.vue';
 import SingleMatchProgress from './Progress/Index.vue';
 import SingleMatchGames from './SingleMatchGames.vue';
+import SingleMatchQualifiers from './SingleMatchQualifiers.vue';
 
 @Component({
   components: {
     SingleMatchTeams,
     SingleMatchProgress,
     SingleMatchGames,
+    SingleMatchQualifiers
   },
 })
 
