@@ -15,7 +15,8 @@
       .content__container--content--teams
         .match__container
           h3="Players: "
-          SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
+          SingleMatchQualifiers(:teams="tournament.teams" v-if="tournament.areQualifiers")
+          SingleMatchTeams(:teams="tournament.teams" v-else-if="(tournament.teams.blue && tournament.teams.red) != 0")
           .matchNotStarted(v-else)
             h3="Waiting for the first map to start"
             p="Refresh that page after a minute"
@@ -38,11 +39,13 @@ import dayjs from 'dayjs';
 import _ from 'underscore';
 import SingleMatchTeams from '../components/match/SingleMatchTeams.vue';
 import SingleMatchMaps from '../components/match/Progress/Index.vue';
+import SingleMatchQualifiers from '../components/match/SingleMatchQualifiers.vue';
 
 @Component({
   components: {
     SingleMatchTeams,
     SingleMatchMaps,
+    SingleMatchQualifiers,
   },
 })
 
@@ -134,6 +137,8 @@ export default class SingleTournament extends Vue {
         &--ranking
           padding-right: 10px
           text-align: left
+          &--global
+            padding-right: unset !important
     &--blue
       .teams__container__member
         &--ranking
@@ -143,6 +148,9 @@ export default class SingleTournament extends Vue {
             flex-direction: row-reverse !important
   ::v-deep .teams__container__member
     height: 70px
+    &--nickname
+      &.qualifiers
+        flex-basis: 80%
     .teams__container__member--ranking
       flex-direction: row
       flex-basis: unset
@@ -150,6 +158,7 @@ export default class SingleTournament extends Vue {
       @media (max-width: 768px)
         flex-direction: column
       &--global
+        padding-right: 10px
         font-size: inherit
         min-width: 100px
         span

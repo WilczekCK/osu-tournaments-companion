@@ -6,7 +6,7 @@
             .teams__container__member--avatar
                 a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
                     img(:src="`https://a.ppy.sh/${player.id}`" alt="user_avatar")
-            .teams__container__member--nickname
+            .teams__container__member--nickname(class="qualifiers")
                 a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
                     p {{ player.username }}
             .teams__container__member--ranking
@@ -71,7 +71,7 @@ export default class Qualifiers extends Vue {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .teams__container
     display: flex
     flex-wrap: nowrap
