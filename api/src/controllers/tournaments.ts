@@ -170,7 +170,7 @@ class Tournaments {
         return {status};
     }
 
-    public parseEventsObject = async (eventsDetail: object[], areQualifiers: boolean ) => {
+    public parseEventsObject = async (eventsDetail: object[], areQualifiers?: boolean ) => {
         let getInfo : {[key: string] : number | string | object | object[]}[] = [];
         let playedBeatmaps : Array<object> = [];
         let countModes: {[key:string]: number} = {osu: 0, mania:0, ctb:0, taiko:0};
