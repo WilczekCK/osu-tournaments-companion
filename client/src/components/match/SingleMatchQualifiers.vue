@@ -1,27 +1,7 @@
 <template lang="pug">
   .teams__container(v-if="teamsLoaded == true")
-    .teams__container--red
-        .teams__container__member(style="color:black" v-for="player in allPlayers.red"
-        :style="`background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${player.coverUrl}');`")
-            .teams__container__member--avatar
-                a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
-                    img(:src="`https://a.ppy.sh/${player.id}`" alt="user_avatar")
-            .teams__container__member--nickname
-                a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
-                    p {{ player.username }}
-            .teams__container__member--ranking
-                .teams__container__member--ranking--global
-                    img(:src="require(`@/assets/${player.playMode}.svg`)" alt="gamemode_icon")
-                    span='#'
-                        .
-                            {{player.ranking.global}}
-                .teams__container__member--ranking--country
-                    img(:src="`https://www.countryflags.io/${player.country.code}/flat/64.png`" alt="country_flag")
-                    span='#'
-                        .
-                            {{player.ranking.country}}
-    .teams__container--blue
-        .teams__container__member(style="color:black" v-for="player in allPlayers.blue"
+    .teams__container
+        .teams__container__member(style="color:black" v-for="player in allPlayers"
         :style="`background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('${player.coverUrl}');`")
             .teams__container__member--avatar
                 a(:href="`https://osu.ppy.sh/u/${player.id}`" target="_blank")
@@ -95,11 +75,11 @@ export default class Qualifiers extends Vue {
 .teams__container
     display: flex
     flex-wrap: nowrap
-    flex-direction: row
+    flex-direction: column
     height: 100%
     &__member
         align-self: space-between
-        height: 50px
+        height: 65px
         color: white
         font-weight: 800
         display: flex
@@ -116,10 +96,11 @@ export default class Qualifiers extends Vue {
             justify-content: space-around
         &--avatar
             max-height: 100%
-            flex-basis: 12.5%
+            flex-basis: 6%
             z-index: 1
+            img
         &--nickname
-            flex-basis: 62.5%
+            flex-basis: 70%
             padding-left: 5px
             z-index: 5
             text-shadow: .5px 0px .5px black
@@ -169,54 +150,4 @@ export default class Qualifiers extends Vue {
                     text-align: left
                 @media (max-width: 600px)
                     font-size: 1em
-    &--red, &--blue
-        flex-basis: 50%
-        display: flex
-        flex-direction: column
-        justify-content: flex-start
-        @media (max-width: 600px)
-            flex-basis: unset
-            width: 50%
-    &--red
-        .teams__container__member
-            &--ranking
-                z-index: 99999 !important
-                @media (max-width: 600px)
-                    align-self: center
-                    margin-right: 5px
-                &--global
-                    img
-                        padding-right: 3px
-                &--country
-                    align-self: flex-end
-    &--blue
-        justify-content: flex-end
-        flex-direction: column-reverse
-        .teams__container__member
-            flex-direction: row-reverse
-            padding-left: unset
-            padding-right: 10px
-            &--nickname
-                text-align: right
-                padding-left: unset
-                padding-right: 5px
-            &--ranking
-                @media (max-width: 600px)
-                    align-self: center
-                    margin-left: 5px
-                &--global
-                    text-align: right
-                    padding: unset
-                    margin: unset
-                    flex-direction: row-reverse
-                    img
-                        padding-left: 5px
-                &--country
-                    flex-direction: row-reverse
-                    align-self: flex-start
-                    img
-                        max-height: 35px
-                    span
-                        text-align: right
-                        z-index: 99999
 </style>
