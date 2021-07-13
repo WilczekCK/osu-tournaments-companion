@@ -276,7 +276,7 @@ class Tournaments {
             switch(true){
                 /* Qualifiers */
                 case true === areQualifiers:
-                    sortedScores['blue'] += parseInt(score.score);
+                    sortedScores['red'] += parseInt(score.score);
                     break;
 
                 /* Team vs Team */
