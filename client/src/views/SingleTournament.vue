@@ -11,7 +11,7 @@
               ='In progress...'
       .content__container--content--maps
         h3="Progress: "
-        SingleMatchMaps(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed")
+        SingleMatchMaps(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed" :areQualifiers="tournament.areQualifiers")
       .content__container--content--teams
         .match__container
           h3="Players: "
