@@ -3,6 +3,7 @@ import tournamentsSchema from '../database/tournaments.schema';
 import * as tournamentsTypes from '../validators/tournamentTypes';
 import users from "./users";
 import _ from "underscore";
+import { StdioNull } from 'child_process';
 
 
 class Tournaments {
@@ -62,24 +63,60 @@ class Tournaments {
         return result;
     };
 
+    public isWhitelisted = (tournamentNameFlatten: string) => {
+        const blackList:Array<string> = [
+            'o!mm', 'o!mm Ranked', 'o!mm Private', 'o!mm Team Private', 'o!mm Team Ranked' //o!mm related, waiting for API access from developer
+        ];
+
+        if ( _.contains(blackList, tournamentNameFlatten) ){
+            return false;
+        }
+
+        return true;
+    }
+
+    public areQualifiers = (nameA: string, nameB: string, tournamentNameFlatten: string) => {
+        const qualifiers:Array<string> = [
+            'Qualifiers', 'Tryouts'
+        ];
+
+        const isTestPassed = _.filter(qualifiers, function(item) {
+            if( item === nameA || item === nameB || !_.isEmpty(tournamentNameFlatten.match(/qualifiers/gi)) || !_.isEmpty(tournamentNameFlatten.match(/tryouts/gi)) ) {
+                return true
+            }else{
+                return false;
+            };
+        })
+
+        return !_.isEmpty(isTestPassed);
+    }
+
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
         //prepare informations about the tournament
         let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events );
     
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( playedBeatmaps );
+        let sortedTeams = await this.sortTeams( playedBeatmaps, judge );
 
         // Judge first!
         await users.insert(judge);
 
+        //scrap the name of tournament for identification of tournament
+        const {teamsName, tournamentNameFlatten} = this.getTeamsName(match.name);
+
+        //WHITELIST!
+        if ( !this.isWhitelisted(tournamentNameFlatten) ) {
+            return {status: 400, repsonse: "This tournament type is disallowed!"};
+        }
+
         const newTournament = new tournamentsSchema({
             id: match.id,
             title: match.name,
-            titleFlattened: match.name, //to flatten soon
+            titleFlattened: tournamentNameFlatten, //to flatten soon
             teams: {
                 blue: sortedTeams.blue,
                 red: sortedTeams.red,
-                names: this.getTeamsName(match.name)
+                names: teamsName,
             }, 
             users: players,
             judge: judge,
@@ -88,7 +125,8 @@ class Tournaments {
             twitchURL: 'TBA',
             mapsPlayed: playedBeatmaps,
             gameMode,
-            events
+            events,
+            areQualifiers: this.areQualifiers(teamsName.blue, teamsName.red, tournamentNameFlatten)
         });
         
         try{
@@ -109,6 +147,14 @@ class Tournaments {
 
     public update = async (tournamentInfo: tournamentsTypes.updateSchema ) => {
         const {whereQuery, modifyQuery} = tournamentInfo;
+
+        //prevent duplicates, object quality!
+        if(modifyQuery.prefix === 'teams'){
+            modifyQuery.content['blue'] = _.uniq(modifyQuery.content['blue']);
+            modifyQuery.content['red'] = _.uniq(modifyQuery.content['red']);
+
+            modifyQuery.content['red'] = _.difference(modifyQuery.content['blue'], modifyQuery.content['red']);
+        }
 
         const resp = modifyQuery.content && modifyQuery.prefix 
         ? await tournamentsSchema.updateOne(
@@ -177,7 +223,7 @@ class Tournaments {
         return getInfo;
     }
 
-    public sortTeams = async ( beatmapsPlayed: any ) => {    
+    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
             red: [],
@@ -252,6 +298,7 @@ class Tournaments {
             blue: '',
             red: ''
         }
+        let tournamentNameFlatten:string = '';
 
         for(let letter of tournamentName){
 
@@ -268,6 +315,9 @@ class Tournaments {
                     break;
                 case ('(' === letter && flags.firstTeamGot):
                     flags.isBracketOpen = true;
+                case ( !flags.isColonNoticed ):
+                    tournamentNameFlatten += letter;
+                    break;
                 default:
                     if(flags.isColonNoticed && flags.isBracketOpen && !flags.firstTeamGot) teamsName.red += letter;
                     if(flags.isColonNoticed && flags.isBracketOpen && flags.firstTeamGot) teamsName.blue += letter;
@@ -276,7 +326,7 @@ class Tournaments {
 
         }
 
-        return teamsName;
+        return {teamsName, tournamentNameFlatten};
     }
 
     public selectMostPlayedMode = (matchPlayed: object) => {

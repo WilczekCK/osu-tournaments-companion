@@ -10,10 +10,16 @@ const tournamentRouter = new Router({
 tournamentRouter.use(manageTournament);
     
 tournamentRouter.get('/', async (ctx) => {
-    let {osuApi: extApi, limit = 0, startFrom = 0, queryKey = '', queryValue=''} = ctx.query;
+    let {osuApi: extApi, limit = 0, startFrom = 0, queryKey = '', queryValue='', cursorMatchId=0} = ctx.query;
+
+    //show osuApi, where it should start scraping tournaments
+    let cursorMatchQuery = '';
+    if (cursorMatchId != 0) {
+        cursorMatchQuery = `cursor[match_id]=${cursorMatchId}`
+    }
 
     ctx.body = extApi 
-        ? await osuApi(`matches/`) 
+        ? await osuApi(`matches?${cursorMatchQuery}`) 
         : limit === 0 ? await tournaments.displayAll() : await tournaments.displaySome(queryKey, queryValue, startFrom, limit);
 })
 

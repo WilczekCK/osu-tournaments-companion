@@ -11,7 +11,7 @@ class Cron {
     private isTournamentCronInProgress : boolean = false;
     private isUserCronInProgress : boolean = false;
     
-    private secondsEachTournamentCron : number = 60;
+    private secondsEachTournamentCron : number = 120;
     private hoursEachUserCron : number = 23;
     
     private tournamentsToUpdate : Array<object>;
@@ -19,7 +19,10 @@ class Cron {
 
     private tournamentsToRemove : Array<object | any>;
 
+    private cursorMatchId : number = 0;
+
     private tournamentsCRON = {
+        provideCursor: () => this.cursorMatchId != 0 ? `&cursorMatchId=${this.cursorMatchId}` : '',
         prepareToUpdate: async () => {
             this.tournamentsToUpdate = await tournaments.displayCertain({'timeEnded': null});
             this.isTournamentCronInProgress = true;
@@ -32,7 +35,7 @@ class Cron {
                 const result = _.values(difference);
                 let name = result[0];
                 let value = result[1];
-    
+                
                 await axios({
                     url: `/tournaments/m/${id}`,
                     method: 'PATCH',
@@ -58,7 +61,7 @@ class Cron {
                         let {end_time: timeEnded}  = match;
                         let [{judge}, {gameMode}, {playedBeatmaps: mapsPlayed}] = await tournaments.parseEventsObject( events );
     
-                        let teams = {...await tournaments.sortTeams( mapsPlayed ), names: tournaments.getTeamsName(match.name)};
+                        let teams = {...await tournaments.sortTeams( mapsPlayed, judge ), names: tournaments.getTeamsName(match.name)};
                         
                         await this.tournamentsCRON.compare(
                             {timeEnded, users, judge, mapsPlayed, gameMode, events, teams},
@@ -72,8 +75,11 @@ class Cron {
             return;
         },
         lookForNew: async () => {
-            await axios.get(`/tournaments/?osuApi=true`)
+            await axios.get(`/tournaments/?osuApi=true${this.tournamentsCRON.provideCursor()}`)
             .then( async ( {data} ) => {
+                //to know, where it should start next time!
+                this.cursorMatchId = data.cursor.match_id;
+
                 for await(let match of data.matches){
                     if(tournaments.isTournament(match.name)){
                         await axios({
@@ -151,13 +157,19 @@ class Cron {
             }
         })
 
-        /* Tournaments fetch and update */
+        /* Tournaments update */
         cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
             if( !this.isTournamentCronInProgress && !this.isUserCronInProgress ){
                 await this.tournamentsCRON.prepareToUpdate();
                 await this.tournamentsCRON.update();
-                await this.tournamentsCRON.lookForNew();
                 await this.tournamentsCRON.removeWithoutPlays();
+            }
+        })
+
+        /* Look for new tournaments */
+        cron.schedule(`*/2 * * * *`, async () => {
+            if(!this.isUserCronInProgress){
+                await this.tournamentsCRON.lookForNew();
             }
         })
     };
