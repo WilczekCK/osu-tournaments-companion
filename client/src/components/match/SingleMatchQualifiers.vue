@@ -54,13 +54,7 @@ export default class Qualifiers extends Vue {
 
     teamsLoaded = false;
 
-    allPlayers : {
-      blue: Array<number | never>,
-      red: Array<number | never>,
-    } = {
-      blue: [],
-      red: [],
-    }
+    allPlayers : Array<number | never> = [];
 
     player = {
       getDbInfo: async (playerId: number) : Promise<void> => {
@@ -73,9 +67,9 @@ export default class Qualifiers extends Vue {
             if (!data.result) {
               //
             } else if (this.teams.red.includes(playerId)) {
-              this.allPlayers.red.push(data.result[0]);
+              this.allPlayers.push(data.result[0]);
             } else {
-              this.allPlayers.blue.push(data.result[0]);
+              this.allPlayers.push(data.result[0]);
             }
           });
       },
