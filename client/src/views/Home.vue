@@ -2,7 +2,7 @@
   .content__container
     .content__container--content
       .content__container--header
-        h2="Follow all tournaments of osu on a single page!"
+        img(:src="require(`@/assets/header.png`)")
       Filtering(
         @queryAppended="props.filtering.setFilterQuery"
       )
