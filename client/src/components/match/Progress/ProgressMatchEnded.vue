@@ -3,7 +3,7 @@
 
         .progress__match__ended--finalText(v-if="qualifiers")
           h2="Total score achieved by team: "
-            b {{Number(sumScore.red).toLocaleString()}}
+            b {{Number(sumScore.red + sumScore.blue).toLocaleString()}}
         .progress__match__ended--finalText(v-else)
             h2="Match won by the "
                 b {{getWinnerOfTournament()}}
