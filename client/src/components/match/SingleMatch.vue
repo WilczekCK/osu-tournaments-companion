@@ -22,6 +22,8 @@
                     :
                 .
                     {{this.matchScore.blue}} {{this.tournament.teams.names.blue}}
+            .md-score(v-else)
+                ="Qualifiers"
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini" @mousedown="opened = true")

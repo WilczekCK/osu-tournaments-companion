@@ -72,7 +72,7 @@ export default class Home extends Vue {
     min-height: 900px
     transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0)
   &--header
-    padding: 25px 0px
+    padding: 30px 0px 10px
     display: flex
     flex-direction: column
     small
