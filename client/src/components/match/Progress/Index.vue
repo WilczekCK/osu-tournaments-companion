@@ -4,9 +4,9 @@
         md-step(v-if="event.detail.type === 'match-created'" :md-description="getProperTime(event.timestamp)" md-label="Match created" md-done=true)
             ProgressMatchStarted(:judgeId="event.user_id")
         md-step(v-if="event.detail.type === 'other'"  md-label="Map played" :md-description="getProperTime(event.timestamp)" md-done=true)
-            ProgressMatchWon(:maps="maps" :events="event")
+            ProgressMatchWon(:maps="maps" :events="event" :areQualifiers="qualifiers")
         md-step(v-if="event.detail.type === 'match-disbanded'" md-label="End of the match" :md-description="getProperTime(event.timestamp)" md-done=true)
-            ProgressMatchEnded(:matchInfo="maps")
+            ProgressMatchEnded(:matchInfo="maps" :areQualifiers="qualifiers")
 </template>
 
 <script lang="ts">
@@ -28,9 +28,13 @@ export default class Progress extends Vue {
 
     @Prop() private mapsPlayed!: Array<Record<string, unknown>>;
 
+    @Prop() private areQualifiers!: boolean;
+
     events = this.progress;
 
     maps = this.mapsPlayed;
+
+    qualifiers = this.areQualifiers;
 
     getProperTime = (timeString:string) :string => dayjs(timeString).format('DD/MM/YYYY HH:mm Z')
 }

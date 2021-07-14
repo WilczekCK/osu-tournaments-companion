@@ -35,7 +35,7 @@ body
   margin: 0
   padding: 0
   width: 100%
-
+  background-image: url("./assets/osu-triangles.png")
 #app
   margin: 0 auto
   display: flex

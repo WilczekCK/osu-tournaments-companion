@@ -1,10 +1,15 @@
 <template lang="pug">
     .progress__match__ended
-        .progress__match__ended--finalText
+
+        .progress__match__ended--finalText(v-if="qualifiers")
+          h2="Total score achieved by team: "
+            b {{Number(sumScore.red + sumScore.blue).toLocaleString()}}
+        .progress__match__ended--finalText(v-else)
             h2="Match won by the "
                 b {{getWinnerOfTournament()}}
                 =" team"
-        .progress__match__ended--results
+
+        .progress__match__ended--results(v-if="!qualifiers")
             h3="Summary scores:"
             = 'Blue: '
             b {{Number(sumScore.blue).toLocaleString()}}
@@ -20,6 +25,10 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 @Component
 export default class Progress extends Vue {
     @Prop() private matchInfo!: Array<Record<string, Record<string, number> >>;
+
+    @Prop() private areQualifiers!: boolean;
+
+    qualifiers = this.areQualifiers;
 
     beatmaps = this.matchInfo;
 

@@ -92,17 +92,20 @@ class Tournaments {
     }
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
+        //scrap the name of tournament for identification of tournament
+        const {teamsName, tournamentNameFlatten} = this.getTeamsName(match.name);
+        
+        //is tournament a qualifier?
+        let areQualifiers = this.areQualifiers(teamsName.blue, teamsName.red, tournamentNameFlatten);
+        
         //prepare informations about the tournament
-        let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events );
+        let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events, areQualifiers );
     
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( playedBeatmaps, judge );
+        let sortedTeams = await this.sortTeams( playedBeatmaps, judge, areQualifiers );
 
         // Judge first!
         await users.insert(judge);
-
-        //scrap the name of tournament for identification of tournament
-        const {teamsName, tournamentNameFlatten} = this.getTeamsName(match.name);
 
         //WHITELIST!
         if ( !this.isWhitelisted(tournamentNameFlatten) ) {
@@ -126,7 +129,7 @@ class Tournaments {
             mapsPlayed: playedBeatmaps,
             gameMode,
             events,
-            areQualifiers: this.areQualifiers(teamsName.blue, teamsName.red, tournamentNameFlatten)
+            areQualifiers,
         });
         
         try{
@@ -167,7 +170,7 @@ class Tournaments {
         return {status};
     }
 
-    public parseEventsObject = async (eventsDetail: object[] ) => {
+    public parseEventsObject = async (eventsDetail: object[], areQualifiers?: boolean ) => {
         let getInfo : {[key: string] : number | string | object | object[]}[] = [];
         let playedBeatmaps : Array<object> = [];
         let countModes: {[key:string]: number} = {osu: 0, mania:0, ctb:0, taiko:0};
@@ -207,7 +210,7 @@ class Tournaments {
                         scores:     gameDetails['scores'],
                         mods:       gameDetails['mods'],
                         teamType:   gameDetails['teamType'],
-                        summaryScore: this.getSummaryScore( gameDetails['scores'] )
+                        summaryScore: this.getSummaryScore( gameDetails['scores'], areQualifiers )
                     })
                     
                     countModes[game.mode]++;
@@ -223,7 +226,7 @@ class Tournaments {
         return getInfo;
     }
 
-    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object ) => {    
+    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object, areQualifiers?: boolean ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
             red: [],
@@ -233,6 +236,11 @@ class Tournaments {
         for(let beatmap of beatmapsPlayed){
             for(let score of beatmap.scores){
                 switch(true){
+                    /* Qualifiers */
+                    case areQualifiers === true:
+                        sortedTeams['red'].push(score.user_id);
+                        break;
+
                     /* Team vs Team */
                     case 'team-vs' === beatmap.teamType && 'blue' === score.match.team  && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
@@ -262,7 +270,7 @@ class Tournaments {
         return sortedTeams;
     }
 
-    public getSummaryScore = (beatmapPlayed: any) => {
+    public getSummaryScore = (beatmapPlayed: any, areQualifiers: boolean) => {
         let sortedScores: { [key: string]: number } = {
             blue: 0,
             red: 0,
@@ -271,6 +279,11 @@ class Tournaments {
 
         for(let score of beatmapPlayed){
             switch(true){
+                /* Qualifiers */
+                case true === areQualifiers:
+                    sortedScores['red'] += parseInt(score.score);
+                    break;
+
                 /* Team vs Team */
                 case 'blue' === score.match.team:
                     sortedScores['blue'] += parseInt(score.score);

@@ -17,11 +17,13 @@
                 span(v-else)
                     ='In progress...'
         md-card-expand
-            .md-score {{tournament.teams.names.red}} {{this.matchScore.red}}
+            .md-score(v-if="!tournament.areQualifiers") {{tournament.teams.names.red}} {{this.matchScore.red}}
                 .
                     :
                 .
                     {{this.matchScore.blue}} {{this.tournament.teams.names.blue}}
+            .md-score(v-else)
+                ="Qualifiers"
             md-card-actions(md-aligment="space-between")
                 md-card-expand-trigger
                     md-button(class="md-mini" @mousedown="opened = true")
@@ -32,12 +34,13 @@
                 .match__container
                     md-tabs(md-alignment="fixed" v-if="opened" :key="renderKey" :md-active-tab="activeTab")
                         md-tab(id="tab-teams" md-label="teams")
-                            SingleMatchTeams(:teams="tournament.teams" v-if="(tournament.teams.blue && tournament.teams.red) != 0")
+                            SingleMatchQualifiers(:teams="tournament.teams" v-if="tournament.areQualifiers")
+                            SingleMatchTeams(:teams="tournament.teams" v-else-if="(tournament.teams.blue && tournament.teams.red) != 0")
                             .matchNotStarted(v-else)
                                 h3="Waiting for the first map to end"
                                 md-progress-spinner(md-mode="indeterminate" name="progress_spin")
                         md-tab(id="tab-progress" md-label="progress")
-                            SingleMatchProgress(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed")
+                            SingleMatchProgress(:progress="tournament.events" :mapsPlayed="tournament.mapsPlayed" :areQualifiers="tournament.areQualifiers")
                             md-button(class="md-mini refresh" :disabled="delayStack != 0" @mousedown="refreshTournament")
                                 b="Refresh"
                                 span(class="material-icons md-layout-item" @mousedown="refreshTournament")
@@ -52,12 +55,14 @@ import dayjs from 'dayjs';
 import SingleMatchTeams from './SingleMatchTeams.vue';
 import SingleMatchProgress from './Progress/Index.vue';
 import SingleMatchGames from './SingleMatchGames.vue';
+import SingleMatchQualifiers from './SingleMatchQualifiers.vue';
 
 @Component({
   components: {
     SingleMatchTeams,
     SingleMatchProgress,
     SingleMatchGames,
+    SingleMatchQualifiers,
   },
 })
 

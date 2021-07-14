@@ -1,9 +1,9 @@
 <template lang="pug">
     .match__list
       transition(v-if="matches.areLoaded" :name="animationDetails.side")
-        .match__list__container(v-if="matches.isAnimationEnded")
+        .match__list__container(v-if="matches.isAnimationEnded && matches.loadedTournaments.status !== 404")
           SingleMatch(v-for="tournament in matches.loadedTournaments" :tournamentInfo="tournament" :key="tournament.id")
-        h3(v-else-if="matches.loadedTournaments.length === 0")="No more tournaments :("
+        h3(v-else)="No more tournaments :("
       md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
 </template>
 

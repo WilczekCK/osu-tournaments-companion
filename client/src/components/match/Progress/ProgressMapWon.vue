@@ -2,7 +2,10 @@
     .progress__map__container
         .progress__map__container__single(v-if="map.beatmapset")
             .progress__map__container__teamWon
-                p(v-if="winnerScoreDifference !== 0")
+                p(v-if="qualifiers")
+                    = ' Total score: '
+                    b {{Number(summaryScoreQualify).toLocaleString()}}
+                p(v-else-if="winnerScoreDifference !== 0")
                     b {{winnerTeamName}}
                     = ' team won by '
                     b {{Number(winnerScoreDifference).toLocaleString()}}
@@ -51,11 +54,17 @@ export default class Progress extends Vue {
 
     @Prop() public events!: Record<string, Record<string, any>>;
 
+    @Prop() private areQualifiers!: boolean;
+
+    qualifiers = this.areQualifiers;
+
     map:any = {};
 
     winnerTeamName:string|undefined = '';
 
     winnerScoreDifference = 0;
+
+    summaryScoreQualify = 0;
 
     setWinnerTeamName(summaryScore:Record<number, number>) :void {
       function getBiggestScore(score: number) {
@@ -64,6 +73,15 @@ export default class Progress extends Vue {
       }
 
       this.winnerTeamName = _.findKey(summaryScore, getBiggestScore);
+    }
+
+    sumScore() :void {
+      this.maps.forEach((beatmap) => {
+        if (beatmap.info && beatmap.info.id === this.map.id) {
+          this.summaryScoreQualify += beatmap.summaryScore.red;
+          this.summaryScoreQualify += beatmap.summaryScore.blue;
+        }
+      });
     }
 
     fetchProperScore() :void {
@@ -78,6 +96,7 @@ export default class Progress extends Vue {
     created() {
       this.map = this.events.game.beatmap || {};
       this.fetchProperScore();
+      this.sumScore();
     }
 }
 </script>
