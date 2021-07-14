@@ -243,8 +243,9 @@ class Tournaments {
 
                     /* 1v1 */
                     case true === this.recog1v1(usersInfo).is1v1:
-                        sortedTeams['blue'].push(score.user_id);
-                        sortedTeams['blue'].push(score.user_id);
+                        const {usersDetails} = this.recog1v1(usersInfo);
+                        if(!sortedTeams['red'].length) sortedTeams['red'].push(usersDetails[0].id);
+                        if(!sortedTeams['blue'].length) sortedTeams['blue'].push(usersDetails[1].id);
                         break;
                 
                     /* Team vs Team */
@@ -257,11 +258,24 @@ class Tournaments {
 
                     /* Single Qualifications below*/
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
+                        console.log('sing a');
                         sortedTeams['red'].push(score.user_id);
                         isSingleQualifyPlayer = score.user_id;
                         break;
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
+                        console.log('sing b');    
                         sortedTeams['blue'].push(score.user_id);
+                        break;
+
+                    /* Undefined type */
+                    default:
+                        //users take turns
+                        console.log('def');
+                        if(sortedTeams['red'].length <= sortedTeams['blue'].length){
+                            sortedTeams['red'].push(score.user_id);
+                        }else{
+                            sortedTeams['blue'].push(score.user_id);
+                        }
                         break;
                 }
             }
