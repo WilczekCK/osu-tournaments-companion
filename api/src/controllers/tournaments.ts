@@ -273,17 +273,14 @@ class Tournaments {
 
     public recog1v1 = (usersInfo: any) =>{
         const usernameArray = usersInfo.players.map(function(user: any){
-            return user.username;
+            return user.username.toLowerCase();
         })
 
-        console.log(usernameArray);
-        console.log(usersInfo.teamsName.red, usersInfo.teamsName.blue);
+        if(_.contains(usernameArray, usersInfo.teamsName.red.toLowerCase(), 0) && _.contains(usernameArray, usersInfo.teamsName.blue.toLowerCase(), 0)){
+            return true;
+        } 
 
-        if(_.contains(usernameArray, usersInfo.teamsName.red, 0) && _.contains(usernameArray, usersInfo.teamsName.blue, 0)){
-            console.log('both of them are there!')
-        }else{
-            console.log('one of them is missing!')
-        }
+        return false;
     }
 
     public getSummaryScore = (beatmapPlayed: any, areQualifiers: boolean) => {
