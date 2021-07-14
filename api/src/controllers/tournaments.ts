@@ -102,7 +102,7 @@ class Tournaments {
         let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events, areQualifiers );
     
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( playedBeatmaps, judge, areQualifiers );
+        let sortedTeams = await this.sortTeams( playedBeatmaps, judge, areQualifiers, {teamsName, players} );
 
         // Judge first!
         await users.insert(judge);
@@ -226,7 +226,7 @@ class Tournaments {
         return getInfo;
     }
 
-    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object, areQualifiers?: boolean ) => {    
+    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object, areQualifiers?: boolean, usersInfo?: any ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
             red: [],
@@ -249,17 +249,18 @@ class Tournaments {
                         sortedTeams['red'].push(score.user_id);
                         break;
 
-                    /* 1 vs 1 below */
+                    /* 1 vs 1 && Single Qualifications below*/
                     case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0:
-                    /* Single Qualifications below*/
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
+                        //Recog if 1v1
+                        this.recog1v1(usersInfo);
+
                         sortedTeams['red'].push(score.user_id);
                         isSingleQualifyPlayer = score.user_id;
                         break;
                     
-                    /* 1 vs 1 below */
+                    /* 1 vs 1 && Single Qualifications below*/
                     case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id:
-                    /* Single Qualifications below */
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
                         break;
@@ -268,6 +269,21 @@ class Tournaments {
         }
 
         return sortedTeams;
+    }
+
+    public recog1v1 = (usersInfo: any) =>{
+        const usernameArray = usersInfo.players.map(function(user: any){
+            return user.username;
+        })
+
+        console.log(usernameArray);
+        console.log(usersInfo.teamsName.red, usersInfo.teamsName.blue);
+
+        if(_.contains(usernameArray, usersInfo.teamsName.red, 0) && _.contains(usernameArray, usersInfo.teamsName.blue, 0)){
+            console.log('both of them are there!')
+        }else{
+            console.log('one of them is missing!')
+        }
     }
 
     public getSummaryScore = (beatmapPlayed: any, areQualifiers: boolean) => {
