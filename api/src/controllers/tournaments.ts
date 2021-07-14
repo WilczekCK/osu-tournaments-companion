@@ -231,7 +231,7 @@ class Tournaments {
             blue: [],
             red: [],
         }
-        let isSingleQualifyPlayer;
+        let gotPlayersId;
         
         for(let beatmap of beatmapsPlayed){
             for(let score of beatmap.scores){
@@ -256,25 +256,13 @@ class Tournaments {
                         sortedTeams['red'].push(score.user_id);
                         break;
 
-                    /* Single Qualifications below*/
-                    case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
-                        console.log('sing a');
-                        sortedTeams['red'].push(score.user_id);
-                        isSingleQualifyPlayer = score.user_id;
-                        break;
-                    case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
-                        console.log('sing b');    
-                        sortedTeams['blue'].push(score.user_id);
-                        break;
 
                     /* Undefined type */
                     default:
-                        //users take turns
-                        console.log('def');
                         if(sortedTeams['red'].length <= sortedTeams['blue'].length){
-                            sortedTeams['red'].push(score.user_id);
+                            _.contains(sortedTeams['red'], score.user_id) === false && _.contains(sortedTeams['blue'], score.user_id) === false ? sortedTeams['red'].push(score.user_id) : 0;
                         }else{
-                            sortedTeams['blue'].push(score.user_id);
+                            _.contains(sortedTeams['blue'], score.user_id) === false && _.contains(sortedTeams['red'], score.user_id) === false  ? sortedTeams['blue'].push(score.user_id) : 0;
                         }
                         break;
                 }
