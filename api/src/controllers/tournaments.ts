@@ -237,10 +237,16 @@ class Tournaments {
             for(let score of beatmap.scores){
                 switch(true){
                     /* Qualifiers */
-                    case areQualifiers === true:
+                    case true === areQualifiers:
                         sortedTeams['red'].push(score.user_id);
                         break;
 
+                    /* 1v1 */
+                    case true === this.recog1v1(usersInfo).is1v1:
+                        sortedTeams['blue'].push(score.user_id);
+                        sortedTeams['blue'].push(score.user_id);
+                        break;
+                
                     /* Team vs Team */
                     case 'team-vs' === beatmap.teamType && 'blue' === score.match.team  && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
@@ -249,18 +255,11 @@ class Tournaments {
                         sortedTeams['red'].push(score.user_id);
                         break;
 
-                    /* 1 vs 1 && Single Qualifications below*/
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0:
+                    /* Single Qualifications below*/
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
-                        //Recog if 1v1
-                        this.recog1v1(usersInfo);
-
                         sortedTeams['red'].push(score.user_id);
                         isSingleQualifyPlayer = score.user_id;
                         break;
-                    
-                    /* 1 vs 1 && Single Qualifications below*/
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id:
                     case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
                         break;
@@ -272,15 +271,31 @@ class Tournaments {
     }
 
     public recog1v1 = (usersInfo: any) =>{
+        //collect usernames
         const usernameArray = usersInfo.players.map(function(user: any){
             return user.username.toLowerCase();
         })
 
         if(_.contains(usernameArray, usersInfo.teamsName.red.toLowerCase(), 0) && _.contains(usernameArray, usersInfo.teamsName.blue.toLowerCase(), 0)){
-            return true;
+            //collect playing users id
+            let usersDetails = usersInfo.players.map(function(user: any){
+                return _.contains([usersInfo.teamsName.red.toLowerCase(),usersInfo.teamsName.blue.toLowerCase()], user.username.toLowerCase()) ? {id: user.id, nickname: user.username } : 0;
+            })
+            usersDetails = _.without(usersDetails, 0);
+
+            //swap if in wrong order
+            if( usersDetails[0].nickname.toLowerCase() !== usersInfo.teamsName.red.toLowerCase() ) {
+                let temp;
+
+                temp = usersDetails[0];
+                usersDetails[0] = usersDetails[1];
+                usersDetails[1] = temp;
+            }
+            
+            return {usersDetails, is1v1: true};
         } 
 
-        return false;
+        return {is1v1: false};
     }
 
     public getSummaryScore = (beatmapPlayed: any, areQualifiers: boolean) => {
