@@ -260,7 +260,10 @@ class Tournaments {
                     /* Undefined type */
                     default:
                         if(sortedTeams['red'].length <= sortedTeams['blue'].length){
-                            _.contains(sortedTeams['red'], score.user_id) === false && _.contains(sortedTeams['blue'], score.user_id) === false ? sortedTeams['red'].push(score.user_id) : 0;
+                               _.contains(sortedTeams['red'], score.user_id) === false 
+                            && _.contains(sortedTeams['blue'], score.user_id) === false 
+                                ? sortedTeams['red'].push(score.user_id) 
+                                : 0;
                         }else{
                             _.contains(sortedTeams['blue'], score.user_id) === false && _.contains(sortedTeams['red'], score.user_id) === false  ? sortedTeams['blue'].push(score.user_id) : 0;
                         }
@@ -274,19 +277,21 @@ class Tournaments {
 
     public recog1v1 = (usersInfo: any) =>{
         //collect usernames
+        const parseNickname = (nickname: string) => nickname.toLowerCase().replace(/[^\w\s]/gi, '');
+
         const usernameArray = usersInfo.players.map(function(user: any){
-            return user.username.toLowerCase();
+            return parseNickname(user.username);
         })
 
         if(_.contains(usernameArray, usersInfo.teamsName.red.toLowerCase(), 0) && _.contains(usernameArray, usersInfo.teamsName.blue.toLowerCase(), 0)){
             //collect playing users id
             let usersDetails = usersInfo.players.map(function(user: any){
-                return _.contains([usersInfo.teamsName.red.toLowerCase(),usersInfo.teamsName.blue.toLowerCase()], user.username.toLowerCase()) ? {id: user.id, nickname: user.username } : 0;
+                return _.contains([parseNickname(usersInfo.teamsName.red),parseNickname(usersInfo.teamsName.blue)], parseNickname(user.username)) ? {id: user.id, nickname: user.username } : 0;
             })
             usersDetails = _.without(usersDetails, 0);
 
             //swap if in wrong order
-            if( usersDetails[0].nickname.toLowerCase() !== usersInfo.teamsName.red.toLowerCase() ) {
+            if( parseNickname(usersDetails[0].nickname) !== parseNickname(usersInfo.teamsName.red) ) {
                 let temp;
 
                 temp = usersDetails[0];
