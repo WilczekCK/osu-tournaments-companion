@@ -129,10 +129,11 @@ export default class SingleMatch extends Vue {
 .md-card
     max-width: 800px
     min-width: 315px
-    width: 100%;
+    width: 100%
     display: flex
     flex-wrap: wrap
     align-items: center
+    justify-content: center
     box-sizing: border-box
     padding: 0px 15px
     overflow: hidden

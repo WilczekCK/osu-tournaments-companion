@@ -3,7 +3,7 @@
       transition(v-if="matches.areLoaded" :name="animationDetails.side")
         .match__list__container(v-if="matches.isAnimationEnded && matches.loadedTournaments.status !== 404")
           SingleMatch(v-for="tournament in matches.loadedTournaments" :tournamentInfo="tournament" :key="tournament.id")
-        h3(v-else)="No more tournaments :("
+      h3(v-else-if="matches.areLoaded && matches.loadedTournaments.length === 0")="No more tournaments :("
       md-progress-spinner(md-mode="indeterminate" name="tournaments_spin" v-else)
 </template>
 
@@ -94,7 +94,12 @@ export default class MatchList extends Vue {
 <style lang="sass">
 .match__list
   max-width: 99%
+  min-width: 99%
   padding: 20px 0px
+  &__container
+    display: flex
+    flex-direction: column
+    align-items: center
   h3, .md-progress-spinner
     text-align: center
     margin: 0 auto

@@ -76,19 +76,17 @@ class Tournaments {
     }
 
     public areQualifiers = (nameA: string, nameB: string, tournamentNameFlatten: string) => {
-        const qualifiers:Array<string> = [
-            'Qualifiers', 'Tryouts'
-        ];
+        let stringToCheck = `${tournamentNameFlatten} ${nameA} ${nameB}`;
 
-        const isTestPassed = _.filter(qualifiers, function(item) {
-            if( item === nameA || item === nameB || !_.isEmpty(tournamentNameFlatten.match(/qualifiers/gi)) || !_.isEmpty(tournamentNameFlatten.match(/tryouts/gi)) ) {
+        const isTestPassed = () => {
+            if( !_.isEmpty(stringToCheck.match(/qualifiers/gi)) || !_.isEmpty(stringToCheck.match(/tryouts/gi)) ) {
                 return true
             }else{
                 return false;
             };
-        })
+        }
 
-        return !_.isEmpty(isTestPassed);
+        return isTestPassed();
     }
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
@@ -102,7 +100,7 @@ class Tournaments {
         let [{judge}, {gameMode}, {playedBeatmaps}] = await this.parseEventsObject( events, areQualifiers );
     
         // In plays.beatmap players have the team color!
-        let sortedTeams = await this.sortTeams( playedBeatmaps, judge, areQualifiers );
+        let sortedTeams = await this.sortTeams( playedBeatmaps, judge, areQualifiers, {teamsName, players} );
 
         // Judge first!
         await users.insert(judge);
@@ -226,21 +224,28 @@ class Tournaments {
         return getInfo;
     }
 
-    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object, areQualifiers?: boolean ) => {    
+    public sortTeams = async ( beatmapsPlayed: any, judge: string | number | object, areQualifiers?: boolean, usersInfo?: any ) => {    
         let sortedTeams: { blue: Array<number>, red: Array<number> } = {
             blue: [],
             red: [],
         }
-        let isSingleQualifyPlayer;
+        let gotPlayersId;
         
         for(let beatmap of beatmapsPlayed){
             for(let score of beatmap.scores){
                 switch(true){
                     /* Qualifiers */
-                    case areQualifiers === true:
+                    case true === areQualifiers:
                         sortedTeams['red'].push(score.user_id);
                         break;
 
+                    /* 1v1 */
+                    case true === this.recog1v1(usersInfo).is1v1:
+                        const {usersDetails} = this.recog1v1(usersInfo);
+                        if(!sortedTeams['red'].length) sortedTeams['red'].push(usersDetails[0].id);
+                        if(!sortedTeams['blue'].length) sortedTeams['blue'].push(usersDetails[1].id);
+                        break;
+                
                     /* Team vs Team */
                     case 'team-vs' === beatmap.teamType && 'blue' === score.match.team  && !sortedTeams['blue'].includes(score.user_id):
                         sortedTeams['blue'].push(score.user_id);
@@ -249,25 +254,53 @@ class Tournaments {
                         sortedTeams['red'].push(score.user_id);
                         break;
 
-                    /* 1 vs 1 below */
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['red'].length === 0:
-                    /* Single Qualifications below*/
-                    case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer === score.user_id && !sortedTeams['red'].includes(score.user_id):
-                        sortedTeams['red'].push(score.user_id);
-                        isSingleQualifyPlayer = score.user_id;
-                        break;
-                    
-                    /* 1 vs 1 below */
-                    case 'head-to-head' === beatmap.teamType && sortedTeams['blue'].length === 0 && isSingleQualifyPlayer !== score.user_id:
-                    /* Single Qualifications below */
-                    case 'head-to-head' === beatmap.teamType && isSingleQualifyPlayer !== score.user_id && !sortedTeams['blue'].includes(score.user_id):
-                        sortedTeams['blue'].push(score.user_id);
+
+                    /* Undefined type */
+                    default:
+                        if(sortedTeams['red'].length <= sortedTeams['blue'].length){
+                               _.contains(sortedTeams['red'], score.user_id) === false 
+                            && _.contains(sortedTeams['blue'], score.user_id) === false 
+                                ? sortedTeams['red'].push(score.user_id) 
+                                : 0;
+                        }else{
+                            _.contains(sortedTeams['blue'], score.user_id) === false && _.contains(sortedTeams['red'], score.user_id) === false  ? sortedTeams['blue'].push(score.user_id) : 0;
+                        }
                         break;
                 }
             }
         }
 
         return sortedTeams;
+    }
+
+    public recog1v1 = (usersInfo: any) =>{
+        //collect usernames
+        const parseNickname = (nickname: string) => nickname.toLowerCase().replace(/[^\w\s]/gi, '');
+
+        const usernameArray = usersInfo.players.map(function(user: any){
+            return parseNickname(user.username);
+        })
+
+        if(_.contains(usernameArray, usersInfo.teamsName.red.toLowerCase(), 0) && _.contains(usernameArray, usersInfo.teamsName.blue.toLowerCase(), 0)){
+            //collect playing users id
+            let usersDetails = usersInfo.players.map(function(user: any){
+                return _.contains([parseNickname(usersInfo.teamsName.red),parseNickname(usersInfo.teamsName.blue)], parseNickname(user.username)) ? {id: user.id, nickname: user.username } : 0;
+            })
+            usersDetails = _.without(usersDetails, 0);
+
+            //swap if in wrong order
+            if( parseNickname(usersDetails[0].nickname) !== parseNickname(usersInfo.teamsName.red) ) {
+                let temp;
+
+                temp = usersDetails[0];
+                usersDetails[0] = usersDetails[1];
+                usersDetails[1] = temp;
+            }
+            
+            return {usersDetails, is1v1: true};
+        } 
+
+        return {is1v1: false};
     }
 
     public getSummaryScore = (beatmapPlayed: any, areQualifiers: boolean) => {
