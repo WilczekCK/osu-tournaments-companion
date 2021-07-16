@@ -93,8 +93,11 @@ export default class MatchList extends Vue {
 
 <style lang="sass">
 .match__list
-  max-width: 99%
-  padding: 20px 0px
+  min-width: 99%
+  &__container
+    display: flex
+    flex-direction: column
+    align-items: center
   h3, .md-progress-spinner
     text-align: center
     margin: 0 auto
