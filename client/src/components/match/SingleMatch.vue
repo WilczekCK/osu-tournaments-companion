@@ -50,7 +50,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
 import SingleMatchTeams from './SingleMatchTeams.vue';
 import SingleMatchProgress from './Progress/Index.vue';
@@ -96,7 +96,7 @@ export default class SingleMatch extends Vue {
     });
   }
 
-  async refreshTournament() {
+  async refreshTournament() :Promise<void> {
     this.delayStack += 1;
 
     this.tournament = await this.setTournamentInformations();
@@ -109,17 +109,17 @@ export default class SingleMatch extends Vue {
     }, 2500);
   }
 
-  async setTournamentInformations() {
+  async setTournamentInformations() :Promise<Record<string, number>> {
     const results = await axios({
       method: 'get',
       url: `${Vue.prototype.$backendUrl}/tournaments/${this.tournamentInfo.id}`,
     })
-      .then((data: any) => data.data);
+      .then((data: AxiosResponse) => data.data);
 
     return results[0];
   }
 
-  created() {
+  created() :void {
     this.getFinishScore();
   }
 }

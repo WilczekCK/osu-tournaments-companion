@@ -4,7 +4,7 @@
         h3="Find by mods or"
         md-field
           label enter keywords to search for tournaments
-          md-input(v-model="searchInput" @input="debounceQuery(searchInput)")
+          md-input(v-model="searchInput" @input="debounceQuery()")
       .filtering__container__mods
         .filtering__container__mods--osu
           img(src="@/assets/osu.svg" alt="std" @click="lookForMode = 'osu'" :class="{ modeActive: lookForMode === 'osu' }")
@@ -20,6 +20,7 @@ import {
   Component, Vue, Watch,
 } from 'vue-property-decorator';
 import _ from 'underscore';
+import { VueDecorator } from 'vue-class-component';
 
 @Component
 export default class Filtering extends Vue {
@@ -31,12 +32,12 @@ export default class Filtering extends Vue {
 
   searchInput = '';
 
-  debounceQuery = _.debounce(function () {
+  debounceQuery = _.debounce(function bounce(this: any) {
     this.lookForKeywords = this.searchInput;
   }, 300);
 
   @Watch('lookForKeywords')
-  createKeywordQuery() {
+  createKeywordQuery() :void{
     this.lookForMode = '';
 
     this.queryCreated = { key: 'title', value: this.lookForKeywords };
@@ -44,7 +45,7 @@ export default class Filtering extends Vue {
   }
 
   @Watch('lookForMode')
-  createModeQuery() {
+  createModeQuery() :void {
     this.lookForKeywords = '';
 
     this.queryCreated = { key: 'gameMode', value: this.lookForMode };
