@@ -76,19 +76,17 @@ class Tournaments {
     }
 
     public areQualifiers = (nameA: string, nameB: string, tournamentNameFlatten: string) => {
-        const qualifiers:Array<string> = [
-            'Qualifiers', 'Tryouts'
-        ];
+        let stringToCheck = `${tournamentNameFlatten} ${nameA} ${nameB}`;
 
-        const isTestPassed = _.filter(qualifiers, function(item) {
-            if( item === nameA || item === nameB || !_.isEmpty(tournamentNameFlatten.match(/qualifiers/gi)) || !_.isEmpty(tournamentNameFlatten.match(/tryouts/gi)) ) {
+        const isTestPassed = () => {
+            if( !_.isEmpty(stringToCheck.match(/qualifiers/gi)) || !_.isEmpty(stringToCheck.match(/tryouts/gi)) ) {
                 return true
             }else{
                 return false;
             };
-        })
+        }
 
-        return !_.isEmpty(isTestPassed);
+        return isTestPassed();
     }
 
     public insert = async (match: tournamentsTypes.insertSchema['match'], events: Array<Object>, players: tournamentsTypes.insertSchema['players']) => {
