@@ -293,6 +293,8 @@ class Tournaments {
                 let temp;
 
                 temp = usersDetails[0];
+
+                console.log(usersDetails);
                 usersDetails[0] = usersDetails[1];
                 usersDetails[1] = temp;
             }

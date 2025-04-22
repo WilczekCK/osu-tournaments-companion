@@ -3,7 +3,7 @@ import users from './users'
 import axios from 'axios';
 import * as cron from 'node-cron';
 import _ from 'underscore';
-import {protectedRoutes} from '../../credentials.json';
+import {protectedRoutes} from '../credentials.json';
 
 
 

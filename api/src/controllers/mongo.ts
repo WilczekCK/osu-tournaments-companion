@@ -1,4 +1,4 @@
-import * as credentials from '../../credentials.json';
+import * as credentials from '../credentials.json';
 import mongoose, { Schema } from "mongoose";
 const {mongoCreds} = credentials;
 

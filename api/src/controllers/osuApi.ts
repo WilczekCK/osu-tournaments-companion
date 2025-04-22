@@ -1,4 +1,4 @@
-import * as credentials from '../../credentials.json';
+import * as credentials from '../credentials.json';
 import axios from 'axios';
 
 const {osuCreds} = credentials;

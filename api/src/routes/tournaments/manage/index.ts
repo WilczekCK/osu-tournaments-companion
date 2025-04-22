@@ -4,7 +4,7 @@ import auth from 'koa-basic-auth';
 import osuApi from '../../../controllers/osuApi';
 import tournaments from '../../../controllers/tournaments';
 import users from '../../../controllers/users';
-import * as credentials from '../../../../credentials.json';
+import * as credentials from '../../../credentials.json';
 const {protectedRoutes} = credentials;
 
 const manageTournament = new Router({
