@@ -1,8 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 #root{max-width:1360px;margin:0 auto;}
 
-html, .bg-main { background-color: #404040; }
+html > * {
+    font-family: "Exo 2", sans-serif; font-optical-sizing: auto; font-style: normal; line-height:1;
+}
+html, .bg-main { background-color: #404040;}
 .bg-container-main { background-color: #555050;}
 .bg-pink {background-color: #FF66AA;}
 .bg-pink-dark {background-color: #A95279;}
 
-.color-grey {background-color: #717171;}
+.color-pink, .link-active, .text-pink-600 {color: #FF66AA !important;}
+.color-grey {color: #717171;}
+.color-pink-dark {color: #A95279;}

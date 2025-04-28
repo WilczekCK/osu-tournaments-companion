@@ -3,7 +3,13 @@
 export default {
   content: ['./src/**/*.{mjs,js,ts,jsx,tsx}'],
   theme: {
-    extend: {}
+    extend: {
+      colors: {
+        pink: {
+          900: '#FF66AA',
+        },
+      },
+    },
   },
   plugins: []
 }
