@@ -8,6 +8,9 @@ export default {
         pink: {
           900: '#FF66AA',
         },
+        gray: {
+          custom: '#717171'
+        }
       },
     },
   },

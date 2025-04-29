@@ -13,5 +13,5 @@ html, .bg-main { background-color: #404040;}
 .bg-pink-dark {background-color: #A95279;}
 
 .color-pink, .link-active, .text-pink-600 {color: #FF66AA !important;}
-.color-grey {color: #717171;}
+.color-grey, .color-grey::placeholder {color: #717171; border-color:#717171;}
 .color-pink-dark {color: #A95279;}

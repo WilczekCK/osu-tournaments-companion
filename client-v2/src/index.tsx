@@ -7,7 +7,7 @@ const container = document.getElementById('root') as HTMLDivElement
 const root = createRoot(container)
 
 root.render(
-  <div className="flex size-full">
+  <div className="flex flex-col gap-6 size-full">
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
