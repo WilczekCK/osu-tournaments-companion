@@ -1,36 +1,24 @@
 import Mode from 'components/Mode'
 import Dropdown from '../../assets/svg/dropdown.svg'
 import { useState } from 'react'
+import usePlayersHook from 'hooks/usePlayersHook'
 
-export default function Tournament({
-  name,
-  teams,
-  progress,
-  mode,
-  status,
-  started
-}: {
-  name: string
-  teams: Record<string, Record<T>>[]
-  progress: Record<string, Record<T>>[]
-  mode: string
-  status: string
-  started: string
-}) {
+export default function Tournament({tournament}) {
   const [isOpen, setIsOpen] = useState(false)
-
+  const players = usePlayersHook(tournament.users, tournament.judge);
+  const teams   = useTeamsHook(tournaments.mapsPlayed, players);
 
   return (
     <>
       <div className="flex flex-col w-full px-4 rounded-xl items-center bg-container-tournament max-w-xl">
         <div className="flex flex-row columns-2 w-full items-center gap-3 py-4">
-          <Mode name={mode} displayText={false} />
+          <Mode name={tournament.gameMode} displayText={false} />
           <div className="flex flex-col gap-0 items-start text-white text-sm grow">
-            <div className="text-pink-900 font-semibold text-lg">{name}</div>
+            <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>
             <div className="mt-[-5px]">
-              ({teams[0].name}) {teams[0].score} : {teams[1].score} ({teams[1].name})
+              {/* ({teams[0].name}) {teams[0].score} : {teams[1].score} ({teams[1].name}) */}
             </div>
-            <div className="mt-[-2.5px]">Started: {started}</div>
+            <div className="mt-[-2.5px]">Started: {tournament.timeCreated}</div>
           </div>
           <img
             src={Dropdown}
@@ -45,7 +33,6 @@ export default function Tournament({
             isOpen ? 'max-h-[300px]' : 'max-h-0 '
           }`}
         >
-          <div>Progress: {progress[0]?.status || 'N/A'}</div>
           <div>Additional Info</div>
         </div>
       </div>

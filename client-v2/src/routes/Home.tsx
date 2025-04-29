@@ -1,9 +1,30 @@
 import Header from 'components/Header'
 import Tournaments from '../assets/svg/tournaments.svg'
 import Tournament from 'components/Tournament'
-
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 function Home() {
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [tournaments, setTournaments] = useState([]);
+
+  useEffect(() => {
+    // yusen: 4
+    // ciallo: 6
+    // 117940566
+    axios.get('https://api.otc.glad.vision/tournaments/117940592')
+      .then((response) => {
+        setTournaments(response.data)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error('Error fetching tournaments:', error)
+        setError(true)
+        setLoading(false)
+      })
+  }, []);
+
   return (
     <>
       <Header />
@@ -21,14 +42,11 @@ function Home() {
         </div>
 
         <div className="flex flex-col gap-4 w-full mt-6 columns-2">
-          <Tournament 
-            name={"OWC 2024"}
-            mode={"standard"}
-            teams={[{name: 'Poland', score:3, players: ['WubWoofWolf', 'Fartownik']}, {name: 'Japan', score:2, players: ['Cookiezi', 'rrtyui']}]}
-            progress={{map: 'Blue Dragon', score: 3, total: 5}}
-            status={'inprogress'}
-            started={'2025.04.12 02:53'}
-          />
+          {!loading && (
+              <Tournament 
+                tournament={tournaments[0]}
+            />
+          )}
         </div>
       </div>
     </>
