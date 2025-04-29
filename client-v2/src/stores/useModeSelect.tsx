@@ -1,7 +1,5 @@
 import { create } from 'zustand'
 
-type Mode = 'standard' | 'taiko' | 'ctb' | 'mania'
-
 interface ModeSelectState {
   modesSelected: Mode[]
   removeMode: (mode: Mode) => void

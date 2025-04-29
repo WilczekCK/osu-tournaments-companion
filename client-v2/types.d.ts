@@ -1,0 +1,1 @@
+type Mode = 'standard' | 'taiko' | 'ctb' | 'mania'
