@@ -7,11 +7,15 @@ export default {
       colors: {
         pink: {
           900: '#FF66AA',
+          custom: '#A95279'
         },
         gray: {
           custom: '#717171'
         }
       },
+      transitionProperty: {
+        'height': 'height'
+      }
     },
   },
   plugins: []

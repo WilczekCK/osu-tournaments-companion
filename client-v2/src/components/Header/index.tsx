@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="flex flex-row columns-2 w-full bg-container-main p-5 pt-4 px-8 mt-4 rounded-xl items-center">
+      <div className="flex flex-row columns-2 w-full bg-container-main p-5 pt-4 px-8 mt-4 rounded-xl items-center select-none">
         <h2 className="grow self-start">
           <span className="text-white text-4xl self-start">osu!</span>
           <span className="color-pink text-4xl">tc</span>
