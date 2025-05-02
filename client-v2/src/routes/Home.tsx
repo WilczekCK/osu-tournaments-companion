@@ -10,10 +10,11 @@ function Home() {
   const [tournaments, setTournaments] = useState([]);
 
   useEffect(() => {
+    // qualifiers: 117968707
     // yusen: 4
     // ciallo: 6
     // 117940566
-    axios.get('https://api.otc.glad.vision/tournaments/117940592')
+    axios.get('https://api.otc.glad.vision/tournaments/117968707')
       .then((response) => {
         setTournaments(response.data)
         setLoading(false)

@@ -2,11 +2,15 @@ import Mode from 'components/Mode'
 import Dropdown from '../../assets/svg/dropdown.svg'
 import { useState } from 'react'
 import usePlayersHook from 'hooks/usePlayersHook'
+import useTeamsShuffleHook from 'hooks/useTeamsShuffleHook'
 
 export default function Tournament({tournament}) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+
   const players = usePlayersHook(tournament.users, tournament.judge);
-  const teams   = useTeamsHook(tournaments.mapsPlayed, players);
+  const teams   = useTeamsShuffleHook(players, tournament.teams);
+
+  console.log(teams);
 
   return (
     <>
