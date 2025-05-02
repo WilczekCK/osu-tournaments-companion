@@ -1,16 +1,22 @@
-import Mode from 'components/Mode'
-import Dropdown from '../../assets/svg/dropdown.svg'
 import { useState } from 'react'
+
+import Dropdown from '../../assets/svg/dropdown.svg'
+
+import Mode from 'components/Mode'
+import TeamsList from 'components/TeamsList'
+
 import usePlayersHook from 'hooks/usePlayersHook'
 import useTeamsShuffleHook from 'hooks/useTeamsShuffleHook'
+import useTeamsTournamentScoresHook from 'hooks/useTeamsTournamentScoresHook'
 
 export default function Tournament({tournament}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const players = usePlayersHook(tournament.users, tournament.judge);
   const teams   = useTeamsShuffleHook(players, tournament.teams);
+  const teamsWithScores = useTeamsTournamentScoresHook(teams, tournament.mapsPlayed);
 
-  console.log(teams);
+  console.log(teamsWithScores)
 
   return (
     <>
@@ -37,7 +43,7 @@ export default function Tournament({tournament}) {
             isOpen ? 'max-h-[300px]' : 'max-h-0 '
           }`}
         >
-          <div>Additional Info</div>
+          <TeamsList teams={teams}/>
         </div>
       </div>
     </>
