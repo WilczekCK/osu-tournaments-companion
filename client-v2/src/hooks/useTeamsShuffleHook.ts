@@ -1,7 +1,13 @@
 export default function useTeamsShuffleHook<T>(players: Player[], teams: Record<string, T>[]) {
     const areQualifiers = (teams as any).areQualifiers;
-    const teamNames = (teams as any).names.teamsName;
     const shuffledTeams: Team[] = [];
+    let teamNames;
+
+    if ((teams as any).names.teamsName) {
+        teamNames = (teams as any).names.teamsName;
+    } else {
+        teamNames = (teams as any).names;
+    }
 
 
     if (areQualifiers) {

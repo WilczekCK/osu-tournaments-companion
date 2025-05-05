@@ -14,7 +14,7 @@ function Home() {
     // yusen: 4
     // ciallo: 6
     // 117940566
-    axios.get('https://api.otc.glad.vision/tournaments/117968707')
+    axios.get('https://api.otc.glad.vision/tournaments/?limit=5&startFrom=0&=')
       .then((response) => {
         setTournaments(response.data)
         setLoading(false)
@@ -42,12 +42,13 @@ function Home() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 w-full mt-6 columns-2">
-          {!loading && (
-              <Tournament 
-                tournament={tournaments[0]}
-            />
-          )}
+        <div className="grid grid-cols-2 md:grid-cols-32 gap-2 w-full masonry mt-4">
+          {!loading &&
+            tournaments.map((tournament, index) => (
+              <div key={index} className="break-inside-avoid">
+                <Tournament tournament={tournament} />
+              </div>
+            ))}
         </div>
       </div>
     </>

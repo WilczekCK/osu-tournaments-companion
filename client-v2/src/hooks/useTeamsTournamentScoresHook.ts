@@ -58,7 +58,7 @@ export default function useTeamsTournamentScoresHook<T>(teams: Team[], mapsPlaye
         teamRed.score += summaryScoreRed || 0;
 
         // Assign wins to teams based on scores
-        teamBlue.score > teamRed.score ? teamBlue.wins++ : teamRed.wins++;
+        summaryScoreBlue > summaryScoreRed ? teamBlue.wins++ : teamRed.wins++;
     });
 
 

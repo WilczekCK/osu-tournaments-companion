@@ -16,3 +16,14 @@ html, .bg-main { background-color: #404040;}
 .color-pink, .link-active, .text-pink-600 {color: #FF66AA !important;}
 .color-grey, .color-grey::placeholder {color: #717171; border-color:#717171;}
 .color-pink-dark {color: #A95279;}
+
+.masonry {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    grid-auto-rows: min-content;
+    gap: 1rem;
+}
+  
+.break-inside-avoid {
+    break-inside: avoid;
+}

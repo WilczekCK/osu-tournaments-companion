@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import dayjs from 'dayjs'
 
 import Dropdown from '../../assets/svg/dropdown.svg'
 
@@ -14,21 +15,45 @@ export default function Tournament({tournament}) {
 
   const players = usePlayersHook(tournament.users, tournament.judge);
   const teams   = useTeamsShuffleHook(players, tournament.teams);
-  const teamsWithScores = useTeamsTournamentScoresHook(teams, tournament.mapsPlayed);
-
-  console.log(teamsWithScores)
+  const {teamBlue, teamRed} = useTeamsTournamentScoresHook(teams, tournament.mapsPlayed);
+  
 
   return (
     <>
-      <div className="flex flex-col w-full px-4 rounded-xl items-center bg-container-tournament max-w-xl">
+      <div className="flex flex-col w-full px-4 rounded-xl items-center bg-container-tournament">
         <div className="flex flex-row columns-2 w-full items-center gap-3 py-4">
           <Mode name={tournament.gameMode} displayText={false} />
           <div className="flex flex-col gap-0 items-start text-white text-sm grow">
             <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>
-            <div className="mt-[-5px]">
-              {/* ({teams[0].name}) {teams[0].score} : {teams[1].score} ({teams[1].name}) */}
+
+            <div className="mt-[-5px] flex flex-row gap-1">
+              { 
+                tournament.areQualifiers 
+                  ? `Qualifiers: (${teams[0].name})` 
+                  : (
+                    <>
+                      {teamBlue.wins > teamRed.wins 
+                        ? (
+                          <>
+                            <div>({teamBlue.name}) {teamBlue.wins}</div> : <div className="text-gray-400">{teamRed.wins} ({teamRed.name})</div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-gray-400">({teamBlue.name}) {teamBlue.wins}</div> : <div>{teamRed.wins} ({teamRed.name})</div>
+                          </>
+                        )}
+                    </>
+                  )
+              }
             </div>
-            <div className="mt-[-2.5px]">Started: {tournament.timeCreated}</div>
+
+            <div className="mt-[-2.5px]">
+              {
+                tournament.timeEnded && tournament.timeEnded.trim() !== ''
+                  ? (`Finished: ${dayjs(tournament.timeEnded).format('YYYY-MM-DD HH:ss')}`)
+                  : (`Started: ${dayjs(tournament.timeCreated).format('YYYY-MM-DD HH:ss')}`)
+              }
+            </div>
           </div>
           <img
             src={Dropdown}
