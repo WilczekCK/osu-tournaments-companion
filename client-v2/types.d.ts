@@ -6,15 +6,23 @@ type Player = {
     playerAvatar: string,
     playerCountry: Record<string, string>,
 }
-interface Team {
-    players: Player[],
-    name: string,
+interface PlayerDetails extends Player {
+    playerRankCountry: number,
+    playerRankGlobal: number,
 }
+
 interface PlayerWithScore extends Player {
     summaryScore: number,
     summaryAccuracy: number,
     scoreByBeatmap: BeatmapPlayerScore[]
 }
+
+interface Team {
+    players: Player[],
+    name: string,
+}
+
+
 interface TeamWithScore extends Team {
     score: number,
     wins: number,
