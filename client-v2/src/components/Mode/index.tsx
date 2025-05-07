@@ -21,16 +21,23 @@ function getModeImage(mode: Mode) {
 export default function Mode({
   name,
   displayImage = true,
-  displayText = true
+  displayText = true,
+  size,
 }: {
   name: Mode
   displayImage?: boolean
   displayText?: boolean
+  size?: number
 }) {
   return (
     <>
       {displayImage && (
-        <img src={getModeImage(name)} alt={`mode-${name}`} className="h-12" />
+        <img 
+          src={getModeImage(name)} 
+          alt={`mode-${name}`} 
+          className={!size ? "h-12" : undefined} 
+          style={size ? { height: size } : undefined} 
+        />
       )}
       {displayText && name}
     </>
