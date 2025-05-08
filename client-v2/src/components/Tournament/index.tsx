@@ -20,8 +20,8 @@ export default function Tournament({tournament}) {
 
   return (
     <>
-      <div className="flex flex-col w-full px-4 rounded-xl items-center bg-container-tournament">
-        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4">
+      <div className="flex flex-col w-full px-2 rounded-xl items-center bg-container-tournament">
+        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-1">
           <Mode name={tournament.gameMode} displayText={false} />
           <div className="flex flex-col gap-0 items-start text-white text-sm grow">
             <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>
@@ -65,7 +65,7 @@ export default function Tournament({tournament}) {
 
         <div
           className={`transition-[max-height] duration-300 ease-in-out overflow-hidden flex flex-row gap-2 w-full items-start text-white text-sm ${
-            isOpen ? 'max-h-[300px]' : 'max-h-0 '
+            isOpen ? 'max-h-[300px] py-2' : 'max-h-0 '
           }`}
         >
           <TeamsList teams={teams}/>
