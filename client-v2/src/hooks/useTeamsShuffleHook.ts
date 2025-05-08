@@ -1,7 +1,8 @@
 export default function useTeamsShuffleHook<T>(players: Player[], teams: Record<string, T>[]) {
-    const areQualifiers = (teams as any).areQualifiers;
     const shuffledTeams: Team[] = [];
     let teamNames;
+
+    let areQualifiers = (teams as any).areQualifiers;
 
     if ((teams as any).names.teamsName) {
         teamNames = (teams as any).names.teamsName;
@@ -12,8 +13,11 @@ export default function useTeamsShuffleHook<T>(players: Player[], teams: Record<
 
     if (areQualifiers) {
         const qualifiersTeam: Team = { players: [], name: '' };
+        let isSoloQualifierNameProper = players.length == 1 && players[0].playerName.toLowerCase() == teamNames.blue.toLowerCase();
 
-        if (teamNames.blue.toLowerCase() != 'qualifiers') {
+
+        if (teamNames.blue.toLowerCase() != 'qualifiers' && isSoloQualifierNameProper) {
+            // check the nickname because sometime the name is not in blue team.
             qualifiersTeam.name = teamNames.blue;
         } else {
             qualifiersTeam.name = teamNames.red;
