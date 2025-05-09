@@ -8,7 +8,12 @@ export default function Team({name, players, teamNumber}: {name: string, players
         {
           players.length > 0 
             ? (players.map((player, index) => <Player player={player} key={index} withRanking={true} teamNumber={teamNumber}/>))
-            : 'No players in team'
+            : (
+              <div className="flex flex-col items-center">
+                No players in team
+                <div className="text-pink-900 text-sm">They might come later...</div>
+              </div>
+              )
         }
       </div>
     </div>
