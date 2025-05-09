@@ -55,6 +55,12 @@ export default function Tournament({tournament}) {
               }
             </div>
           </div>
+          <a target="_blank" href={"https://osu.ppy.sh/community/matches/"+ tournament.id} className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out text-pink-custom hover:text-white">
+            osu!
+          </a>
+          <a target="_blank" href="#" className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out  text-pink-custom hover:text-white">
+            otc!
+          </a>
           <img
             src={Dropdown}
             alt="dropdown-icon"
