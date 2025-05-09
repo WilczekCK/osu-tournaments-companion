@@ -5,23 +5,29 @@ import Dropdown from '../../assets/svg/dropdown.svg'
 
 import Mode from 'components/Mode'
 import TeamsList from 'components/TeamsList'
+import MapInProgress from './MapInProgress'
 
 import usePlayersHook from 'hooks/usePlayersHook'
 import useTeamsShuffleHook from 'hooks/useTeamsShuffleHook'
 import useTeamsTournamentScoresHook from 'hooks/useTeamsTournamentScoresHook'
+import useBeatmapHook from 'hooks/useBeatmapHook'
 
 export default function Tournament({tournament}) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const mapInProgress = useBeatmapHook(tournament.mapsPlayed[tournament.mapsPlayed.length - 1]);
   const players = usePlayersHook(tournament.users, tournament.judge);
   const teams   = useTeamsShuffleHook(players, tournament.teams);
   const {teamBlue, teamRed} = useTeamsTournamentScoresHook(teams, tournament.mapsPlayed);
-  
 
   return (
     <>
-      <div className="flex flex-col w-full px-2 rounded-xl items-center bg-container-tournament">
-        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-1 pt-3">
+      <div className="flex flex-col w-full rounded-xl items-center bg-container-tournament">
+        {!tournament.timeEnded && (
+          <MapInProgress beatmap={mapInProgress} />
+        )}
+
+        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-2 pt-3 ">
           <Mode name={tournament.gameMode} displayText={false} />
           <div className="flex flex-col gap-0 items-start text-white text-sm grow">
             <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>

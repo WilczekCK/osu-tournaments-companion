@@ -22,11 +22,18 @@ interface Team {
     name: string,
 }
 
-
 interface TeamWithScore extends Team {
     score: number,
     wins: number,
     players: PlayerWithScore[]
+}
+
+interface Beatmap {
+    id: number,
+    title: string,
+    artist: string,
+    creator: string,
+    difficulty: string,
 }
 
 interface BeatmapPlayerScore {
