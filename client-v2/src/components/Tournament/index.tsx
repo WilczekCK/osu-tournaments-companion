@@ -11,6 +11,7 @@ import usePlayersHook from 'hooks/usePlayersHook'
 import useTeamsShuffleHook from 'hooks/useTeamsShuffleHook'
 import useTeamsTournamentScoresHook from 'hooks/useTeamsTournamentScoresHook'
 import useBeatmapHook from 'hooks/useBeatmapHook'
+import InformationSwitchMenu from './InformationSwitchMenu'
 
 export default function Tournament({tournament}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,12 +23,12 @@ export default function Tournament({tournament}) {
 
   return (
     <>
-      <div className="flex flex-col w-full rounded-xl items-center bg-container-tournament">
-        {!(tournament.timeEnded && mapInProgress) && (
+      <div className="flex flex-col w-full rounded-xl items-center bg-container-tournament relative">
+        {(!tournament.timeEnded && mapInProgress) && (
           <MapInProgress beatmap={mapInProgress} />
         )}
 
-        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-2 pt-3 ">
+        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-2 pt-3">
           <Mode name={tournament.gameMode} displayText={false} />
           <div className="flex flex-col gap-0 items-start text-white text-sm grow">
             <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>
@@ -76,12 +77,18 @@ export default function Tournament({tournament}) {
         </div>
 
         <div
-          className={`transition-[max-height] duration-300 ease-in-out overflow-hidden flex flex-row gap-2 w-full items-start text-white text-sm ${
+          className={`transition-[max-height] duration-300 ease-in-out overflow-hidden gap-2 w-full items-start text-white text-sm relative flex flex-row ${
             isOpen ? 'max-h-[300px] py-2 px-2 overflow-scroll' : 'max-h-0 '
           }`}
         >
           <TeamsList teams={teams}/>
         </div>
+
+
+        {isOpen && (
+          <InformationSwitchMenu />
+        )}
+
       </div>
     </>
   )

@@ -13,10 +13,10 @@ export default function useTeamsShuffleHook<T>(players: Player[], teams: Record<
 
     if (areQualifiers) {
         const qualifiersTeam: Team = { players: [], name: '' };
-        let isSoloQualifierNameProper = players.length == 1 && players[0].playerName.toLowerCase() == teamNames.blue.toLowerCase();
+        // let isSoloQualifierNameProper = players.length == 1 && players[0].playerName.toLowerCase() == teamNames.blue.toLowerCase();
 
 
-        if (teamNames.blue.toLowerCase() != 'qualifiers' && isSoloQualifierNameProper) {
+        if (teamNames.blue.toLowerCase() != 'qualifiers') {
             // check the nickname because sometime the name is not in blue team.
             qualifiersTeam.name = teamNames.blue;
         } else {
