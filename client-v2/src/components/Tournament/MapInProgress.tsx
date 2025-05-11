@@ -1,11 +1,4 @@
 export default function MapInProgress({beatmap} : {beatmap: Beatmap}) {
-    if (!beatmap) {
-        return null;
-    }
-
-    console.log(beatmap.coverImg)
-
-
     return (
         <div className="relative w-[100%] h-24 flex flex-col">
             <div className="absolute inset-0 z-0">
@@ -22,15 +15,29 @@ export default function MapInProgress({beatmap} : {beatmap: Beatmap}) {
                 ></div>
             </div>
 
-            <div className="z-10 p-2 px-4 font-semibold">
-                <a target="_blank" href={"https://osu.ppy.sh/b/"+beatmap.id+''}>
-                    <div className="text-white underline underline-offset-2 text-xl">{beatmap.title}</div>
-                    <div className="text-white text-regular">{beatmap.artist}</div>
+            <div className="z-10 p-2 px-3 font-semibold">
+                <a className={"flex flex-row"} target="_blank" href={"https://osu.ppy.sh/b/"+beatmap.id+''}>
+                    <div className={"grow"}>
+                        <div className="text-white underline underline-offset-2 text-xl">{beatmap.title}</div>
+                        <div className="text-white text-regular">{beatmap.artist}</div>
 
-                    <div className="mt-4 flex text-regular">
-                        <div className="text-white pr-1">Map by: </div>
-                        <div className="text-pink-900">{beatmap.creator}</div>
+                        <div className="mt-4 flex text-regular">
+                            <div className="text-white pr-1">Map by: </div>
+                            <div className="text-pink-900">{beatmap.creator}</div>
+                        </div>
                     </div>
+
+                    <div className={"flex flex-col items-end justify-start text-white"}>
+                        <div>
+                            Difficulty: <strong>{beatmap.difficulty}</strong>
+                        </div>
+                        
+
+                        <div className={"absolute bottom-2 text-white bg-red-700 p-2 w-min"}>
+                            LIVE
+                        </div>
+                    </div>
+
                 </a>
             </div>
         </div>

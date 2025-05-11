@@ -1,6 +1,6 @@
-export default function useBeatmapHook(beatmap: any) {
+export default function useBeatmapHook(beatmap: Record<string, any>) {
     if (!beatmap) {
-        return null;
+        return false;
     }
 
    return {

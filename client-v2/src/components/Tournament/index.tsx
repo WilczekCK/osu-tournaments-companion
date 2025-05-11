@@ -23,7 +23,7 @@ export default function Tournament({tournament}) {
   return (
     <>
       <div className="flex flex-col w-full rounded-xl items-center bg-container-tournament">
-        {!tournament.timeEnded && (
+        {!(tournament.timeEnded && mapInProgress) && (
           <MapInProgress beatmap={mapInProgress} />
         )}
 
@@ -70,14 +70,14 @@ export default function Tournament({tournament}) {
           <img
             src={Dropdown}
             alt="dropdown-icon"
-            className={"max-h-10 cursor-pointer"+ (isOpen ? ' rotate-180' : '')}
+            className={"max-h-10 cursor-pointer "+ (isOpen ? 'rotate-180' : '')}
             onClick={() => setIsOpen(!isOpen)}
           />
         </div>
 
         <div
           className={`transition-[max-height] duration-300 ease-in-out overflow-hidden flex flex-row gap-2 w-full items-start text-white text-sm ${
-            isOpen ? 'max-h-[300px] py-2 px-1' : 'max-h-0 '
+            isOpen ? 'max-h-[300px] py-2 px-2 overflow-scroll' : 'max-h-0 '
           }`}
         >
           <TeamsList teams={teams}/>
