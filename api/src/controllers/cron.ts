@@ -55,7 +55,7 @@ class Cron {
             for await(let tournament of this.tournamentsToUpdate){
                 const {id} : {id?:number} = tournament;
                 
-                await axios.get(`/tournaments/${id}?osuApi=true`)
+                await axios.get(`/tournaments/118061384?osuApi=true`)
                     .then( async ( {data} ) => {
                         let {match, events, users} = data;
                         let {end_time: timeEnded}  = match;
@@ -66,10 +66,13 @@ class Cron {
 
                         // this function causes a bug that tournaments are not updating
                         // replaced with react function of sorting team
-                        // let teams = {...await tournaments.sortTeams( mapsPlayed, judge ), names: {teamsName, tournamentNameFlatten}, areQualifiers };
+                        let teams = {
+                            ...await tournaments.sortTeams( mapsPlayed, judge, areQualifiers, users )
+                            , names: {teamsName, tournamentNameFlatten}, areQualifiers 
+                        };
                         
                         await this.tournamentsCRON.compare(
-                            {timeEnded, users, judge, mapsPlayed, gameMode, events},
+                            {timeEnded, users, judge, mapsPlayed, gameMode, events, teams},
                             tournament
                         );
                     })
@@ -155,28 +158,28 @@ class Cron {
 
     public start = async () => {
         /* User info update */
-        cron.schedule(`0 0 ${this.hoursEachUserCron} * * *`, async () => {
-            if( !this.isUserCronInProgress ) {
-                await this.usersCRON.prepareToUpdate();
-                await this.usersCRON.update();
-            }
-        })
+        // cron.schedule(`0 0 ${this.hoursEachUserCron} * * *`, async () => {
+        //     if( !this.isUserCronInProgress ) {
+        //         await this.usersCRON.prepareToUpdate();
+        //         await this.usersCRON.update();
+        //     }
+        // })
 
         /* Tournaments update */
-        cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
+        // cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
             if( !this.isTournamentCronInProgress && !this.isUserCronInProgress ){
                 await this.tournamentsCRON.prepareToUpdate();
                 await this.tournamentsCRON.update();
                 await this.tournamentsCRON.removeWithoutPlays();
             }
-        })
+        // })
 
         /* Look for new tournaments */
-        cron.schedule(`*/2 * * * *`, async () => {
-            if(!this.isUserCronInProgress){
-                await this.tournamentsCRON.lookForNew();
-            }
-        })
+        // cron.schedule(`*/2 * * * *`, async () => {
+        //     if(!this.isUserCronInProgress){
+        //         await this.tournamentsCRON.lookForNew();
+        //     }
+        // })
     };
 }
 

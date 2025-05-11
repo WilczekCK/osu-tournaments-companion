@@ -230,7 +230,8 @@ class Tournaments {
             red: [],
         }
         let gotPlayersId;
-        
+
+
         for(let beatmap of beatmapsPlayed){
             for(let score of beatmap.scores){
                 switch(true){
@@ -240,11 +241,11 @@ class Tournaments {
                         break;
 
                     /* 1v1 */
-                    case true === this.recog1v1(usersInfo).is1v1:
-                        const {usersDetails} = this.recog1v1(usersInfo);
-                        if(!sortedTeams['red'].length) sortedTeams['red'].push(usersDetails[0].id);
-                        if(!sortedTeams['blue'].length) sortedTeams['blue'].push(usersDetails[1].id);
-                        break;
+                    // case true === this.recog1v1(usersInfo).is1v1:
+                    //     const {usersDetails} = this.recog1v1(usersInfo);
+                    //     if(!sortedTeams['red'].length) sortedTeams['red'].push(usersDetails[0].id);
+                    //     if(!sortedTeams['blue'].length) sortedTeams['blue'].push(usersDetails[1].id);
+                    //     break;
                 
                     /* Team vs Team */
                     case 'team-vs' === beatmap.teamType && 'blue' === score.match.team  && !sortedTeams['blue'].includes(score.user_id):
@@ -273,7 +274,7 @@ class Tournaments {
         return sortedTeams;
     }
 
-    public recog1v1 = (usersInfo: any) =>{
+    public recog1v1 = (usersInfo: any,) =>{
         //collect usernames
         const parseNickname = (nickname: string) => nickname.toLowerCase().replace(/[^\w\s]/gi, '');
 
@@ -284,7 +285,7 @@ class Tournaments {
         if(_.contains(usernameArray, usersInfo.teamsName.red.toLowerCase(), 0) && _.contains(usernameArray, usersInfo.teamsName.blue.toLowerCase(), 0)){
             //collect playing users id
             let usersDetails = usersInfo.players.map(function(user: any){
-                return _.contains([parseNickname(usersInfo.teamsName.red),parseNickname(usersInfo.teamsName.blue)], parseNickname(user.username)) ? {id: user.id, nickname: user.username } : 0;
+                return _.contains([parseNickname(usersInfo.red),parseNickname(usersInfo.teamsName.blue)], parseNickname(user.username)) ? {id: user.id, nickname: user.username } : 0;
             })
             usersDetails = _.without(usersDetails, 0);
 
