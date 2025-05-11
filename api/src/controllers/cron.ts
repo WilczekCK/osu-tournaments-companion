@@ -31,6 +31,7 @@ class Cron {
             const differences = _.difference([matchInfo], [tournament]);
             const {id} : {id?:number} = tournament;
     
+
             for await(let difference of _.pairs(differences[0])){
                 const result = _.values(difference);
                 let name = result[0];
@@ -55,7 +56,7 @@ class Cron {
             for await(let tournament of this.tournamentsToUpdate){
                 const {id} : {id?:number} = tournament;
                 
-                await axios.get(`/tournaments/118061384?osuApi=true`)
+                await axios.get(`/tournaments/${id}?osuApi=true`)
                     .then( async ( {data} ) => {
                         let {match, events, users} = data;
                         let {end_time: timeEnded}  = match;
@@ -70,7 +71,7 @@ class Cron {
                             ...await tournaments.sortTeams( mapsPlayed, judge, areQualifiers, users )
                             , names: {teamsName, tournamentNameFlatten}, areQualifiers 
                         };
-                        
+
                         await this.tournamentsCRON.compare(
                             {timeEnded, users, judge, mapsPlayed, gameMode, events, teams},
                             tournament
