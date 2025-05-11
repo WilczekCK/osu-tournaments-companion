@@ -64,10 +64,12 @@ class Cron {
                         const {teamsName, tournamentNameFlatten} = tournaments.getTeamsName(match.name);
                         let areQualifiers = tournaments.areQualifiers(teamsName.blue, teamsName.red, tournamentNameFlatten);
 
-                        let teams = {...await tournaments.sortTeams( mapsPlayed, judge ), names: {teamsName, tournamentNameFlatten}, areQualifiers };
+                        // this function causes a bug that tournaments are not updating
+                        // replaced with react function of sorting team
+                        // let teams = {...await tournaments.sortTeams( mapsPlayed, judge ), names: {teamsName, tournamentNameFlatten}, areQualifiers };
                         
                         await this.tournamentsCRON.compare(
-                            {timeEnded, users, judge, mapsPlayed, gameMode, events, teams},
+                            {timeEnded, users, judge, mapsPlayed, gameMode, events},
                             tournament
                         );
                     })
