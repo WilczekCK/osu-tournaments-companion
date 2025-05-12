@@ -83,11 +83,11 @@ class Cron {
             }
             return;
         },
-        lookForNew: async () => {
+        lookForNew: async (withCursor = true) => {
             await axios.get(`/tournaments/?osuApi=true${this.tournamentsCRON.provideCursor()}`)
             .then( async ( {data} ) => {
                 //to know, where it should start next time!
-                this.cursorMatchId = data.cursor.match_id;
+                this.cursorMatchId = withCursor ? data.cursor.match_id : 0;
 
                 for await(let match of data.matches){
                     if(tournaments.isTournament(match.name)){
@@ -149,8 +149,8 @@ class Cron {
                         }
                     })
 
-                    //give a osu!api some rest, .3s each user!
-                    await new Promise(resolve => setTimeout(resolve, 300));
+                    //give a osu!api some rest, 1s each user!
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                 } 
             }
             this.isUserCronInProgress = false;
@@ -159,7 +159,7 @@ class Cron {
 
     public start = async () => {
         /* User info update */
-        cron.schedule(`0 0 ${this.hoursEachUserCron} * * *`, async () => {
+        cron.schedule(`*/30 */${this.hoursEachUserCron} * * *`, async () => {
             if( !this.isUserCronInProgress ) {
                 await this.usersCRON.prepareToUpdate();
                 await this.usersCRON.update();
@@ -175,10 +175,17 @@ class Cron {
             }
         })
 
-        /* Look for new tournaments */
-        cron.schedule(`*/1 * * * *`, async () => {
-            if(!this.isUserCronInProgress){
+        /* Look for new tournaments -- cursor, look for old pages */
+        cron.schedule(`*/3 * * * *`, async () => {
+            if (!this.isUserCronInProgress) {
                 await this.tournamentsCRON.lookForNew();
+            }
+        })
+
+        /* Look for new tournaments - only new one! */
+        cron.schedule(`*/1 * * * *`, async () => {
+            if (!this.isUserCronInProgress) {
+                await this.tournamentsCRON.lookForNew(false);
             }
         })
     };
