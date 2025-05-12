@@ -12,7 +12,7 @@ class Cron {
     private isUserCronInProgress : boolean = false;
     
     private secondsEachTournamentCron : number = 120;
-    private hoursEachUserCron : number = 23;
+    private hoursEachUserCron : number = 1;
     
     private tournamentsToUpdate : Array<object>;
     private usersToUpdate : Array<any>
@@ -166,7 +166,7 @@ class Cron {
             }
         })
 
-        /* Tournaments update */
+        // /* Tournaments update */
         cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
             if( !this.isTournamentCronInProgress && !this.isUserCronInProgress ){
                 await this.tournamentsCRON.prepareToUpdate();
@@ -176,7 +176,7 @@ class Cron {
         })
 
         /* Look for new tournaments */
-        cron.schedule(`*/2 * * * *`, async () => {
+        cron.schedule(`*/1 * * * *`, async () => {
             if(!this.isUserCronInProgress){
                 await this.tournamentsCRON.lookForNew();
             }

@@ -26,10 +26,24 @@ app.use(async (ctx, next) => {
 });
 
 // Front-end, allows CORS
+const allowedOrigins = [
+  'https://otc.glad.vision',
+  'http://localhost',
+  'http://localhost:5173',
+];
+
 app.use(cors({
-  allowMethods: 'GET',
-  origin: 'https://otc.glad.vision'
+  origin: (ctx) => {
+    const requestOrigin = ctx.headers.origin;
+    if (!requestOrigin) return false;
+    if (allowedOrigins.includes(requestOrigin)) {
+      return requestOrigin;
+    }
+    return false;
+  },
+  allowMethods: ['GET'], // ✅ właściwa opcja w @koa/cors
 }));
+
 
 app.use(routes);
 app.use(Logger());
