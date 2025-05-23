@@ -22,7 +22,7 @@ export default function Player({player, withRanking = false, teamNumber} : {play
                     setLoading(false);
                 });
         }
-    }, [withRanking, player.id]);
+    }, []);
 
     return (
         <a href={`https://osu.ppy.sh/u/${player.id}`}  target="_blank" className={"min-w-[100%] flex flex-row gap-3 items-center relative text-white cursor-pointer text-lg shadow-red-500/50 inset-shadow-2xs z-10"}>

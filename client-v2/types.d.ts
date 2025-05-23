@@ -34,9 +34,11 @@ interface Beatmap {
     artist: string,
     creator: string,
     difficulty: string,
+    mode: Mode,
 }
 
 interface BeatmapPlayerScore {
+    userId: number | null,
     beatmapId: number,
     score: number,
     accuracy: number,

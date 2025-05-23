@@ -31,6 +31,7 @@ export default function useTeamsTournamentScoresHook<T>(teams: Team[], mapsPlaye
                 playerInBlue.summaryScore += playerScore;
                 playerInBlue.summaryAccuracy += accuracy;
                 playerInBlue.scoreByBeatmap.push({
+                    userId: user_id,
                     beatmapId: map.info.id,
                     score: playerScore,
                     accuracy,
@@ -44,6 +45,7 @@ export default function useTeamsTournamentScoresHook<T>(teams: Team[], mapsPlaye
                 playerInRed.summaryScore += playerScore;
                 playerInRed.summaryAccuracy += accuracy;
                 playerInRed.scoreByBeatmap.push({
+                    userId: user_id,
                     beatmapId: map.info.id,
                     score: playerScore,
                     accuracy,

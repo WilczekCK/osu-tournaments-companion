@@ -1,6 +1,6 @@
 import Team from "components/Team";
 
-export default function TeamsList({teams}: Team[]) {
+export default function TournamentTeamsList({teams}: Team[]) {
   const areQualifiers = teams[1].name === 'Qualifiers';
 
   return (

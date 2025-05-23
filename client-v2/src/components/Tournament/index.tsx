@@ -4,8 +4,9 @@ import dayjs from 'dayjs'
 import Dropdown from '../../assets/svg/dropdown.svg'
 
 import Mode from 'components/Mode'
-import TeamsList from 'components/TeamsList'
+import TournamentTeamsList from 'components/TournamentTeamsList'
 import MapInProgress from './MapInProgress'
+import TournamentProgress from 'components/TournamentProgress'
 
 import usePlayersHook from 'hooks/usePlayersHook'
 import useTeamsShuffleHook from 'hooks/useTeamsShuffleHook'
@@ -83,10 +84,10 @@ export default function Tournament({tournament}) {
           }`}
         >
           {displayContent === 'players' && (
-            <TeamsList teams={teams}/>
+            <TournamentTeamsList teams={teams}/>
           )}
           {displayContent === 'matches' && (
-            <>Progre</>
+            <TournamentProgress progress={tournament.events} />
           )}
         </div>
 
