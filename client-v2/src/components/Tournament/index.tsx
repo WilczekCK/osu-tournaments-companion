@@ -15,6 +15,7 @@ import InformationSwitchMenu from './InformationSwitchMenu'
 
 export default function Tournament({tournament}) {
   const [isOpen, setIsOpen] = useState(false);
+  const [displayContent, setDisplayContent] = useState('players');
 
   const mapInProgress = useBeatmapHook(tournament.mapsPlayed[tournament.mapsPlayed.length - 1]);
   const players = usePlayersHook(tournament.users, tournament.judge);
@@ -81,12 +82,20 @@ export default function Tournament({tournament}) {
             isOpen ? 'max-h-[300px] py-2 px-2 overflow-scroll' : 'max-h-0 '
           }`}
         >
-          <TeamsList teams={teams}/>
+          {displayContent === 'players' && (
+            <TeamsList teams={teams}/>
+          )}
+          {displayContent === 'matches' && (
+            <>Progress</>
+          )}
         </div>
 
 
         {isOpen && (
-          <InformationSwitchMenu />
+          <InformationSwitchMenu 
+            displayContent={displayContent}
+            setDisplayContent={(content) => setDisplayContent(content)}
+          />
         )}
 
       </div>
