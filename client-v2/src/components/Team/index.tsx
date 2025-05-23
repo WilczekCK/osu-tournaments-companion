@@ -1,8 +1,8 @@
 import Player from "components/Player";
 
-export default function Team({name, players, teamNumber}: {name: string, players: any[], teamNumber: number}) {
+export default function Team({name, players, teamNumber, areQualifiers}: {name: string, players: any[], teamNumber: number, areQualifiers: boolean}) {
   return (
-    <div className="flex flex-col md:w-[50%] scroll-m-1">
+    <div className={"flex flex-col scroll-m-1 "+ (areQualifiers ? 'md:w-[100%]' : 'md:w-[50%]') }>
       <div className="text-2xl font-bold text-center text-xl">{name}</div>
       <div className="flex flex-col gap-2 w-ful mt-2">
         {

@@ -5,7 +5,7 @@ export default function TeamsList({teams}: Team[]) {
 
   return (
     <>
-        <Team name={teams[0].name} players={teams[0].players} teamNumber={0}/>
+        <Team name={teams[0].name} players={teams[0].players} teamNumber={0} areQualifiers={areQualifiers}/>
         {!areQualifiers && (
             <Team name={teams[1].name} players={teams[1].players} teamNumber={1}/>
         )}
