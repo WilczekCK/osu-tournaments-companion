@@ -14,7 +14,7 @@ function Home() {
     // yusen: 4
     // ciallo: 6
     // 117940566
-    axios.get('https://api.otc.glad.vision/tournaments/?limit=15&startFrom=0&=')
+    axios.get('https://api.otc.glad.vision/tournaments/?limit=30&startFrom=0&=')
       .then((response) => {
         setTournaments(response.data)
         setLoading(false)
