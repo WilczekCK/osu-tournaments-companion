@@ -86,7 +86,7 @@ export default function Tournament({tournament}) {
             <TeamsList teams={teams}/>
           )}
           {displayContent === 'matches' && (
-            <>Progress</>
+            <>Progre</>
           )}
         </div>
 

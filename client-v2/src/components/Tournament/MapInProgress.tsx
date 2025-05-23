@@ -1,3 +1,5 @@
+import { shortenString } from "utils"
+
 export default function MapInProgress({beatmap} : {beatmap: Beatmap}) {
     return (
         <div className="relative w-[100%] h-24 flex flex-col">
@@ -18,18 +20,18 @@ export default function MapInProgress({beatmap} : {beatmap: Beatmap}) {
             <div className="z-10 p-2 px-3 font-semibold">
                 <a className={"flex flex-row"} target="_blank" href={"https://osu.ppy.sh/b/"+beatmap.id+''}>
                     <div className={"grow"}>
-                        <div className="text-white underline underline-offset-2 text-xl">{beatmap.title}</div>
-                        <div className="text-white text-regular">{beatmap.artist}</div>
+                        <div className="text-white underline underline-offset-2 text-xl">{shortenString(beatmap.title, 30)}</div>
+                        <div className="text-white text-regular">{shortenString(beatmap.artist, 45)}</div>
 
                         <div className="mt-4 flex text-regular">
                             <div className="text-white pr-1">Map by: </div>
-                            <div className="text-pink-900">{beatmap.creator}</div>
+                            <div className="text-pink-900">{shortenString(beatmap.creator, 20)}</div>
                         </div>
                     </div>
 
                     <div className={"flex flex-col items-end justify-start text-white"}>
                         <div>
-                            Difficulty: <strong>{beatmap.difficulty}</strong>
+                            Difficulty: <strong>{shortenString(beatmap.difficulty, 25)}</strong>
                         </div>
                         
 
