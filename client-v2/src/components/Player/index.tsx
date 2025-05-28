@@ -2,27 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Mode from "components/Mode";
 import Avatar  from "./Avatar";
+import usePlayerDetailsHook from "hooks/usePlayerDetailsHook";
 
 export default function Player({player, withRanking = false, teamNumber} : {player: Player, withRanking?: boolean, teamNumber: number}) {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const [playerDetails, setPlayerDetails] = useState({});
+    const {playerDetails, loading: playerLoading, error: playerError} = usePlayerDetailsHook(player.id);
 
-    useEffect(() => {
-        if (withRanking) {
-            axios
-                .get(`https://api.otc.glad.vision/users/${player.id}`)
-                .then((response) => {
-                    setPlayerDetails(response.data.result[0]);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    console.error("Error fetching user:", error);
-                    setError(true);
-                    setLoading(false);
-                });
-        }
-    }, []);
 
     return (
         <a href={`https://osu.ppy.sh/u/${player.id}`}  target="_blank" className={"min-w-[100%] flex flex-row gap-3 items-center relative text-white cursor-pointer text-lg shadow-red-500/50 inset-shadow-2xs z-10"}>
@@ -44,7 +28,7 @@ export default function Player({player, withRanking = false, teamNumber} : {play
                     {player.playerName.length > 10 ? `${player.playerName.slice(0, 10)}...` : player.playerName}
                 </div>
                 {withRanking && (
-                    (!loading && !error) && (
+                    (!playerLoading && !playerError) && (
                         <div className={"flex flex-col grow gap-1 " + (teamNumber == 0 ? 'items-start' : 'items-end')}>
                             <span className={"text-zinc-300 flex flex-row gap-1 items-center text-base " + (teamNumber == 0 ? 'flex-row' : 'flex-row-reverse')}>
                                 <Mode name={playerDetails.gameMode} displayText={false} size={'20px'} />

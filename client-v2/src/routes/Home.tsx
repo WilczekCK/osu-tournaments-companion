@@ -3,6 +3,7 @@ import Tournaments from '../assets/svg/tournaments.svg'
 import Tournament from 'components/Tournament'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { API_URL } from 'utils'
 
 function Home() {
   const [loading, setLoading] = useState(true)
@@ -14,7 +15,7 @@ function Home() {
     // yusen: 4
     // ciallo: 6
     // 117940566
-    axios.get('https://api.otc.glad.vision/tournaments/?limit=30&startFrom=0&=')
+    axios.get(`${API_URL}/tournaments/?limit=30&startFrom=0&=`)
       .then((response) => {
         setTournaments(response.data)
         setLoading(false)
