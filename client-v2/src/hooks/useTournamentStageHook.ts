@@ -1,4 +1,5 @@
 import Player from "components/Player";
+import usePlayerDetailsHook from "./usePlayerDetailsHook";
 
 interface TournamentStage {
     stageType: string,
@@ -30,6 +31,14 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[]) 
             case 'other':
                 // map played... wtf is that name osuApi?
                 const scores = stage.game.scores.map((score: BeatmapPlayerScore) => {
+                    //@ts-ignore
+                    const {playerDetails, loading, error} = usePlayerDetailsHook(score.user_id);
+
+                    let player;
+                    if (!loading && !error) {
+                        player = playerDetails as Player;
+                    }
+
                     return {
                         beatmapId: stage.game.beatmap.id,
                         score:     score.score,
@@ -40,7 +49,7 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[]) 
                         perfect:   score.perfect,
                         mods:      score.mods,
                         //@ts-ignore
-                        player:    score.user_id,
+                        player: playerDetails
                     }
                 });
 
