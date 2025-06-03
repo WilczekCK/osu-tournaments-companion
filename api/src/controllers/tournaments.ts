@@ -10,12 +10,12 @@ class Tournaments {
     //@ts-ignore
     private query = (where: string | number | object) => tournamentsSchema.where(where);
     public regex = /(\w*[\w!();:@$]): \((.*?)\) ((vs)|(VS)) \((.*?)\)/;
+    private groupedUsersMap: Map<number, any> = new Map<number, any>();
     
     //check by the name, tournaments have the same structures
     public isTournament = (tournamentName:string) :boolean => this.regex.test(tournamentName);
     
     public displayAll = async () => {
-    
         const result = await tournamentsSchema.find((err: any, tournament: any) => {
             return tournament;
         }).sort({timeCreated: -1});
@@ -24,36 +24,91 @@ class Tournaments {
     };
 
     public displayOne = async (tournamentId: Number) => {
-        
-        const result = await this.query( {id: tournamentId} ).find((err: any, tournament: any) => {
+        const map = await tournamentsSchema.find({ id: tournamentId });
+
+        if (map[0]?.users?.length) {
+            await this.loadCachePlayerDetailsInfoForTournament(map[0].users);
+
+            map[0].users = await Promise.all(
+                map[0].users.map((user: any) => ({
+                    ...user,
+                    details: this.groupedUsersMap.get(user.id) || {},
+                }))
+            );
+        }
+
+        const result = map.find((tournament: any) => {
             return tournament;
         });
 
-        return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
+        return result ? result : { status: 404, message: 'We do not have this tournament at our DB :(' };
     };
 
-    public displaySome = async (queryKey:string, queryValue:string, startFrom: string, limitedTo:string) => {
-        
-        const query:object = queryKey && queryValue ? { [`${queryKey}`]: { $regex: new RegExp(queryValue, 'i')} } : {};
+    public loadCachePlayerDetailsInfoForTournament = async (usersDbInfo: tournamentsTypes.insertSchema['players']) => {
+        const userIds = usersDbInfo.map((user: any) => user.id);
+        const usersFetched = await users.displayCertain({id: {$in: userIds}});
+        const uniqueUsers = _.uniq(usersFetched, 'id');
 
-        const result = await this.query( query ).find((err: any, tournament: any) => {
+        uniqueUsers.forEach((user: any) => {
+            this.groupedUsersMap.set(user.id, user);
+        });
+    
+    }
+    public displaySome = async (queryKey: string, queryValue: string, startFrom: string, limitedTo: string) => {
+        const query: object = queryKey && queryValue ? { [`${queryKey}`]: { $regex: new RegExp(queryValue, 'i') } } : {};
+
+        let result = await this.query(query).find((tournament: any) => {
             return tournament;
-        }).sort({timeCreated: -1}).skip( parseInt(startFrom) ).limit( parseInt(limitedTo) );
+        }).sort({ timeCreated: -1 }).skip(parseInt(startFrom)).limit(parseInt(limitedTo));
+        
+        // takes 12s for 10 results.. too much
+        // result = await Promise.all(
+        //     result.map(async (tournament: any) => {
+        //         if (tournament.users && tournament.users.length) {
+        //             await this.loadCachePlayerDetailsInfoForTournament(tournament.users);
 
-        return result.length ? result : {status: 404, message: 'We do not have this tournament at our DB :('};
+        //             tournament.users = await Promise.all(
+        //             tournament.users.map((user: any) => ({
+        //                 ...user,
+        //                 details: this.groupedUsersMap.get(user.id) || {},
+        //             }))
+        //             );
+        //         }
+
+        //         return tournament;
+        //     })
+        // );
+
+        return result.length ? result : { status: 404, message: 'We do not have this tournament at our DB :(' };
     };
 
     public displayCertain = async (whereQuery: Object) => {
-        
         const result = await this.query(whereQuery).find((err: any, tournament: any) => {
             return tournament;
         }).sort({timeCreated: -1});
+
+        // takes 12s for 10 results.. too much
+        // result = await Promise.all(
+        //     result.map(async (tournament: any) => {
+        //         if (tournament.users && tournament.users.length) {
+        //             await this.loadCachePlayerDetailsInfoForTournament(tournament.users);
+
+        //             tournament.users = await Promise.all(
+        //             tournament.users.map((user: any) => ({
+        //                 ...user,
+        //                 details: this.groupedUsersMap.get(user.id) || {},
+        //             }))
+        //             );
+        //         }
+
+        //         return tournament;
+        //     })
+        // );
 
         return result;
     };
 
     public countTournaments = async (queryKey:string, queryValue:string) => {
-
         const query:object = queryKey && queryValue ? { [`${queryKey}`]: { $regex: new RegExp(queryValue, 'i')} } : {};
         
         const result = await this.query(query).find((err: any, tournament: any) => {
