@@ -1,5 +1,5 @@
 export default function useBeatmapHook(beatmap: Record<string, any>) {
-    if (!beatmap || !beatmap.info) {
+    if (!beatmap || !beatmap.info || !beatmap.info.beatmapset) {
         return false;
     }
 

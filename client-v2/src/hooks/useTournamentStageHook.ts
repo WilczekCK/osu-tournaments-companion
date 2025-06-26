@@ -32,24 +32,24 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[]) 
                 // map played... wtf is that name osuApi?
                 const scores = stage.game.scores.map((score: BeatmapPlayerScore) => {
                     //@ts-ignore
-                    const {playerDetails, loading, error} = usePlayerDetailsHook(score.user_id);
+                    // const {playerDetails, loading, error} = usePlayerDetailsHook(score.user_id);
 
                     let player;
-                    if (!loading && !error) {
-                        player = playerDetails as Player;
-                    }
+                    // if (!loading && !error) {
+                        // player = playerDetails as Player;
+                    // }
 
                     return {
-                        beatmapId: stage.game.beatmap.id,
-                        score:     score.score,
-                        accuracy:  score.accuracy,
-                        // TODO: FIX
-                        //@ts-ignore 
-                        combo:     score.max_combo,
-                        perfect:   score.perfect,
-                        mods:      score.mods,
-                        //@ts-ignore
-                        player: playerDetails
+                        // beatmapId: stage.game.beatmap.id,
+                        // score:     score.score,
+                        // accuracy:  score.accuracy,
+                        // // TODO: FIX
+                        // //@ts-ignore 
+                        // combo:     score.max_combo,
+                        // perfect:   score.perfect,
+                        // mods:      score.mods,
+                        // //@ts-ignore
+                        // player: playerDetails
                     }
                 });
 

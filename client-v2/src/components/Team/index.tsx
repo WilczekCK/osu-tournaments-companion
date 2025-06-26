@@ -7,7 +7,8 @@ export default function Team({name, players, teamNumber, areQualifiers}: {name: 
       <div className="flex flex-col gap-2 w-ful mt-2">
         {
           players.length > 0 
-            ? (players.map((player, index) => <Player player={player} key={index} withRanking={true} teamNumber={teamNumber}/>))
+            // ? (players.map((player, index) => <Player player={player} key={index} withRanking={true} teamNumber={teamNumber}/>))
+            ? (players.map((player, index) => <></>))
             : (
               <div className="flex flex-col items-center">
                 No players in team

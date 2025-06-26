@@ -7,21 +7,25 @@ import Mode from 'components/Mode'
 import TournamentTeamsList from 'components/TournamentTeamsList'
 import MapInProgress from './MapInProgress'
 import TournamentProgress from 'components/TournamentProgress'
+import InformationSwitchMenu from './InformationSwitchMenu'
 
 import usePlayersHook from 'hooks/usePlayersHook'
 import useTeamsShuffleHook from 'hooks/useTeamsShuffleHook'
 import useTeamsTournamentScoresHook from 'hooks/useTeamsTournamentScoresHook'
 import useBeatmapHook from 'hooks/useBeatmapHook'
-import InformationSwitchMenu from './InformationSwitchMenu'
+import useTournamentDetailsHook from 'hooks/useTournamentDetailsHook'
 
 export default function Tournament({tournament}) {
   const [isOpen, setIsOpen] = useState(false);
   const [displayContent, setDisplayContent] = useState('players');
+  const [isTournamentDetailsLoading, setIsTournamentDetailsLoading] = useState(true);
 
   const mapInProgress = useBeatmapHook(tournament.mapsPlayed[tournament.mapsPlayed.length - 1]);
   const players = usePlayersHook(tournament.users, tournament.judge);
   const teams   = useTeamsShuffleHook(players, tournament.teams);
   const {teamBlue, teamRed} = useTeamsTournamentScoresHook(teams, tournament.mapsPlayed);
+
+  const {tournamentDetails, loading: tournamentLoading, error: tournamentError} = useTournamentDetailsHook(tournament.id, isOpen);
 
   return (
     <>
@@ -83,12 +87,24 @@ export default function Tournament({tournament}) {
             isOpen ? 'max-h-[300px] py-2 px-2 overflow-scroll' : 'max-h-0 '
           }`}
         >
-          {displayContent === 'players' && (
-            <TournamentTeamsList teams={teams}/>
-          )}
-          {displayContent === 'matches' && (
-            <TournamentProgress progress={tournament.events} />
-          )}
+          {
+            tournamentLoading
+            ? (
+              <>Loading</>
+            )
+            : ( 
+              <>
+                {displayContent === 'players' && (
+                  <TournamentTeamsList teams={teams}/>
+                )}
+                {displayContent === 'matches' && (
+                  <TournamentProgress progress={tournament.events} />
+                )}
+              </>
+            )
+        }
+
+
         </div>
 
 

@@ -4,6 +4,9 @@ import { API_URL } from "utils";
 
 const playersLoaded = new Map<number, Player>();
 
+// ABANDONED:
+// This hook was used when API was not returning player details in tournaments.
+
 export default function usePlayerDetailsHook(playerId: number) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
