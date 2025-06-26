@@ -13,6 +13,7 @@ export default function usePlayersHook<T>(tournamentPlayers: Record<string, T>[]
             playerName: player.username,
             playerAvatar: player.avatar_url,
             playerCountry: player.country,
+            playerDetails: player.details ?? []
         } as Player;
     })
 

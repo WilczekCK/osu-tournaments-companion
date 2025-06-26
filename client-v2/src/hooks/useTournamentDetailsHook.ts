@@ -14,7 +14,7 @@ export default function useTournamentDetailsHook<T>(tournamentId: number, enable
             await axios
                 .get(`${API_URL}/tournaments/${tournamentId}`)
                 .then((response) => {
-                    setTournamentDetails(response.data.result[0]);
+                    setTournamentDetails(response.data);
                     setLoading(false);
                 })
                 .catch((error) => {

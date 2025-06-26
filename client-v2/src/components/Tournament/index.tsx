@@ -20,12 +20,13 @@ export default function Tournament({tournament}) {
   const [displayContent, setDisplayContent] = useState('players');
   const [isTournamentDetailsLoading, setIsTournamentDetailsLoading] = useState(true);
 
+  const {tournamentDetails, loading: tournamentLoading, error: tournamentError} = useTournamentDetailsHook(tournament.id, isOpen);
   const mapInProgress = useBeatmapHook(tournament.mapsPlayed[tournament.mapsPlayed.length - 1]);
+
   const players = usePlayersHook(tournament.users, tournament.judge);
   const teams   = useTeamsShuffleHook(players, tournament.teams);
+  
   const {teamBlue, teamRed} = useTeamsTournamentScoresHook(teams, tournament.mapsPlayed);
-
-  const {tournamentDetails, loading: tournamentLoading, error: tournamentError} = useTournamentDetailsHook(tournament.id, isOpen);
 
   return (
     <>
@@ -89,16 +90,14 @@ export default function Tournament({tournament}) {
         >
           {
             tournamentLoading
-            ? (
-              <>Loading</>
-            )
+            ? (<div className="animate-spin h-8 w-8 border-4 border-pink-custom border-t-transparent rounded-full"></div>)
             : ( 
               <>
                 {displayContent === 'players' && (
-                  <TournamentTeamsList teams={teams}/>
+                  <TournamentTeamsList teams={[]} details={tournamentDetails}/>
                 )}
                 {displayContent === 'matches' && (
-                  <TournamentProgress progress={tournament.events} />
+                  <TournamentProgress progress={tournamentDetails.events} />
                 )}
               </>
             )
