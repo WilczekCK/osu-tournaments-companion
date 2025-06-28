@@ -23,6 +23,7 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[]) 
                     stageType: stage.detail.type,
                     startTime: stage.timestamp,
                     endTime:   stage.timestamp,
+                    userId:    stage.user_id,
                     scores:    null,
                     mods:      null,
                     beatmap:   null,
@@ -34,7 +35,7 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[]) 
                     //@ts-ignore
                     // const {playerDetails, loading, error} = usePlayerDetailsHook(score.user_id);
 
-                    let player;
+                    // let player;
                     // if (!loading && !error) {
                         // player = playerDetails as Player;
                     // }

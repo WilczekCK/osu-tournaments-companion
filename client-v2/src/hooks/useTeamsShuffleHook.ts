@@ -1,3 +1,5 @@
+import { shortenString } from "utils";
+
 export default function useTeamsShuffleHook<T>(players: Player[], teams: Record<string, T>[]) {
     const shuffledTeams: Team[] = [];
     let teamNames;
@@ -53,8 +55,10 @@ export default function useTeamsShuffleHook<T>(players: Player[], teams: Record<
             }
         })
 
-        teamBlue.name = teamNames.blue;
-        teamRed.name = teamNames.red;
+        teamBlue.name = shortenString(teamNames.blue, 30);
+        teamRed.name = shortenString(teamNames.red, 30);
+
+        
 
         shuffledTeams.push(teamBlue, teamRed);
     }

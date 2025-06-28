@@ -35,7 +35,7 @@ export default function Tournament({tournament}) {
           <MapInProgress beatmap={mapInProgress} />
         )}
 
-        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-2 pt-3">
+        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-3 pt-3">
           <Mode name={tournament.gameMode} displayText={false} />
           <div className="flex flex-col gap-0 items-start text-white text-sm grow">
             <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>
@@ -85,7 +85,7 @@ export default function Tournament({tournament}) {
 
         <div
           className={`transition-[max-height] duration-300 ease-in-out overflow-hidden gap-2 w-full items-start text-white text-sm relative flex flex-row ${
-            isOpen ? 'max-h-[300px] py-2 px-2 overflow-scroll' : 'max-h-0 '
+            isOpen ? 'max-h-[300px] py-2 px-3 overflow-scroll' : 'max-h-0 '
           }`}
         >
           {
@@ -97,7 +97,7 @@ export default function Tournament({tournament}) {
                   <TournamentTeamsList teams={[]} details={tournamentDetails}/>
                 )}
                 {displayContent === 'matches' && (
-                  <TournamentProgress progress={tournamentDetails.events} />
+                  <TournamentProgress progress={tournamentDetails.events} users={tournamentDetails.users} />
                 )}
               </>
             )
