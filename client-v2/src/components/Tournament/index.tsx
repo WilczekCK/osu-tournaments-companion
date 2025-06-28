@@ -85,7 +85,7 @@ export default function Tournament({tournament}) {
 
         <div
           className={`transition-[max-height] duration-300 ease-in-out overflow-hidden gap-2 w-full items-start text-white text-sm relative flex flex-row ${
-            isOpen ? 'max-h-[300px] py-2 px-3 overflow-scroll' : 'max-h-0 '
+            isOpen ? 'max-h-[500px] py-2 px-3 overflow-scroll' : 'max-h-0 '
           }`}
         >
           {
@@ -97,7 +97,7 @@ export default function Tournament({tournament}) {
                   <TournamentTeamsList teams={[]} details={tournamentDetails}/>
                 )}
                 {displayContent === 'matches' && (
-                  <TournamentProgress progress={tournamentDetails.events} users={tournamentDetails.users} />
+                  <TournamentProgress progress={tournamentDetails.events} users={tournamentDetails.users} teams={teams} />
                 )}
               </>
             )

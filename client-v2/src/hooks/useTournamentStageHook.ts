@@ -11,8 +11,29 @@ interface TournamentStage {
     beatmap: Beatmap | null,
 }
 
-export default function useTournamentStageHook<T>(progress: Record<any, any>[]) {
+export default function useTournamentStageHook<T>(progress: Record<any, any>[], teams: Team[] = []): TournamentStage[] {
     const stagesAccepted: TournamentStage[] = [];
+
+    const getWinBy = (scores: BeatmapPlayerScore[]) => {
+        let teamBlue = 0;
+        let teamRed = 0;
+
+        scores.forEach((score) => {
+            if (score.match.team == 'blue' || score.match.team == 'none') {
+                teamBlue += score.score;
+            } else {
+                teamRed += score.score;
+            }
+        })
+
+        return {diff: Math.abs(teamBlue-teamRed), teamName: teams[teamBlue > teamRed ? 0 : 1].name};
+    }
+
+    const getBestScores = (scores: BeatmapPlayerScore[]) => {
+        const scoresSorted = scores.sort((a,b) => b.score - a.score);
+
+        return scoresSorted.slice(0, 3);
+    }
 
     progress.forEach((stage => {
         switch (stage.detail.type) {
@@ -45,15 +66,15 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[]) 
                     }
                 });
 
-                console.log(stage)
-
                 stagesAccepted.push({
                     stageType:  'map-played',
                     startTime:  stage.game.start_time,
                     endTime:    stage.game.end_time || null,
                     scores:     scores,
                     mods:       stage.game.mods,
-                    beatmap:    useBeatmapHook({info: stage.game.beatmap})
+                    beatmap:    useBeatmapHook({info: stage.game.beatmap}),
+                    winBy: stage.game.end_time ? getWinBy(stage.game.scores) : null,
+                    topScores:  stage.game.end_time ? getBestScores(stage.game.scores) : null,
                 })
                 break;
             default:

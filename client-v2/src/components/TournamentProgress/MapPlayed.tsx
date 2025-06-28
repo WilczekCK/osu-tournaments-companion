@@ -1,10 +1,14 @@
-import Player from "components/Player"
+import Player from "../../components/Player"
 import usePlayersHook from '../../hooks/usePlayersHook'
 import Icon from '../../assets/svg/stage-match.svg';
 import { shortenString } from "utils"
 
-export default function MapPlayed({details, user}) {
+export default function MapPlayed({details, users, teams}) {
     const beatmap = details.beatmap || {};
+
+    const findUser = (userId) => {
+        return users.find(user => user.details.id === userId) || null;
+    }
 
     return (
         <div className="flex flex-row w-100 items-start gap-5">
@@ -25,7 +29,8 @@ export default function MapPlayed({details, user}) {
                     {details.startTime}
                 </div>
 
-                <div className={"mt-4"}>
+
+                <div className={"mt-3"}>
                     {details.beatmap && (
                         <div className="relative w-[100%] h-24 flex flex-col">
                         <div className="absolute inset-0 z-0">
@@ -42,7 +47,7 @@ export default function MapPlayed({details, user}) {
                             ></div>
                         </div>
 
-                        <div className="z-10 p-2 px-3 font-semibold">
+                        <div className="z-10 p-1 px-3 font-semibold">
                             <a className={"flex flex-row"} target="_blank" href={"https://osu.ppy.sh/b/"+details.beatmap.id+''}>
                                 <div className={"grow"}>
                                     <div className="text-white underline underline-offset-2 text-xl">{shortenString(beatmap.title, 30)}</div>
@@ -56,7 +61,7 @@ export default function MapPlayed({details, user}) {
 
                                 <div className={"flex flex-col items-end justify-start text-white"}>
                                     <div>
-                                        Difficulty: <strong>{shortenString(beatmap.difficulty, 25)}</strong>
+                                        Difficulty: <strong>{shortenString(beatmap.difficulty, 20)}</strong>
                                     </div>
                                 </div>
 
@@ -66,12 +71,35 @@ export default function MapPlayed({details, user}) {
                     )}
                 </div>
 
-                {user && (
-                    <div className="mt-2">
-                        <div class="text-base mb-1">Owner:</div>
-                        {/* <Player player={usePlayersHook([user], 0)[0]} team={0}/> */}
-                    </div>
-                )}
+
+                <div className="flex flex-col gap-2">
+                    {details.endTime && (
+                        details.winBy.teamName === 'Qualifiers' ? (
+                            <div className={"text-base mt-2"}>
+                                Score achieved: {details.winBy.diff}
+                            </div>
+                        ) : (
+                            <div className={"text-base mt-2"}>
+                                Won by <b className={"text-pink-900"}>{details.winBy.teamName}</b> with <b>{details.winBy.diff}</b> score difference
+                            </div>
+                        )
+                    )}
+
+                    {details.endTime && (
+                        <>
+                            <div className={"text-base"}>Best scores by:</div>
+                            {Array.isArray(details.topScores) && details.topScores.map((score, index) => (
+                                <div key={index} className={"text-gray-custom text-sm flex flex-row items-center"}>
+                                    <div className="grow">{<Player player={usePlayersHook([findUser(score.user_id)])[0]} team={score.match.team == 'red' ? 1 : 0} withRanking={true}/> }</div>
+                                    <div className={"min-w-[125px] text-center text-white text-2xl"}>{score.score}</div>
+                                </div>
+                            ))}
+                        </>
+                    )}
+                </div>
+                
+                <div>
+                </div>
             </div>
         </div>
     )

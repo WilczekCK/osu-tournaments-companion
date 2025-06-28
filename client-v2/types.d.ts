@@ -45,4 +45,7 @@ interface BeatmapPlayerScore {
     combo: number,
     perfect: boolean,
     mods: string,
+    match: {
+        team: 'blue' | 'red' | 'none',
+    }
 }
