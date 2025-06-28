@@ -1,5 +1,6 @@
 import useTournamentStageHook from "hooks/useTournamentStageHook"
 import MatchCreated from "./MatchCreated"
+import MapPlayed from "./MapPlayed"
 
 export default function TournamentProgress({progress, users}) {
     const tournamentStages = useTournamentStageHook(progress);
@@ -8,19 +9,37 @@ export default function TournamentProgress({progress, users}) {
         return users.find(user => user.user_id === userId) || null;
     }
 
+
+    const getUsersDetails = (scores) => {
+        const users = [];
+
+        scores.forEach(score => {
+            const user = getUserDetails(score.user_id);
+
+            if (user) {
+                users.push(user);
+            }
+        });
+
+        return users;
+    }
+
     return (
         <div className="relative w-[100%]">
-            <div className={"absolute h-[95%] left-5 bg-pink-400 w-1 z-0 rounded-full"}>
+            <div className={"absolute h-[95%] left-[3.5%] bg-pink-400 w-1 z-0 rounded-full"}>
                 {/* STRIP LINE */}
             </div>
 
-            <div className={"w-3/4 z-10 relative ml-2"}>
+            <div className={"w-100 z-10 relative ml-2 flex flex-col gap-10"}>
                 {
                     tournamentStages.map(stage => {
                         if (stage.stageType === 'match-created') {
                             return <MatchCreated details={stage} user={getUserDetails(stage.user_id)} />;
                         } 
 
+                        if (stage.stageType === 'map-played') {
+                            return <MapPlayed details={stage} user={getUserDetails(stage.scores)} />;
+                        }
                         return null; 
                     })
                 }

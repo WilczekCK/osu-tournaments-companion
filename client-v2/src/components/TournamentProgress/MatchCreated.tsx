@@ -5,16 +5,16 @@ import Icon from '../../assets/svg/stage-start.svg';
 export default function MatchCreated({details, user}) {
     return (
         <div className="flex flex-row w-100 items-start gap-5">
-            <div className={"bg-pink-900 p-1 rounded-full mt-2"}>
+            <div className={"bg-pink-900 p-2 rounded-full mt-2"}>
                 <img 
                     src={Icon} 
                     alt={`icon-start`} 
-                    className={"h-6" } 
+                    className={"h-4" } 
                 />
             </div>
 
             <div className={"flex flex-col grow"}>
-                <div className={"text-pink-900 text-lg"}>
+                <div className={"text-pink-900 text-lg mt-1"}>
                     Match created:
                 </div>
                 
