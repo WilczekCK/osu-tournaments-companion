@@ -1,6 +1,6 @@
 import Mode from '../Mode'
 import Subheader from './Subheader'
-import { useModeSelectStore } from '../../stores/useModeSelect'
+import { useModeSelectStore } from '../../stores/useModeSelectStore'
 
 export default function Header() {
   const toggleMode = useModeSelectStore((state) => state.toggleMode)
@@ -8,6 +8,7 @@ export default function Header() {
     (state) => state.modesSelected
   )
   const isModeActive = (m: Mode) => modesSelected.includes(m)
+
 
   return (
     <>

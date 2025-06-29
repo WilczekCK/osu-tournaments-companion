@@ -35,7 +35,7 @@ export default function Tournament({tournament}) {
           <MapInProgress beatmap={mapInProgress} />
         )}
 
-        <div className="flex flex-row columns-2 w-full items-center gap-3 py-4 px-3 pt-3">
+        <div className={`flex flex-row columns-2 w-full items-center gap-3 py-4 px-3 pt-3 shadow-md  ${isOpen ? '' : 'rounded-xl'} transition-all duration-300`}>
           <Mode name={tournament.gameMode} displayText={false} />
           <div className="flex flex-col gap-0 items-start text-white text-sm grow">
             <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>

@@ -3,19 +3,23 @@ import Tournaments from '../assets/svg/tournaments.svg'
 import Tournament from 'components/Tournament'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { API_URL } from 'utils'
+import { API_URL, LOAD_AMOUNT } from 'utils'
+import { useLoadMoreStore } from 'stores/useLoadMoreStore'
 
 function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [tournaments, setTournaments] = useState([]);
 
+  const toggleLoad = useLoadMoreStore((state) => state.toggled);
+  const setToggleLoad = useLoadMoreStore((state) => state.setToggle);
+
   useEffect(() => {
     // qualifiers: 117968707
     // yusen: 4
     // ciallo: 6
     // 117940566
-    axios.get(`${API_URL}/tournaments/?limit=30&startFrom=0&=`)
+    axios.get(`${API_URL}/tournaments/?limit=${LOAD_AMOUNT}&startFrom=0&=`)
       .then((response) => {
         setTournaments(response.data)
         setLoading(false)
@@ -39,7 +43,9 @@ function Home() {
           </div>
           <div className="min-w-[50%] flex justify-end text-zinc-300 items-center gap-4">
             12415 tournaments in total
-            <button className="bg-pink-custom p-2 pb-3 hover:bg-pink-900 hover:text-white transition duration-300 ease-in-out">see more</button>
+            <button className="bg-pink-custom p-2 pb-3 hover:bg-pink-900 hover:text-white transition duration-300 ease-in-out" onClick={() => setToggleLoad()}>
+              {!toggleLoad ? 'load more' : 'stop loading more tournaments'}
+              </button>
           </div>
         </div>
 

@@ -20,3 +20,4 @@ export function formatDate(dateString: string): string {
 }
 
 export const API_URL = 'http://api.otc.glad.vision'
+export const LOAD_AMOUNT = 24;
