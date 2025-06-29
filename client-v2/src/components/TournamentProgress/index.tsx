@@ -1,6 +1,7 @@
 import useTournamentStageHook from "hooks/useTournamentStageHook"
 import MatchCreated from "./MatchCreated"
 import MapPlayed from "./MapPlayed"
+import MatchEnded from "./MatchEnded"
 
 export default function TournamentProgress({progress, users, teams}) {
     const tournamentStages = useTournamentStageHook(progress, teams);
@@ -25,7 +26,7 @@ export default function TournamentProgress({progress, users, teams}) {
 
     return (
         <div className="relative w-[100%]">
-            <div className={"absolute h-[95%] left-[3.5%] bg-pink-custom w-1 z-0 rounded-full"}>
+            <div className={"absolute h-[100%] left-[3.5%] bg-pink-custom w-1 z-0 rounded-full"}>
                 {/* STRIP LINE */}
             </div>
 
@@ -39,6 +40,11 @@ export default function TournamentProgress({progress, users, teams}) {
                         if (stage.stageType === 'map-played') {
                             return <MapPlayed details={stage} users={users} />;
                         }
+
+                        if (stage.stageType === 'match-disbanded') {
+                            return <MatchEnded details={stage} user={getUserDetails(stage.user_id)} />;
+                        }
+
                         return null; 
                     })
                 }
