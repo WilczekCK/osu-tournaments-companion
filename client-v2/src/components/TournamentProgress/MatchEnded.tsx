@@ -1,8 +1,11 @@
 import Player from "components/Player"
 import usePlayersHook from '../../hooks/usePlayersHook'
 import Icon from '../../assets/svg/stage-finish.svg';
+import { formatDate } from "utils"
 
 export default function MatchEnded({details, user}) {
+    console.log(details);
+    
     return (
         <div className="flex flex-row w-100 items-start gap-5">
             <div className={"bg-pink-900 p-2 rounded-full mt-3"}>
@@ -19,7 +22,7 @@ export default function MatchEnded({details, user}) {
                 </div>
                 
                 <div className={"text-gray-custom text-xs mt-[-5px]"}>
-                    {details.startTime}
+                    {formatDate(details.startTime)}
                 </div>
             </div>
         </div>

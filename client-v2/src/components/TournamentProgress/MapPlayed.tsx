@@ -1,10 +1,11 @@
 import Player from "../../components/Player"
 import usePlayersHook from '../../hooks/usePlayersHook'
 import Icon from '../../assets/svg/stage-match.svg';
-import { shortenString } from "utils"
+import { shortenString, formatDate } from "utils"
 
 export default function MapPlayed({details, users, teams}) {
     const beatmap = details.beatmap || {};
+    const areQualifiers = teams[0].name === 'Qualifiers' || teams[1].name === 'Qualifiers';
 
     const findUser = (userId) => {
         return users.find(user => user.details.id === userId) || null;
@@ -26,7 +27,7 @@ export default function MapPlayed({details, users, teams}) {
                 </div>
                 
                 <div className={"text-gray-custom text-xs mt-[-5px]"}>
-                    {details.startTime}
+                    {formatDate(details.startTime)}
                 </div>
 
 
@@ -74,13 +75,13 @@ export default function MapPlayed({details, users, teams}) {
 
                 <div className="flex flex-col gap-2">
                     {details.endTime && (
-                        details.winBy.teamName === 'Qualifiers' ? (
+                        areQualifiers ? (
                             <div className={"text-base mt-2"}>
-                                Score achieved: {details.winBy.diff}
+                                Score achieved: {new Intl.NumberFormat().format(details.winBy.diff)}
                             </div>
                         ) : (
                             <div className={"text-base mt-2"}>
-                                Won by <b className={"text-pink-900"}>{details.winBy.teamName}</b> with <b>{details.winBy.diff}</b> score difference
+                                Won by <b className={"text-pink-900"}>{details.winBy.teamName}</b> with <b>{new Intl.NumberFormat().format(details.winBy.diff)}</b> score difference
                             </div>
                         )
                     )}
@@ -91,7 +92,23 @@ export default function MapPlayed({details, users, teams}) {
                             {Array.isArray(details.topScores) && details.topScores.map((score, index) => (
                                 <div key={index} className={"text-gray-custom text-sm flex flex-row items-center"}>
                                     <div className="grow">{<Player player={usePlayersHook([findUser(score.user_id)])[0]} team={score.match.team == 'red' ? 1 : 0} withRanking={true}/> }</div>
-                                    <div className={"min-w-[125px] text-center text-white text-2xl"}>{score.score}</div>
+                                    <div className={"min-w-[125px] text-center text-white text-xl flex flex-col mt-[-5px]"}>
+                                        {new Intl.NumberFormat().format(score.score)}
+
+                                        <div className={"text-gray-custom text-xs"}>
+                                            <div>
+                                                {(score.accuracy * 100).toFixed(2) + '%'}  / {score.max_combo && score.max_combo + 'x'}  
+                                            </div>
+
+                                            {Array.isArray(score.mods) && score.mods.length > 0 && (
+                                                <span className=" text-pink-custom">
+                                                    {score.mods.map((mod, modIndex) => (
+                                                        <span key={modIndex} className="mr-1 ">{mod}</span>
+                                                    ))}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </>

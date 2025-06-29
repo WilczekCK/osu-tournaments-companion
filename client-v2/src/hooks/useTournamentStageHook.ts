@@ -28,11 +28,12 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[], 
             }
         })
 
-        return {diff: Math.abs(teamBlue-teamRed), teamName: teams[teamBlue > teamRed ? 1 : 0].name};
+        return {diff: Math.abs(teamBlue-teamRed), teamName: teams[teamBlue > teamRed ? 0 : 1].name};
     }
 
     const getBestScores = (scores: BeatmapPlayerScore[]) => {
         const scoresSorted = scores.sort((a,b) => b.score - a.score);
+        console.log(scoresSorted)
 
         return scoresSorted.slice(0, 3);
     }

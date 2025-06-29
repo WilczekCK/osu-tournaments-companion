@@ -1,6 +1,7 @@
 import Player from "components/Player"
 import usePlayersHook from '../../hooks/usePlayersHook'
 import Icon from '../../assets/svg/stage-start.svg';
+import { formatDate } from "utils"
 
 export default function MatchCreated({details, user}) {
     return (
@@ -19,7 +20,7 @@ export default function MatchCreated({details, user}) {
                 </div>
                 
                 <div className={"text-gray-custom text-xs mt-[-5px]"}>
-                    {details.startTime}
+                    {formatDate(details.startTime)}
                 </div>
 
                 {user && (

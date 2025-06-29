@@ -24,6 +24,8 @@ export default function TournamentProgress({progress, users, teams}) {
         return users;
     }
 
+    console.log([progress, users, teams])
+
     return (
         <div className="relative w-[100%]">
             <div className={"absolute h-[100%] left-[3.5%] bg-pink-custom w-1 z-0 rounded-full"}>
@@ -38,7 +40,7 @@ export default function TournamentProgress({progress, users, teams}) {
                         } 
 
                         if (stage.stageType === 'map-played') {
-                            return <MapPlayed details={stage} users={users} />;
+                            return <MapPlayed details={stage} users={users} teams={teams} />;
                         }
 
                         if (stage.stageType === 'match-disbanded') {
