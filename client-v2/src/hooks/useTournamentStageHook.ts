@@ -33,8 +33,6 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[], 
 
     const getBestScores = (scores: BeatmapPlayerScore[]) => {
         const scoresSorted = scores.sort((a,b) => b.score - a.score);
-        console.log(scoresSorted)
-
         return scoresSorted.slice(0, 3);
     }
 

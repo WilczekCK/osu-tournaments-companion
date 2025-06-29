@@ -24,8 +24,6 @@ export default function TournamentProgress({progress, users, teams}) {
         return users;
     }
 
-    console.log([progress, users, teams])
-
     return (
         <div className="relative w-[100%]">
             <div className={"absolute h-[100%] left-[3.5%] bg-pink-custom w-1 z-0 rounded-full"}>
@@ -34,21 +32,21 @@ export default function TournamentProgress({progress, users, teams}) {
 
             <div className={"w-100 z-10 relative ml-2 flex flex-col gap-8"}>
                 {
-                    tournamentStages.map(stage => {
-                        if (stage.stageType === 'match-created') {
-                            return <MatchCreated details={stage} user={getUserDetails(stage.user_id)} />;
-                        } 
+                    tournamentStages.map((stage, index) => (
+                        <div key={index}>
+                            {stage.stageType === 'match-created' && (
+                                <MatchCreated details={stage} user={getUserDetails(stage.user_id)} />
+                            )}
 
-                        if (stage.stageType === 'map-played') {
-                            return <MapPlayed details={stage} users={users} teams={teams} />;
-                        }
+                            {stage.stageType === 'map-played' && (
+                                <MapPlayed details={stage} users={users} teams={teams} />
+                            )}
 
-                        if (stage.stageType === 'match-disbanded') {
-                            return <MatchEnded details={stage} user={getUserDetails(stage.user_id)} />;
-                        }
-
-                        return null; 
-                    })
+                            {stage.stageType === 'match-disbanded' && (
+                                <MatchEnded details={stage} user={getUserDetails(stage.user_id)} />
+                            )}
+                        </div>
+                    ))
                 }
             </div>
         </div>

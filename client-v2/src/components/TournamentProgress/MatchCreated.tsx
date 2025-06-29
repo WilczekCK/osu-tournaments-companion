@@ -25,7 +25,7 @@ export default function MatchCreated({details, user}) {
 
                 {user && (
                     <div className="mt-2">
-                        <div class="text-base mb-1">Owner of the room:</div>
+                        <div className="text-base mb-1">Owner of the room:</div>
                         <Player player={usePlayersHook([user], 0)[0]} team={0}/>
                     </div>
                 )}
