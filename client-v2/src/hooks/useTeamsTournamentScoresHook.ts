@@ -56,11 +56,13 @@ export default function useTeamsTournamentScoresHook<T>(teams: Team[], mapsPlaye
             }
         });
 
-        teamBlue.score += summaryScoreBlue || 0;
-        teamRed.score += summaryScoreRed || 0;
+        if (summaryScoreBlue > 0 || summaryScoreRed > 0) {
+            teamBlue.score += summaryScoreBlue || 0;
+            teamRed.score += summaryScoreRed || 0;
 
-        // Assign wins to teams based on scores
-        summaryScoreBlue > summaryScoreRed ? teamBlue.wins++ : teamRed.wins++;
+            // Assign wins to teams based on scores
+            summaryScoreBlue > summaryScoreRed ? teamBlue.wins++ : teamRed.wins++;               
+        }
     });
 
 

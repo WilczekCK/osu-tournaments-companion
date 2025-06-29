@@ -19,14 +19,16 @@ export default function useTournamentStageHook<T>(progress: Record<any, any>[], 
         let teamRed = 0;
 
         scores.forEach((score) => {
-            if (score.match.team == 'blue' || score.match.team == 'none') {
+            const isFromBlueTeam = teams[0].players.find(teamMember => score.user_id == teamMember.id );
+
+            if (isFromBlueTeam) {
                 teamBlue += score.score;
             } else {
                 teamRed += score.score;
             }
         })
 
-        return {diff: Math.abs(teamBlue-teamRed), teamName: teams[teamBlue > teamRed ? 0 : 1].name};
+        return {diff: Math.abs(teamBlue-teamRed), teamName: teams[teamBlue > teamRed ? 1 : 0].name};
     }
 
     const getBestScores = (scores: BeatmapPlayerScore[]) => {
