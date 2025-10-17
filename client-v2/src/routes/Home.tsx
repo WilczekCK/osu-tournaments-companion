@@ -1,35 +1,63 @@
 import Header from 'components/Header'
 import Tournaments from '../assets/svg/tournaments.svg'
 import Tournament from 'components/Tournament'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef} from 'react'
 import axios from 'axios'
 import { API_URL, LOAD_AMOUNT } from 'utils'
 import { useLoadMoreStore } from 'stores/useLoadMoreStore'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 function Home() {
   const [loading, setLoading] = useState(true)
+  const [isInfiniteLoading, setIsInfiniteLoading] = useState(false)
   const [error, setError] = useState(false)
   const [tournaments, setTournaments] = useState([]);
+  const [cursor, setCursor] = useState(0);
 
   const toggleLoad = useLoadMoreStore((state) => state.toggled);
-  const setToggleLoad = useLoadMoreStore((state) => state.setToggle);
+  const setToggleLoad = useLoadMoreStore((state) => state.setToggle)
+  const endOfPage = useRef();
 
-  useEffect(() => {
-    // qualifiers: 117968707
-    // yusen: 4
-    // ciallo: 6
-    // 117940566
-    axios.get(`${API_URL}/tournaments/?limit=${LOAD_AMOUNT}&startFrom=0&=`)
-      .then((response) => {
-        setTournaments(response.data)
-        setLoading(false)
-      })
-      .catch((error) => {
-        console.error('Error fetching tournaments:', error)
-        setError(true)
-        setLoading(false)
-      })
-  }, []);
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver((entries) => {
+  //     console.log(entries[0])
+  //     if (entries[0].isIntersecting) {
+  //       fetchTournaments();
+  //     }
+  //   });
+  //   observer.observe(endOfPage.current);
+  // }, []);
+
+
+  const fetchTournaments = async () => {
+      let test = toggleLoad;
+
+      setCursor((prevCursor) => {
+        const newCursor = prevCursor + 1;
+        console.log(toggleLoad)
+        setIsInfiniteLoading(true);
+    
+        axios
+          .get(`${API_URL}/tournaments/?limit=${LOAD_AMOUNT}&startFrom=${LOAD_AMOUNT * newCursor}`)
+          .then((response) => {
+            setTournaments((prevTournaments) => [...prevTournaments, ...response.data]);
+            setLoading(false);
+            setIsInfiniteLoading(false);
+          })
+          .catch((error) => {
+            console.error('Error fetching tournaments:', error);
+            setError(true);
+            setLoading(false);
+          });
+    
+        return newCursor;
+      });
+  };
+
+  function test() {
+    setToggleLoad();
+    fetchTournaments();
+  }
 
   return (
     <>
@@ -43,19 +71,32 @@ function Home() {
           </div>
           <div className="min-w-[50%] flex justify-end text-zinc-300 items-center gap-4">
             12415 tournaments in total
-            <button className="bg-pink-custom p-2 pb-3 hover:bg-pink-900 hover:text-white transition duration-300 ease-in-out" onClick={() => setToggleLoad()}>
+            <button className="bg-pink-custom p-2 pb-3 hover:bg-pink-900 hover:text-white transition duration-300 ease-in-out" onClick={() => test()}>
               {!toggleLoad ? 'load more' : 'stop loading more tournaments'}
               </button>
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-32 gap-2 w-full masonry mt-4">
-          {!loading &&
-            tournaments.map((tournament, index) => (
-              <div key={index} className="break-inside-avoid">
-                <Tournament tournament={tournament} />
-              </div>
-            ))}
+          <InfiniteScroll
+            dataLength={tournaments.length}
+            next={fetchTournaments}
+            hasMore={true}
+            loader={<h4>Loading...</h4>}>
+            {
+                      tournaments.map((tournament, index) => (
+                        <div key={index} className="break-inside-avoid">
+                          <Tournament tournament={tournament} />
+                        </div>
+                      ))}} 
+          </InfiniteScroll>
+
+
+            {isInfiniteLoading && (
+              'Loading more tournaments...'
+            )}
+
+            <div className="infi-load" ref={endOfPage}></div>
         </div>
       </div>
     </>

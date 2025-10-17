@@ -27,3 +27,7 @@ html, .bg-main { background-color: #404040;}
 .break-inside-avoid {
     break-inside: avoid;
 }
+
+.infinite-scroll-component__outerdiv, .infinite-scroll-component {
+    display: contents;
+}
