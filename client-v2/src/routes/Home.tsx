@@ -6,6 +6,7 @@ import axios from 'axios'
 import { API_URL, LOAD_AMOUNT } from 'utils'
 import { useLoadMoreStore } from 'stores/useLoadMoreStore'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import TournamentPlaceholder from 'components/Tournament/Placeholder'
 
 function Home() {
   const [loading, setLoading] = useState(true)
@@ -14,29 +15,20 @@ function Home() {
   const [tournaments, setTournaments] = useState([]);
   const [cursor, setCursor] = useState(0);
 
+  // Infinite load
   const toggleLoad = useLoadMoreStore((state) => state.toggled);
-  const setToggleLoad = useLoadMoreStore((state) => state.setToggle)
-  const endOfPage = useRef();
+  const setToggleLoad = useLoadMoreStore((state) => state.setToggle);
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver((entries) => {
-  //     console.log(entries[0])
-  //     if (entries[0].isIntersecting) {
-  //       fetchTournaments();
-  //     }
-  //   });
-  //   observer.observe(endOfPage.current);
-  // }, []);
-
+  useEffect(() => {
+    fetchTournaments();
+  }, []);
 
   const fetchTournaments = async () => {
-      let test = toggleLoad;
-
       setCursor((prevCursor) => {
         const newCursor = prevCursor + 1;
-        console.log(toggleLoad)
         setIsInfiniteLoading(true);
-    
+        setLoading(true);
+
         axios
           .get(`${API_URL}/tournaments/?limit=${LOAD_AMOUNT}&startFrom=${LOAD_AMOUNT * newCursor}`)
           .then((response) => {
@@ -54,11 +46,6 @@ function Home() {
       });
   };
 
-  function test() {
-    setToggleLoad();
-    fetchTournaments();
-  }
-
   return (
     <>
       <Header />
@@ -71,7 +58,7 @@ function Home() {
           </div>
           <div className="min-w-[50%] flex justify-end text-zinc-300 items-center gap-4">
             12415 tournaments in total
-            <button className="bg-pink-custom p-2 pb-3 hover:bg-pink-900 hover:text-white transition duration-300 ease-in-out" onClick={() => test()}>
+            <button className="bg-pink-custom p-2 pb-3 hover:bg-pink-900 hover:text-white transition duration-300 ease-in-out" onClick={() => [setToggleLoad(!toggleLoad), fetchTournaments()]}>
               {!toggleLoad ? 'load more' : 'stop loading more tournaments'}
               </button>
           </div>
@@ -81,24 +68,33 @@ function Home() {
           <InfiniteScroll
             dataLength={tournaments.length}
             next={fetchTournaments}
-            hasMore={true}
-            loader={<h4>Loading...</h4>}>
+            hasMore={toggleLoad}
+            loader={(
+              Array.from({ length: LOAD_AMOUNT }).map((_, i) => (
+                <TournamentPlaceholder key={i} />
+              ))
+            )}
+            >
             {
-                      tournaments.map((tournament, index) => (
-                        <div key={index} className="break-inside-avoid">
-                          <Tournament tournament={tournament} />
-                        </div>
-                      ))}} 
+              tournaments.map((tournament, index) => (
+                <div key={index} className="break-inside-avoid">
+                  <Tournament tournament={tournament} />
+                </div>
+              ))
+            }
           </InfiniteScroll>
 
-
-            {isInfiniteLoading && (
-              'Loading more tournaments...'
-            )}
-
-            <div className="infi-load" ref={endOfPage}></div>
+          {loading && (
+            Array.from({ length: LOAD_AMOUNT }).map((_, i) => (
+              <TournamentPlaceholder key={i} />
+            ))
+          )}
         </div>
       </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-32 gap-2 w-full masonry mt-4">
+          Tu będzie content
+        </div>
     </>
   )
 }
