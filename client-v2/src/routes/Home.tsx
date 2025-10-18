@@ -71,7 +71,7 @@ function Home() {
             hasMore={toggleLoad}
             loader={(
               Array.from({ length: LOAD_AMOUNT }).map((_, i) => (
-                <TournamentPlaceholder key={i} />
+                <TournamentPlaceholder itemNum={i} loadCount={cursor} />
               ))
             )}
             >
@@ -86,7 +86,7 @@ function Home() {
 
           {loading && (
             Array.from({ length: LOAD_AMOUNT }).map((_, i) => (
-              <TournamentPlaceholder key={i} />
+              <TournamentPlaceholder itemNum={i} loadCount={cursor} />
             ))
           )}
         </div>
