@@ -14,6 +14,7 @@ import useTeamsShuffleHook from 'hooks/useTeamsShuffleHook'
 import useTeamsTournamentScoresHook from 'hooks/useTeamsTournamentScoresHook'
 import useBeatmapHook from 'hooks/useBeatmapHook'
 import useTournamentDetailsHook from 'hooks/useTournamentDetailsHook'
+import TournamentTeamsListPlaceholder from 'components/TournamentTeamsList/Placeholder'
 
 export default function Tournament({tournament}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -90,7 +91,13 @@ export default function Tournament({tournament}) {
         >
           {
             tournamentLoading
-            ? (<div className="animate-spin h-8 w-8 border-4 border-pink-custom border-t-transparent rounded-full"></div>)
+            ? (
+              <>
+                {displayContent === 'players' && (
+                  <TournamentTeamsListPlaceholder />
+                )}
+              </>
+            )
             : ( 
               <>
                 {displayContent === 'players' && (
