@@ -96,6 +96,12 @@ export default function Tournament({tournament}) {
                 {displayContent === 'players' && (
                   <TournamentTeamsListPlaceholder />
                 )}
+
+                {displayContent === 'matches' && (
+                  <div className="flex justify-center py-2 w-full">
+                    <div className="animate-spin h-8 w-8 border-4 border-pink-custom border-t-transparent rounded-full"></div>
+                  </div>
+                )}
               </>
             )
             : ( 
