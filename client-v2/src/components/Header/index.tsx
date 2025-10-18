@@ -18,7 +18,7 @@ export default function Header() {
           <span className="color-pink text-4xl">tc</span>
         </h2>
         <ul className="flex flex-row columns-4 gap-12 color-grey font-medium lowercase">
-          {['osu', 'taiko', 'ctb', 'mania'].map((mode) => (
+          {['osu', 'taiko', 'fruits', 'mania'].map((mode) => (
             <li
               className={
                 'flex flex-row gap-2 items-center cursor-pointer  transition-colors duration-300 ease-in-out hover:text-pink-900 ' +

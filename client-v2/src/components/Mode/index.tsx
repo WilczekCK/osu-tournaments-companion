@@ -9,7 +9,7 @@ function getModeImage(mode: Mode) {
       return Standard
     case 'taiko':
       return Taiko
-    case 'ctb':
+    case 'fruits':
       return Ctb
     case 'mania':
       return Mania
@@ -39,7 +39,7 @@ export default function Mode({
           style={size ? { height: size } : undefined} 
         />
       )}
-      {displayText && name}
+      {displayText && (name == 'fruits' ? 'ctb' : name)}
     </>
   )
 }

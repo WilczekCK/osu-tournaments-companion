@@ -1,4 +1,4 @@
-type Mode = 'standard' | 'taiko' | 'ctb' | 'mania'
+type Mode = 'standard' | 'taiko' | 'fruits' | 'mania'
 
 type Player = {
     id: number,

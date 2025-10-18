@@ -1,6 +1,8 @@
 import Search from '../../assets/svg/search.svg'
 
 export default function Subheader() {
+  
+
   return (
     <div className="flex columns-2 px-8">
       <div className="color-grey min-w-[50%]">
