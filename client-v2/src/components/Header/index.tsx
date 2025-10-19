@@ -1,6 +1,8 @@
 import Mode from '../Mode'
 import Subheader from './Subheader'
 import { useModeSelectStore } from '../../stores/useModeSelectStore'
+import { useTournamentsStore } from 'stores/useTournamentsStore'
+import { useLoadMoreStore } from 'stores/useLoadMoreStore'
 
 export default function Header() {
   const toggleMode = useModeSelectStore((state) => state.toggleMode)
@@ -9,6 +11,10 @@ export default function Header() {
   )
   const isModeActive = (m: Mode) => modesSelected.includes(m)
 
+  // tournaments list
+  const clearTournaments = useTournamentsStore((state) => state.clearTournaments);
+  const loadTournaments = useTournamentsStore((state) => state.loadTournaments);
+  const setToggleLoad = useLoadMoreStore((state) => state.setToggle);
 
   return (
     <>
@@ -24,7 +30,7 @@ export default function Header() {
                 'flex flex-row gap-2 items-center cursor-pointer  transition-colors duration-300 ease-in-out hover:text-pink-900 ' +
                 (isModeActive(mode) ? 'text-pink-900' : '')
               }
-              onClick={() => toggleMode(mode)}
+              onClick={() => [toggleMode(mode), clearTournaments(), loadTournaments(4)]}
               key={mode}
             >
               <Mode name={mode} />
