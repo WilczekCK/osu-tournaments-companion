@@ -6,6 +6,7 @@ import { useSearchStore } from 'stores/useSearchStore'
 
 interface TournamentsStore {
   tournaments: Tournament[],
+  tournamentsCount: number,
   addTournaments: () => void
   setTournaments: () => void
   clearTournaments: () => void
@@ -13,6 +14,7 @@ interface TournamentsStore {
 
 export const useTournamentsStore = create<TournamentsStore>((set, get) => ({
   tournaments: [],
+  tournamentsCount: 0,
   cursor: 0,
   status: 'idle',
 
@@ -45,6 +47,19 @@ export const useTournamentsStore = create<TournamentsStore>((set, get) => ({
    
     set((state) => ({ ...state, status: 'loading' }))
 
+    // count fetch
+    axios
+      .get(`${API_URL}/tournaments/countTournaments?${customQuery ?? ''}`)
+      .then((response) => {
+        if (!response.data || response.data.status == 404) {
+          set((state) => ({ ...state, tournamentsCount: 0 }))
+        } else {
+          set((state) => ({ ...state, tournamentsCount: response.data }))
+        }
+      })
+
+
+    // tournaments fetch
     axios
       .get(`${API_URL}/tournaments/?limit=${LOAD_AMOUNT*multiplyLoadAmount}&startFrom=${LOAD_AMOUNT * get().cursor}&${customQuery ?? ''}`)
       .then((response) => {

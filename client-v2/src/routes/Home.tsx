@@ -9,7 +9,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import TournamentPlaceholder from 'components/Tournament/Placeholder'
 import { useModeSelectStore } from 'stores/useModeSelectStore'
 import { useTournamentsStore } from 'stores/useTournamentsStore'
-
+import { useSearchStore } from 'stores/useSearchStore'
 type LoadingError = 'fetch-error' | 'no-results' | 'no-more' | false;
 
 function Home() {
@@ -22,13 +22,16 @@ function Home() {
   const toggleLoad = useLoadMoreStore((state) => state.toggled);
   const setToggleLoad = useLoadMoreStore((state) => state.setToggle);
 
-
-
   // Tournaments store
   const tournaments = useTournamentsStore((state) => state.tournaments);
+  const tournamentsCount = useTournamentsStore((state) => state.tournamentsCount);
   const tournamentsStatus = useTournamentsStore((state) => state.status);
   const setTournaments = useTournamentsStore((state) => state.addTournaments);
   const fetchTournamentsStore = useTournamentsStore((state) => state.loadTournaments);
+
+  // Queries
+  const modesSelected = useModeSelectStore((state) => state.modesSelected);
+  const searchPhrase = useSearchStore((state) => state.searchPhrase);
 
   useEffect(() => {
     fetchTournaments();
@@ -50,10 +53,19 @@ function Home() {
             Tournaments
         </div>
         <div className="min-w-[50%] flex justify-end text-zinc-300 items-center gap-4">
-          12415 tournaments in total
+          {tournamentsStatus == 'loading' ? (
+            <div className="flex justify-center">
+              <div className="animate-spin h-4 w-4 border-4 border-pink-custom border-t-transparent rounded-full"></div>
+            </div>
+          ) : (
+            <div>
+              {tournamentsCount} tournaments found
+            </div>
+          )}
+
           <button className="bg-pink-custom p-2 pb-3 hover:bg-pink-900 hover:text-white transition duration-300 ease-in-out" onClick={() => [setToggleLoad(!toggleLoad), (!toggleLoad && fetchTournamentsStore(4))]}>
             {!toggleLoad ? 'load more' : 'stop loading more tournaments'}
-            </button>
+          </button>
         </div>
       </div>
 
