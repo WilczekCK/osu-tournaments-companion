@@ -5,6 +5,7 @@ interface ModeSelectState {
   removeMode: (mode: Mode) => void
   insertMode: (mode: Mode) => void
   toggleMode: (mode: Mode) => void
+  disableModes: ()         => void
 }
 
 export const useModeSelectStore = create<ModeSelectState>((set) => ({
@@ -24,5 +25,10 @@ export const useModeSelectStore = create<ModeSelectState>((set) => ({
       }
 
       return {}
-    })
+    }),
+  disableModes: () => 
+    set((state) => ({
+      modesSelected: []
+    }
+  ))
 }))

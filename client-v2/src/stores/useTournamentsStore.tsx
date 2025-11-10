@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { API_URL, LOAD_AMOUNT } from 'utils'
 import axios from 'axios'
 import { useModeSelectStore } from './useModeSelectStore'
+import { useSearchStore } from 'stores/useSearchStore'
 
 interface TournamentsStore {
   tournaments: Tournament[],
@@ -28,9 +29,19 @@ export const useTournamentsStore = create<TournamentsStore>((set, get) => ({
   ),
 
   loadTournaments: (multiplyLoadAmount = 1) => {
+    let customQuery = '';
+
     // Osu mode selection
     const modesSelected = useModeSelectStore.getState().modesSelected;
-    const customQuery = `queryKey=gameMode&queryValue=${modesSelected.join('|')}`;
+    if (modesSelected.length) {
+      customQuery = `queryKey=gameMode&queryValue=${modesSelected.join('|')}`;
+    }
+
+    // Search phrase
+    const searchPhrase = useSearchStore.getState().searchPhrase;
+    if (searchPhrase.length) {
+      customQuery = `queryKey=title&queryValue=${searchPhrase}`;
+    }
    
     set((state) => ({ ...state, status: 'loading' }))
 

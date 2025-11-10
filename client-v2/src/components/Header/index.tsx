@@ -3,6 +3,7 @@ import Subheader from './Subheader'
 import { useModeSelectStore } from '../../stores/useModeSelectStore'
 import { useTournamentsStore } from 'stores/useTournamentsStore'
 import { useLoadMoreStore } from 'stores/useLoadMoreStore'
+import { useSearchStore } from 'stores/useSearchStore'
 
 export default function Header() {
   const toggleMode = useModeSelectStore((state) => state.toggleMode)
@@ -10,6 +11,9 @@ export default function Header() {
     (state) => state.modesSelected
   )
   const isModeActive = (m: Mode) => modesSelected.includes(m)
+
+  // search input
+  const setSearchPhrase  = useSearchStore((state) => state.setPhrase);
 
   // tournaments list
   const clearTournaments = useTournamentsStore((state) => state.clearTournaments);
@@ -30,7 +34,7 @@ export default function Header() {
                 'flex flex-row gap-2 items-center cursor-pointer  transition-colors duration-300 ease-in-out hover:text-pink-900 ' +
                 (isModeActive(mode) ? 'text-pink-900' : '')
               }
-              onClick={() => [toggleMode(mode), clearTournaments(), loadTournaments(4)]}
+              onClick={() => [toggleMode(mode), clearTournaments(), setSearchPhrase(''), loadTournaments(4)]}
               key={mode}
             >
               <Mode name={mode} />

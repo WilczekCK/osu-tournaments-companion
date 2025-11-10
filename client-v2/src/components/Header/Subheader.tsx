@@ -1,7 +1,27 @@
 import Search from '../../assets/svg/search.svg'
+import { useSearchStore } from 'stores/useSearchStore'
+import { useTournamentsStore } from 'stores/useTournamentsStore'
+import { useModeSelectStore } from 'stores/useModeSelectStore';
+import { useState } from 'react';
 
 export default function Subheader() {
+  const setSearchPhrase  = useSearchStore((state) => state.setPhrase);
+  const searchPhrase     = useSearchStore((state) => state.searchPhrase);
+  const clearTournaments = useTournamentsStore((state) => state.clearTournaments);
+  const loadTournaments  = useTournamentsStore((state) => state.loadTournaments);
+  const clearModes       = useModeSelectStore((state) => state.disableModes)
+
+  let timeoutId: NodeJS.Timeout | null = null;
+
+  const changeSearchPhrase = () => {
+    window.clearTimeout(timeoutId);
   
+    timeoutId = window.setTimeout(() => {
+      clearTournaments();
+      clearModes();
+      loadTournaments(4);
+    }, 1000);
+  }
 
   return (
     <div className="flex columns-2 px-8">
@@ -12,7 +32,7 @@ export default function Subheader() {
       </div>
       <div className="columns-2 flex justify-end min-w-[50%] gap-3">
         <img src={Search} alt="search-icon" className="h-4 self-center"/>
-        <input type="text" placeholder="search by tournament name" className="bg-transparent outline-none border-b-2 placeholder:text-gray-custom border-gray-custom text-white text-center font-light pb-1 focus:text-zinc-100" />
+        <input type="text" placeholder="search by tournament name" onChange={({target}) => [setSearchPhrase(target.value), changeSearchPhrase()]} value={searchPhrase} className="bg-transparent outline-none border-b-2 placeholder:text-gray-custom border-gray-custom text-white text-center font-light pb-1 focus:text-zinc-100" />
       </div>
     </div>
   )
