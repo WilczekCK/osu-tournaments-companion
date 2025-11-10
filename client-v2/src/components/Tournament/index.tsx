@@ -87,7 +87,7 @@ export default function Tournament({tournament}) {
         </div>
 
         <div
-          className={`transition-[max-height] duration-300 ease-in-out overflow-hidden gap-2 w-full items-start text-white text-sm relative flex flex-row ${
+          className={`transition-[max-height] duration-300 ease-in-out overflow-hidden gap-2 w-full items-center sm:items-start text-white text-sm relative flex flex-col sm:flex-row justify-around ${
             isOpen ? 'max-h-[500px] py-2 px-3 overflow-scroll' : 'max-h-0 '
           }`}
         >

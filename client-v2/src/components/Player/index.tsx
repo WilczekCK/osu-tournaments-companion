@@ -18,18 +18,18 @@ export default function Player({player, withRanking = false, teamNumber} : {play
                     }}
                 ></div>
             </div>
-            <div className={"z-10 flex flex-row min-w-[100%] py-1 px-2 items-center gap-2 text-base " + (teamNumber == 0 ? 'flex-row-reverse' : 'flex-row')}>
+            <div className={"z-10 flex flex-row min-w-[100%] py-1 px-2 items-center gap-2 text-base " + (teamNumber == 0 ? 'sm:flex-row-reverse' : 'sm:flex-row')}>
                 <Avatar player={player} />
                 <div className="flex">
                     {player.playerName.length > 10 ? `${player.playerName.slice(0, 10)}...` : player.playerName}
                 </div>
                 {withRanking && (
-                    <div className={"flex flex-col grow gap-1 " + (teamNumber == 0 ? 'items-start' : 'items-end')}>
-                        <span className={"text-zinc-300 flex flex-row gap-1 items-center text-base " + (teamNumber == 0 ? 'flex-row' : 'flex-row-reverse')}>
+                    <div className={"flex-col flex grow gap-0 items-end sm:items-stretch"}>
+                        <span className={"text-zinc-300 flex flex-row-reverse sm:flex-row gap-1 items-center text-base " + (teamNumber == 0 ? 'ml-[-1px]' : 'sm:flex-row-reverse mr-[-2px]')}>
                             <Mode name={player.playerDetails.gameMode} displayText={false} size={'20px'} />
                             #{player.playerDetails.ranking?.global}
                         </span>
-                        <span className={"text-zinc-300 flex flex-row gap-2 mt-[-5px] items-center text-base " + (teamNumber == 0 ? 'flex-row' : 'flex-row-reverse')}>
+                        <span className={"text-zinc-300 flex flex-row-reverse sm:flex-row gap-1 items-center text-base " + (teamNumber == 0 ? 'sm:flex-row' : 'sm:flex-row-reverse')}>
                             <img src={`https://flagcdn.com/${player.playerDetails.country?.code.toLowerCase()}.svg`} width="20" className={'max-h-[15px]'} />
                             #{player.playerDetails.ranking?.country}
                         </span>
