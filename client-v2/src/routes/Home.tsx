@@ -71,7 +71,7 @@ function Home() {
 
       {(!error || (error == 'no-more' && tournaments.length)) && (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-32 gap-2 w-full masonry mt-4">
+          <div className="flex flex-col sm:grid lg:grid-cols-2 md:grid-cols-32 gap-4 w-full mt-4 md:grid-cols-1">
             <InfiniteScroll
               dataLength={tournaments.length}
               next={fetchTournaments}

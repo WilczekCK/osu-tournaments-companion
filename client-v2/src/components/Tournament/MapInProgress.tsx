@@ -2,7 +2,7 @@ import { shortenString } from "utils"
 
 export default function MapInProgress({beatmap} : {beatmap: Beatmap}) {
     return (
-        <div className="relative w-[100%] h-24 flex flex-col">
+        <div className="relative w-[100%] h-36 sm:h-24 flex flex-col justify-center sm:justify-start">
             <div className="absolute inset-0 z-0">
                 <div
                     className="h-full w-full bg-gradient-to-r from-black to-transparent z-0"
@@ -17,9 +17,9 @@ export default function MapInProgress({beatmap} : {beatmap: Beatmap}) {
                 ></div>
             </div>
 
-            <div className="z-10 p-2 px-3 font-semibold">
-                <a className={"flex flex-row"} target="_blank" href={"https://osu.ppy.sh/b/"+beatmap.id+''}>
-                    <div className={"grow"}>
+            <div className="z-10 p-2 px-3 font-semibold mt-[-10px] sm:mt-0">
+                <a className={"flex flex-col sm:flex-row gap-2 sm:gap-0 items-center sm:items-stretch"} target="_blank" href={"https://osu.ppy.sh/b/"+beatmap.id+''}>
+                    <div className={"grow items-center flex flex-col sm:block"}>
                         <div className="text-white underline underline-offset-2 text-xl">{shortenString(beatmap.title, 30)}</div>
                         <div className="text-white text-regular">{shortenString(beatmap.artist, 45)}</div>
 
@@ -35,7 +35,7 @@ export default function MapInProgress({beatmap} : {beatmap: Beatmap}) {
                         </div>
                         
 
-                        <div className={"absolute bottom-2 text-white bg-red-700 p-2 w-min"}>
+                        <div className={"absolute bottom-2 text-white bg-red-700 p-2 w-min hidden sm:flex"}>
                             LIVE
                         </div>
                     </div>

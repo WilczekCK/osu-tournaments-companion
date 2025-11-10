@@ -36,9 +36,9 @@ export default function Tournament({tournament}) {
           <MapInProgress beatmap={mapInProgress} />
         )}
 
-        <div className={`flex flex-row columns-2 w-full items-center gap-3 py-4 px-3 pt-3 shadow-md  ${isOpen ? '' : 'rounded-xl'} transition-all duration-300`}>
+        <div className={`flex flex-col sm:flex-row columns-2 w-full items-center gap-3 py-4 px-3 pt-3 shadow-md  ${isOpen ? '' : 'rounded-xl'} transition-all duration-300`}>
           <Mode name={tournament.gameMode} displayText={false} />
-          <div className="flex flex-col gap-0 items-start text-white text-sm grow">
+          <div className="flex flex-col gap-0 items-center sm:items-start text-white text-sm grow">
             <div className="text-pink-900 font-semibold text-lg">{tournament.titleFlattened}</div>
 
             <div className="mt-[-5px] flex flex-row gap-1">
@@ -70,18 +70,20 @@ export default function Tournament({tournament}) {
               }
             </div>
           </div>
-          <a target="_blank" href={"https://osu.ppy.sh/community/matches/"+ tournament.id} className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out text-pink-custom hover:text-white">
-            osu!
-          </a>
-          <a target="_blank" href="#" className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out  text-pink-custom hover:text-white">
-            otc!
-          </a>
-          <img
-            src={Dropdown}
-            alt="dropdown-icon"
-            className={"max-h-10 cursor-pointer "+ (isOpen ? 'rotate-180' : '')}
-            onClick={() => setIsOpen(!isOpen)}
-          />
+          <div className={"flex flex-row items-center gap-2"}>
+            <a target="_blank" href={"https://osu.ppy.sh/community/matches/"+ tournament.id} className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out text-pink-custom hover:text-white">
+              osu!
+            </a>
+            <a target="_blank" href="#" className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out  text-pink-custom hover:text-white">
+              otc!
+            </a>
+            <img
+              src={Dropdown}
+              alt="dropdown-icon"
+              className={"max-h-10 cursor-pointer "+ (isOpen ? 'rotate-180' : '')}
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          </div>
         </div>
 
         <div
