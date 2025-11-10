@@ -24,8 +24,8 @@ export default function Subheader() {
   }
 
   return (
-    <div className="flex columns-2 px-8">
-      <div className="color-grey min-w-[50%]">
+    <div className="flex columns-1 sm:columns-2 flex-col sm:flex-row px-8 items-center gap-3 sm:gap-0 sm:items-stretch">
+      <div className="color-grey min-w-[50%] text-center sm:text-left">
         Not correctly created tournaments can show wrong results
       </div>
       <div className="columns-2 flex justify-end min-w-[50%] gap-3">

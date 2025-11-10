@@ -22,16 +22,16 @@ export default function Header() {
 
   return (
     <>
-      <div className="flex flex-row columns-2 w-full bg-container-main p-5 pt-4 px-8 mt-4 rounded-xl items-center select-none">
-        <h2 className="grow self-start">
+      <div className="flex flex-col sm:flex-row columns-1 sm:columns-2 w-full bg-container-main p-5 pt-4 px-8 mt-4 rounded-xl items-center select-none gap-4 sm:gap-0">
+        <h2 className="grow self-center sm:self-start">
           <span className="text-white text-4xl self-start">osu!</span>
           <span className="color-pink text-4xl">tc</span>
         </h2>
-        <ul className="flex flex-row columns-4 gap-12 color-grey font-medium lowercase">
+        <ul className="flex flex-row columns-4 gap-6 sm:gap-12 color-grey font-medium lowercase">
           {['osu', 'taiko', 'fruits', 'mania'].map((mode) => (
             <li
               className={
-                'flex flex-row gap-2 items-center cursor-pointer  transition-colors duration-300 ease-in-out hover:text-pink-900 ' +
+                'flex flex-col sm:flex-row gap-2 items-center cursor-pointer  transition-colors duration-300 ease-in-out hover:text-pink-900 ' +
                 (isModeActive(mode) ? 'text-pink-900' : '')
               }
               onClick={() => [toggleMode(mode), clearTournaments(), setSearchPhrase(''), loadTournaments(4)]}
