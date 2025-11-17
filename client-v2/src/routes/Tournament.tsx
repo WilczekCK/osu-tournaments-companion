@@ -10,6 +10,7 @@ import TournamentProgress from "components/TournamentProgress";
 import useTeamsShuffleHook from "hooks/useTeamsShuffleHook";
 import usePlayersHook from "hooks/usePlayersHook";
 
+
 function Tournament({props}) {
   let {id} = useParams();
   const {tournamentDetails, loading: tournamentLoading, error: tournamentError} = useTournamentDetailsHook(id, true);

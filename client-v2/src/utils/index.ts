@@ -19,5 +19,15 @@ export function formatDate(dateString: string): string {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} (UTF+1)`;
 }
 
+export function shuffleArray(array: any[]) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  
+  return arr;
+}
+
 export const API_URL = 'http://api.otc.glad.vision'
 export const LOAD_AMOUNT = 4;
