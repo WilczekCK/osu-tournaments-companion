@@ -31,3 +31,7 @@ html, .bg-main { background-color: #404040;}
 .infinite-scroll-component__outerdiv, .infinite-scroll-component {
     display: contents;
 }
+
+.swiper-wrapper {
+    transition-timing-function: linear !important;
+    }

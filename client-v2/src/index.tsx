@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 
 import Home from 'routes/Home'
 import Tournament from 'routes/Tournament'
+import Header from 'components/Header'
 
 function ViewTransitionWrapper({ children }) {
   const location = useLocation();
