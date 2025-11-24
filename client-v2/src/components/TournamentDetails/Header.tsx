@@ -16,7 +16,9 @@ export default function TournamentHeader({tournamentDetails}) {
 
         <div className="relative [perspective:1400px] [transform:rotateZ(6.5deg)] mt-[-100px] ml-[-150px]">
         {[...Array(3)].map((_, index) => (
-          <div className="
+          <div 
+          key={index}
+          className="
           relative 
           pointer-events-auto
           backdrop-blur-sm
@@ -37,9 +39,9 @@ export default function TournamentHeader({tournamentDetails}) {
               modules={[Autoplay]}
               style={{overflow: "visible"}}
             >
-              {shuffleArray(tournamentDetails.mapsPlayed).map(map => (
+              {shuffleArray(tournamentDetails.mapsPlayed.length < 3 ? new Array(6).fill(tournamentDetails.mapsPlayed).flat() : tournamentDetails.mapsPlayed).map(map => (
                 <SwiperSlide>
-                  <img key={map.info.beatmapset_id} className="h-52 w-96 object-cover" src={map.info.beatmapset.covers['cover']} />
+                  <img key={map.info.beatmapset_id} className="h-52 w-96 ml-14 object-cover" src={map.info.beatmapset.covers['cover']} />
                 </SwiperSlide>
               ))}
             </Swiper>

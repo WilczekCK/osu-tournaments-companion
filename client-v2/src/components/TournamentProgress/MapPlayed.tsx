@@ -76,11 +76,11 @@ export default function MapPlayed({details, users, teams, variant}) {
                 <div className="flex flex-col gap-2">
                     {details.endTime && (
                         areQualifiers ? (
-                            <div className={"text-base mt-2"}>
+                            <div className={"text-base mt-2 "+ (variant == 'white' ? 'text-white' : '')}>
                                 Score achieved: {new Intl.NumberFormat().format(details.winBy.diff)}
                             </div>
                         ) : (
-                            <div className={"text-base mt-2"}>
+                            <div className={"text-base mt-2 "+ (variant == 'white' ? 'text-white' : '')}>
                                 Won by <b className={"text-pink-900"}>{details.winBy.teamName}</b> with <b>{new Intl.NumberFormat().format(details.winBy.diff)}</b> score difference
                             </div>
                         )
@@ -88,14 +88,14 @@ export default function MapPlayed({details, users, teams, variant}) {
 
                     {details.endTime && (
                         <>
-                            <div className={"text-base"}>Best scores by:</div>
+                            <div className={"text-base "+ (variant == 'white' ? 'text-white' : '')}>Best scores by:</div>
                             {Array.isArray(details.topScores) && details.topScores.map((score, index) => (
                                 <div key={index} className={"text-gray-custom text-sm flex flex-row items-center"}>
                                     <div className="grow">{<Player player={usePlayersHook([findUser(score.user_id)])[0]} team={score.match.team == 'red' ? 1 : 0} withRanking={true}/> }</div>
                                     <div className={"min-w-[125px] text-center text-white text-xl flex flex-col mt-[-5px]"}>
                                         {new Intl.NumberFormat().format(score.score)}
 
-                                        <div className={"text-gray-custom text-xs"}>
+                                        <div className={"text-gray-custom text-xs "+ (variant == 'white' ? 'text-white' : '')}>
                                             <div>
                                                 {(score.accuracy * 100).toFixed(2) + '%'}  / {score.max_combo && score.max_combo + 'x'}  
                                             </div>
