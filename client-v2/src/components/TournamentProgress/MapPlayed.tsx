@@ -3,7 +3,7 @@ import usePlayersHook from '../../hooks/usePlayersHook'
 import Icon from '../../assets/svg/stage-match.svg';
 import { shortenString, formatDate } from "utils"
 
-export default function MapPlayed({details, users, teams}) {
+export default function MapPlayed({details, users, teams, variant}) {
     const beatmap = details.beatmap || {};
     const areQualifiers = teams[0].name === 'Qualifiers' || teams[1].name === 'Qualifiers';
 
@@ -26,7 +26,7 @@ export default function MapPlayed({details, users, teams}) {
                     {!details.endTime ? "Currently played map" : "Map played"}
                 </div>
                 
-                <div className={"text-gray-custom text-xs mt-[-5px]"}>
+                <div className={"text-gray-custom text-xs mt-[-5px] "+ (variant == 'white' ? 'text-white' : '')}>
                     {formatDate(details.startTime)}
                 </div>
 

@@ -3,7 +3,7 @@ import MatchCreated from "./MatchCreated"
 import MapPlayed from "./MapPlayed"
 import MatchEnded from "./MatchEnded"
 
-export default function TournamentProgress({progress, users, teams}) {
+export default function TournamentProgress({progress, users, teams, variant}: {progress: any[], users: any[], teams: any[], variant: string}) {
     const tournamentStages = useTournamentStageHook(progress, teams);
 
     const getUserDetails   = (userId) => {
@@ -35,15 +35,15 @@ export default function TournamentProgress({progress, users, teams}) {
                     tournamentStages.map((stage, index) => (
                         <div key={index}>
                             {stage.stageType === 'match-created' && (
-                                <MatchCreated details={stage} user={getUserDetails(stage.user_id)} />
+                                <MatchCreated details={stage} user={getUserDetails(stage.user_id)} variant={variant} />
                             )}
 
                             {stage.stageType === 'map-played' && (
-                                <MapPlayed details={stage} users={users} teams={teams} />
+                                <MapPlayed details={stage} users={users} teams={teams} variant={variant} />
                             )}
 
                             {stage.stageType === 'match-disbanded' && (
-                                <MatchEnded details={stage} user={getUserDetails(stage.user_id)} />
+                                <MatchEnded details={stage} user={getUserDetails(stage.user_id)} variant={variant} />
                             )}
                         </div>
                     ))

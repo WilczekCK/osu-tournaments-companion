@@ -31,11 +31,11 @@ function Tournament({props}) {
 
           <div className="flex flex-col gap-12 pt-8 mt-[-20px] bg-container-main px-8 pb-6">
             <div className="flex gap-4">
-              <TournamentTeamsList teams={tournamentDetails.teams} details={tournamentDetails} />
+              <TournamentTeamsList teams={tournamentDetails.teams} details={tournamentDetails} variant="white"/>
             </div>
 
             {/* <div className="bg-container-tournament p-4"> */}
-              <TournamentProgress progress={tournamentDetails.events} users={tournamentDetails.users} teams={teams} />
+              <TournamentProgress progress={tournamentDetails.events} users={tournamentDetails.users} teams={teams} variant="white" />
             {/* </div> */}
           </div>
         </>

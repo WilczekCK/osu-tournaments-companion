@@ -3,7 +3,7 @@ import usePlayersHook from '../../hooks/usePlayersHook'
 import Icon from '../../assets/svg/stage-start.svg';
 import { formatDate } from "utils"
 
-export default function MatchCreated({details, user}) {
+export default function MatchCreated({details, user, variant}) {
     return (
         <div className="flex flex-row w-100 items-start gap-5">
             <div className={"bg-pink-900 p-2 rounded-full mt-2"}>
@@ -19,13 +19,13 @@ export default function MatchCreated({details, user}) {
                     Match created:
                 </div>
                 
-                <div className={"text-gray-custom text-xs mt-[-5px]"}>
+                <div className={"text-gray-custom text-xs mt-[-5px] "+ (variant == 'white' ? 'text-white' : '')}>
                     {formatDate(details.startTime)}
                 </div>
 
                 {user && (
                     <div className="mt-2">
-                        <div className="text-base mb-1">Owner of the room:</div>
+                        <div className={"text-base mb-1 "+ (variant == 'white' ? 'text-white' : '')}>Owner of the room:</div>
                         <Player player={usePlayersHook([user], 0)[0]} team={0}/>
                     </div>
                 )}
