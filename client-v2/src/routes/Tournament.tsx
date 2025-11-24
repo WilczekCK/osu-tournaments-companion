@@ -25,7 +25,7 @@ function Tournament({props}) {
     <>
       <Header />
 
-      {!tournamentLoading && (
+      {!tournamentLoading ? (
         <>
           <TournamentHeader tournamentDetails={tournamentDetails} />
 
@@ -37,6 +37,18 @@ function Tournament({props}) {
             {/* <div className="bg-container-tournament p-4"> */}
               <TournamentProgress progress={tournamentDetails.events} users={tournamentDetails.users} teams={teams} variant="white" />
             {/* </div> */}
+          </div>
+        </>
+      ) : (
+        <>
+          <TournamentHeader preloading={true} />
+
+          <div className="flex flex-col gap-12 pt-8 mt-[-20px] bg-container-main px-8 pb-6 h-[20vw]">
+            <div className="flex gap-4">
+              <div className="flex justify-center py-2 w-full">
+                <div className="animate-spin h-8 w-8 border-4 border-pink-custom border-t-transparent rounded-full"></div>
+              </div>
+            </div>
           </div>
         </>
       )}

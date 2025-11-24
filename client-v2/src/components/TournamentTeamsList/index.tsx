@@ -2,7 +2,7 @@ import Team from "components/Team";
 import useTeamsShuffleHook from "hooks/useTeamsShuffleHook";
 import usePlayersHook from "hooks/usePlayersHook";
 
-export default function TournamentTeamsList({teams, details, variant}: {teams: any[], details: any, variant: string}) {
+export default function TournamentTeamsList({teams, details, variant, preloading}: {teams: any[], details: any, variant: string}) {
   // Details needs to be reloaded
   if (!teams.length && details) {
     const players = usePlayersHook(details.users, details.judge);
