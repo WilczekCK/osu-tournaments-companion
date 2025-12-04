@@ -20,11 +20,11 @@ export default function Player({player, withRanking = false, teamNumber} : {play
             </div>
             <div className={"z-10 flex flex-row min-w-[100%] py-1 px-2 items-center gap-2 text-base " + (teamNumber == 0 ? 'sm:flex-row-reverse' : 'sm:flex-row')}>
                 <Avatar player={player} />
-                <div className="flex">
+                <div className="flex overflow-hidden">
                     {player.playerName.length > 10 ? `${player.playerName.slice(0, 10)}...` : player.playerName}
                 </div>
                 {withRanking && (
-                    <div className={"flex-col flex grow gap-0 items-end sm:items-stretch"}>
+                    <div className={"flex-col grow gap-0 items-end sm:items-stretch hidden sm:flex"}>
                         <span className={"text-zinc-300 flex flex-row-reverse sm:flex-row gap-1 items-center text-base " + (teamNumber == 0 ? 'ml-[-1px]' : 'sm:flex-row-reverse mr-[-2px]')}>
                             <Mode name={player.playerDetails.gameMode} displayText={false} size={'20px'} />
                             #{player.playerDetails.ranking?.global}

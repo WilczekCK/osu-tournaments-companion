@@ -13,7 +13,7 @@ export default function MapPlayed({details, users, teams, variant}) {
 
     return (
         <div className="flex flex-row w-100 items-start gap-5">
-            <div className={"bg-pink-900 p-1 rounded-full mt-3"}>
+            <div className={"bg-pink-900 p-1 rounded-full mt-3 hidden md:flex"}>
                 {details.endTime 
                     ? ( <img src={Icon} alt={`icon-match`} className={"h-6" } />) 
                     : ( <div className="animate-spin h-4 w-4 p-2 border-4 border-white-0 border-t-transparent rounded-full"></div>)
@@ -54,13 +54,13 @@ export default function MapPlayed({details, users, teams, variant}) {
                                     <div className="text-white underline underline-offset-2 text-xl">{shortenString(beatmap.title, 30)}</div>
                                     <div className="text-white text-regular">{shortenString(beatmap.artist, 45)}</div>
 
-                                    <div className="mt-4 flex text-regular">
+                                    <div className="mt-4 text-regular hidden sm:flex">
                                         <div className="text-white pr-1">Map by: </div>
                                         <div className="text-pink-900">{shortenString(beatmap.creator, 20)}</div>
                                     </div>
                                 </div>
 
-                                <div className={"flex flex-col items-end justify-start text-white"}>
+                                <div className={"flex flex-col md:items-end justify-start text-white text-right pl-1"}>
                                     <div>
                                         Difficulty: <strong>{shortenString(beatmap.difficulty, 20)}</strong>
                                     </div>
@@ -90,9 +90,9 @@ export default function MapPlayed({details, users, teams, variant}) {
                         <>
                             <div className={"text-base "+ (variant == 'white' ? 'text-white' : '')}>Best scores by:</div>
                             {Array.isArray(details.topScores) && details.topScores.map((score, index) => (
-                                <div key={index} className={"text-gray-custom text-sm flex flex-row items-center"}>
+                                <div key={index} className={"text-gray-custom text-sm flex flex-row items-center gap-2"}>
                                     <div className="grow">{<Player player={usePlayersHook([findUser(score.user_id)])[0]} team={score.match.team == 'red' ? 1 : 0} withRanking={true}/> }</div>
-                                    <div className={"min-w-[125px] text-center text-white text-xl flex flex-col mt-[-5px]"}>
+                                    <div className={"md:min-w-[125px] text-center text-white text-xl flex flex-col mt-[-5px]"}>
                                         {new Intl.NumberFormat().format(score.score)}
 
                                         <div className={"text-gray-custom text-xs "+ (variant == 'white' ? 'text-white' : '')}>

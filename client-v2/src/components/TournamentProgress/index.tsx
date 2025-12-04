@@ -26,7 +26,7 @@ export default function TournamentProgress({progress, users, teams, variant}: {p
 
     return (
         <div className="relative w-[100%]">
-            <div className={"absolute h-[100%] left-[23px] bg-pink-custom w-1 z-0 rounded-full"}>
+            <div className={"absolute hidden md:flex h-[100%] left-[23px] bg-pink-custom w-1 z-0 rounded-full"}>
                 {/* STRIP LINE */}
             </div>
 

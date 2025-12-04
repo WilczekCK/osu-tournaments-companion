@@ -6,7 +6,7 @@ import { formatDate } from "utils"
 export default function MatchEnded({details, user, variant}) {    
     return (
         <div className="flex flex-row w-100 items-start gap-5">
-            <div className={"bg-pink-900 p-2 rounded-full mt-3"}>
+            <div className={"bg-pink-900 p-2 rounded-full mt-3 hidden md:flex"}>
                 <img 
                     src={Icon} 
                     alt={`icon-finish`} 

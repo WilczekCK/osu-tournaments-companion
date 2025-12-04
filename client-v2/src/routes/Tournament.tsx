@@ -29,14 +29,12 @@ function Tournament({props}) {
         <>
           <TournamentHeader tournamentDetails={tournamentDetails} />
 
-          <div className="flex flex-col gap-12 pt-8 mt-[-20px] bg-container-main px-8 pb-6">
-            <div className="flex gap-4">
+          <div className="flex flex-col gap-12 pt-8 mt-[-20px] bg-container-main px-2 md:px-8 pb-6">
+            <div className="flex flex-col md:flex-row gap-4">
               <TournamentTeamsList teams={tournamentDetails.teams} details={tournamentDetails} variant="white"/>
             </div>
 
-            {/* <div className="bg-container-tournament p-4"> */}
               <TournamentProgress progress={tournamentDetails.events} users={tournamentDetails.users} teams={teams} variant="white" />
-            {/* </div> */}
           </div>
         </>
       ) : (

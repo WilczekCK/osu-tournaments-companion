@@ -59,7 +59,7 @@ export default function TournamentHeader({tournamentDetails, preloading}) {
 
 
       </div>
-      <div className="w-100 bg-container-tournament border-white text-pink-900 px-10 py-3 pb-5 text-2xl mt-[-135px] z-20 rounded-md justify-center flex flex-col">
+      <div className="w-100 bg-container-tournament border-white text-center md:text-left text-pink-900 px-10 py-3 pb-5 text-2xl mt-[-135px] z-20 rounded-md justify-center flex flex-col">
         {!preloading ? (
             <>
             <Mode name={tournamentDetails.gameMode} displayText={false} />
