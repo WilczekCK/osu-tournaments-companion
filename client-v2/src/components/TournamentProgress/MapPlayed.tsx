@@ -33,7 +33,7 @@ export default function MapPlayed({details, users, teams, variant}) {
 
                 <div className={"mt-3"}>
                     {details.beatmap && (
-                        <div className="relative w-[100%] h-24 flex flex-col">
+                        <div className="relative w-[100%] h-full min-h-24 flex flex-col pb-1 md:pb-0">
                         <div className="absolute inset-0 z-0">
                             <div
                                 className="h-full w-full bg-gradient-to-r from-black to-transparent z-0"

@@ -24,7 +24,12 @@ export default function Header() {
   const loadTournaments = useTournamentsStore((state) => state.loadTournaments);
   const setToggleLoad = useLoadMoreStore((state) => state.setToggle);
 
-  const location = useLocation();
+  // where header is turned on
+  const innerLocation = useLocation();
+
+  const [isTournamentPage, setIsTournamentPage] = useState(() => {
+    return innerLocation.pathname.includes('/tournament/');
+  });
 
   return (
     <>
@@ -38,6 +43,19 @@ export default function Header() {
 
         <ul className="flex flex-row columns-4 gap-6 sm:gap-12 color-grey font-medium lowercase">
           {['osu', 'taiko', 'fruits', 'mania'].map((mode) => (
+            isTournamentPage ? (
+            <NavLink
+              to="/"
+              className={
+                'flex flex-col sm:flex-row gap-2 items-center cursor-pointer  transition-colors duration-300 ease-in-out hover:text-pink-900 ' +
+                (isModeActive(mode) ? 'text-pink-900' : '')
+              }
+              onClick={() => [toggleMode(mode), clearTournaments(), setSearchPhrase(''), loadTournaments(4)]}
+              key={mode}
+            >
+              <Mode name={mode} />
+            </NavLink>
+            ) : (
             <li
               className={
                 'flex flex-col sm:flex-row gap-2 items-center cursor-pointer  transition-colors duration-300 ease-in-out hover:text-pink-900 ' +
@@ -48,11 +66,12 @@ export default function Header() {
             >
               <Mode name={mode} />
             </li>
+            )
           ))}
         </ul>
       </div>
 
-      <Subheader />
+      <Subheader/>
     </>
   )
 }
