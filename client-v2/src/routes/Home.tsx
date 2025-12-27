@@ -3,7 +3,9 @@ import Tournaments from '../assets/svg/tournaments.svg'
 import Tournament from 'components/Tournament'
 import { useEffect, useState, useRef} from 'react'
 import axios from 'axios'
-import { API_URL, LOAD_AMOUNT } from 'utils'
+import {Adsense} from '@ctrl/react-adsense';
+
+import { API_URL, LOAD_AMOUNT, ADS_CLIENT } from 'utils'
 import { useLoadMoreStore } from 'stores/useLoadMoreStore'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import TournamentPlaceholder from 'components/Tournament/Placeholder'
@@ -119,8 +121,16 @@ function Home() {
 
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-32 gap-2 w-full masonry mt-4">
-          Tu będzie content
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full mt-4">
+          <Adsense
+            client={ADS_CLIENT}
+            slot="7259870550"
+          />
+  
+          <Adsense
+            client={ADS_CLIENT}
+            slot="7259870550"
+          />
       </div>
     </>
   )

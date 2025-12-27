@@ -23,6 +23,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@ctrl/react-adsense": "^2.1.0",
     "axios": "^1.12.2",
     "dayjs": "^1.11.13",
     "prop-types": "^15.8.1",
