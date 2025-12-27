@@ -76,6 +76,10 @@ class Cron {
                             {timeEnded, users, judge, mapsPlayed, gameMode, events, teams},
                             tournament
                         );
+
+
+                        //give a osu!api some rest, 1s each user!
+                        await new Promise(resolve => setTimeout(resolve, 5000));
                     })
                     .catch((err) => {
                         return;
@@ -150,7 +154,7 @@ class Cron {
                     })
 
                     //give a osu!api some rest, 1s each user!
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    await new Promise(resolve => setTimeout(resolve, 5000));
                 } 
             }
             this.isUserCronInProgress = false;
@@ -166,7 +170,7 @@ class Cron {
             }
         })
 
-        // /* Tournaments update */
+        // // /* Tournaments update */
         cron.schedule(`*/${this.secondsEachTournamentCron} * * * * *`, async () => {
             if( !this.isTournamentCronInProgress && !this.isUserCronInProgress ){
                 await this.tournamentsCRON.prepareToUpdate();
@@ -175,14 +179,14 @@ class Cron {
             }
         })
 
-        /* Look for new tournaments -- cursor, look for old pages */
+        // /* Look for new tournaments -- cursor, look for old pages */
         cron.schedule(`*/3 * * * *`, async () => {
             if (!this.isUserCronInProgress) {
                 await this.tournamentsCRON.lookForNew();
             }
         })
 
-        /* Look for new tournaments - only new one! */
+        // /* Look for new tournaments - only new one! */
         cron.schedule(`*/1 * * * *`, async () => {
             if (!this.isUserCronInProgress) {
                 await this.tournamentsCRON.lookForNew(false);
