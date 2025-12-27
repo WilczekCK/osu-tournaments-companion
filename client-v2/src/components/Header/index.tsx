@@ -71,7 +71,7 @@ export default function Header() {
         </ul>
       </div>
 
-      <Subheader/>
+      <Subheader isTournamentPage={isTournamentPage}/>
     </>
   )
 }

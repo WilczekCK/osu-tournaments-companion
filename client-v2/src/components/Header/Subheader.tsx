@@ -6,7 +6,7 @@ import { useModeSelectStore } from 'stores/useModeSelectStore';
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom'
 
-export default function Subheader() {
+export default function Subheader({ isTournamentPage = false }: { isTournamentPage?: boolean }) {
   const setSearchPhrase  = useSearchStore((state) => state.setPhrase);
   const searchPhrase     = useSearchStore((state) => state.searchPhrase);
   const clearTournaments = useTournamentsStore((state) => state.clearTournaments);
@@ -25,19 +25,13 @@ export default function Subheader() {
     }, 1000);
   }
 
-  // TODO: refactor to a single source of truth
-  const innerLocation = useLocation();
-  const [isTournamentPaged, setIsTournamentPage] = useState(() => {
-    return innerLocation.pathname.includes('/tournament/');
-  });
-
   return (
     <div className="flex columns-1 sm:columns-2 flex-col sm:flex-row px-8 items-center gap-3 sm:gap-0 sm:items-stretch">
       <div className="color-grey min-w-[50%] text-center sm:text-left">
         Not correctly created tournaments can show wrong results
       </div>
       <div className="columns-2 flex justify-end min-w-[50%] gap-3">
-        {isTournamentPaged ? (
+        {isTournamentPage ? (
           <>
           <img src={Dropdown} alt="back-icon" className="h-5 self-center rotate-90"/>
           <NavLink to={'/'} className="h-5 color-grey">
