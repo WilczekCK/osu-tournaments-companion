@@ -81,7 +81,7 @@ function Home() {
               loader={(
                 (loading && !error) && (
                   Array.from({ length: LOAD_AMOUNT }).map((_, i) => (
-                    <TournamentPlaceholder itemNum={i} loadCount={cursor} />
+                    <TournamentPlaceholder key={i} itemNum={i} loadCount={cursor} />
                   ))
                 )
               )}
@@ -104,7 +104,7 @@ function Home() {
 
             {(tournamentsStatus == 'loading') && (
               Array.from({ length: LOAD_AMOUNT }).map((_, i) => (
-                <TournamentPlaceholder itemNum={i} loadCount={cursor} />
+                <TournamentPlaceholder key={i} itemNum={i} loadCount={cursor} />
               ))
             )}
           </div>
