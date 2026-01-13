@@ -4,7 +4,7 @@ const {mongoCreds} = credentials;
 
 
 class Mongo{
-    private uri: string = `${mongoCreds.prefix}${mongoCreds.host}:${mongoCreds.port}/${mongoCreds.database}`;
+    private uri: string = `${mongoCreds.prefix}${mongoCreds.database}:${mongoCreds.password}@${mongoCreds.host}:${mongoCreds.port}/${mongoCreds.database}`;
     public getConnection(){
         return mongoose.connect(this.uri, 
             {useUnifiedTopology: true, useNewUrlParser: true, poolSize: 4},

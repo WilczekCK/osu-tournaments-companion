@@ -78,8 +78,9 @@ class Cron {
                         );
 
 
+                        
                         //give a osu!api some rest, 1s each user!
-                        await new Promise(resolve => setTimeout(resolve, 5000));
+                        await new Promise(resolve => setTimeout(resolve, 2000));
                     })
                     .catch((err) => {
                         return;
@@ -154,7 +155,7 @@ class Cron {
                     })
 
                     //give a osu!api some rest, 1s each user!
-                    await new Promise(resolve => setTimeout(resolve, 5000));
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                 } 
             }
             this.isUserCronInProgress = false;

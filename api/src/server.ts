@@ -27,9 +27,7 @@ app.use(async (ctx, next) => {
 
 // Front-end, allows CORS
 const allowedOrigins = [
-  'https://otc.glad.vision',
-  'http://localhost',
-  'http://localhost:5173',
+  'https://osutc.app'
 ];
 
 app.use(cors({
@@ -41,7 +39,7 @@ app.use(cors({
     }
     return false;
   },
-  allowMethods: ['GET'], // ✅ właściwa opcja w @koa/cors
+  allowMethods: ['GET'],
 }));
 
 

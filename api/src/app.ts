@@ -6,7 +6,7 @@ import mongo from './controllers/mongo';
 const port = process.env.PORT || 3000;
 const server = app.listen(port);
 
-axios.defaults.baseURL = `http://api.otc.glad.vision`;
+axios.defaults.baseURL = `http://api.osutc.app`;
 // axios.defaults.baseURL = `http://localhost:${port}`;
 
 //Start mongo connection!

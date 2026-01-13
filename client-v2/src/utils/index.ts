@@ -30,5 +30,5 @@ export function shuffleArray(array: any[]) {
 }
 
 export const ADS_CLIENT = 'ca-pub-1576581205432574';
-export const API_URL = 'http://api.otc.glad.vision'
-export const LOAD_AMOUNT = 4;
+export const API_URL = 'https://api.osutc.app'
+export const LOAD_AMOUNT = 6;
