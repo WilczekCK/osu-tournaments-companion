@@ -49,7 +49,7 @@ function Home() {
       
       <div className="flex flex-col w-full bg-container-main p-5 pt-4 px-8 rounded-xl items-center">
 
-      <div className="flex flex-col sm:flex-row columns-1 sm:columns-2 w-full justify-center sm:justify-start items-start sm:items-center">
+      <div className="flex flex-col sm:flex-row columns-1 sm:columns-2 w-full justify-center sm:justify-start items-start sm:items-center relative sm:sticky sm:top-0 z-50 p-0 sm:p-2 md:bg-[#555050] sm:bg-[#373434] rounded-b-none sm:rounded-b-md">
         <div className="w-full sm:min-w-[50%] flex flex-row gap-3 justify-center sm:justify-start items-center text-white text-lg">
             <img src={Tournaments} alt="tournaments-icon" className="h-4 mt-[2px] self-center"/>
             Tournaments
