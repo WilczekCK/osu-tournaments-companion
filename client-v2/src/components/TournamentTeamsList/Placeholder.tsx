@@ -20,13 +20,13 @@ export default function TournamentTeamsListPlaceholder() {
     return (
         <div className="flex animate-pulse mt-2 items-center w-full pb-2">
             <div className="flex-1 space-y-6 py-1">
-                <div className="grid grid-cols-10 gap-4 px-6">
-                    <div className="col-span-4 h-3 ml-10 bg-gray-300 rounded"></div>    
-                    <div className="col-span-2 h-2"></div>      
-                    <div className="col-span-4 h-3 mr-12 bg-gray-300 rounded"></div>     
+                <div className="grid md:grid-cols-10 gap-4 px-6">
+                    <div className="col-span-4 h-3 ml-10 bg-gray-300 rounded hidden md:grid"></div>    
+                    <div className="col-span-2 h-2 hidden md:grid"></div>      
+                    <div className="col-span-4 h-3 md:mr-12 bg-gray-300 rounded sm:w-full sm:mr-0"></div>     
                 </div>
 
-                <div className="grid grid-cols-10 gap-4 px-1">
+                <div className="grid md:grid-cols-10 md:gap-4 gap-1 px-1">
                     <MemberPlaceholder />
                     <MemberPlaceholder />
                     <MemberPlaceholder />
