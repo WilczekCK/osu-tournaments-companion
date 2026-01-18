@@ -6,7 +6,7 @@ import { useModeSelectStore } from '../../stores/useModeSelectStore'
 import { useTournamentsStore } from 'stores/useTournamentsStore'
 import { useLoadMoreStore } from 'stores/useLoadMoreStore'
 import { useSearchStore } from 'stores/useSearchStore'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Header() {
   const toggleMode = useModeSelectStore((state) => state.toggleMode)
@@ -30,6 +30,15 @@ export default function Header() {
   const [isTournamentPage, setIsTournamentPage] = useState(() => {
     return innerLocation.pathname.includes('/tournament/');
   });
+
+  // Scroll to previous position when leaving tournament page
+  useEffect(() => {
+    const scrollPos = localStorage.getItem('scrollPosition');
+    if (!isTournamentPage && scrollPos && scrollPos.trim() !== '') {
+      window.scrollTo(0, parseInt(scrollPos));
+      localStorage.removeItem('scrollPosition');
+    }
+  }, [isTournamentPage]);
 
   return (
     <>

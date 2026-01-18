@@ -27,7 +27,10 @@ app.use(async (ctx, next) => {
 
 // Front-end, allows CORS
 const allowedOrigins = [
-  'https://osutc.app'
+  'https://osutc.app',
+  'http://localhost:5173',
+  'http://localhost',
+  'localhost'
 ];
 
 app.use(cors({

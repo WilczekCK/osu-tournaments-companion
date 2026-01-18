@@ -30,9 +30,14 @@ export default function Tournament({tournament}) {
   
   const {teamBlue, teamRed} = useTeamsTournamentScoresHook(teams, tournament.mapsPlayed);
 
+  function createScrollSession() {
+    const scrollPosition = window.scrollY;
+    localStorage.setItem(`scrollPosition`, scrollPosition);
+  }
+
   return (
     <>
-      <div className="flex flex-col w-full rounded-xl items-center bg-container-tournament relative">
+      <div className="flex flex-col rounded-xl items-center bg-container-tournament relative">
         {(!tournament.timeEnded && mapInProgress) && (
           <MapInProgress beatmap={mapInProgress} />
         )}
@@ -75,7 +80,7 @@ export default function Tournament({tournament}) {
             <a target="_blank" href={"https://osu.ppy.sh/community/matches/"+ tournament.id} className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out text-pink-custom hover:text-white">
               osu!
             </a>
-            <NavLink to={"/tournament/"+ tournament.id} className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out  text-pink-custom hover:text-white">
+            <NavLink to={"/tournament/"+ tournament.id} onClick={() => createScrollSession()} className="text-xs cursor-pointer rounded-full border border-pink-custom bg-transparent p-1 pb-2 hover:bg-pink-custom transition duration-300 ease-in-out  text-pink-custom hover:text-white">
               otc!
             </NavLink>
             <img

@@ -34,4 +34,14 @@ html, .bg-main { background-color: #404040;}
 
 .swiper-wrapper {
     transition-timing-function: linear !important;
-    }
+}
+
+.w-full-inner > div {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+}
+
+.w-full-inner > div > div {
+    width: 100%;
+}
