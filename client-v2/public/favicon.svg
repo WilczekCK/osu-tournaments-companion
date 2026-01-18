@@ -1,3 +1,29 @@
-<svg width="410" height="410" viewBox="0 0 410 410" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M205 410C318.218 410 410 318.218 410 205C410 91.7816 318.218 0 205 0C91.7816 0 0 91.7816 0 205C0 318.218 91.7816 410 205 410ZM205 360C290.604 360 360 290.604 360 205C360 119.396 290.604 50 205 50C119.396 50 50 119.396 50 205C50 290.604 119.396 360 205 360Z" fill="#4F46E5" />
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  width="64"
+  height="64"
+>
+  <!-- tło -->
+  <rect width="64" height="64" rx="14" fill="#404040"/>
+
+  <!-- gradient -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF66AA"/>
+      <stop offset="100%" stop-color="#FF66AA"/>
+    </linearGradient>
+  </defs>
+
+  <!-- prosty wir -->
+  <path
+    d="
+      M32 14
+      A18 18 0 1 1 18 32
+      A10 10 0 1 0 32 22
+      A6 6 0 0 1 32 14
+      Z
+    "
+    fill="url(#g)"
+  />
 </svg>

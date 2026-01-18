@@ -109,6 +109,16 @@ function Home() {
                 <TournamentPlaceholder key={i} itemNum={i} loadCount={cursor} />
               ))
             )}
+
+            <Adsense
+              client={ADS_CLIENT}
+              slot="7259870550"
+            />
+    
+            <Adsense
+              client={ADS_CLIENT}
+              slot="7259870550"
+            />
           </div>
         </>
       )}
@@ -119,18 +129,6 @@ function Home() {
         </div>
       )}
 
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full mt-4">
-          <Adsense
-            client={ADS_CLIENT}
-            slot="7259870550"
-          />
-  
-          <Adsense
-            client={ADS_CLIENT}
-            slot="7259870550"
-          />
       </div>
     </>
   )
